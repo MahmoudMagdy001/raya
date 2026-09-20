@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Modern Geometric Flag Motif -->
+  <path d="M20 15 L20 85" stroke="#12372A" stroke-width="6" stroke-linecap="round"/>
+  <path d="M22 18 C35 12, 55 24, 75 16 C82 13, 85 18, 82 25 L75 58 C60 66, 40 54, 22 62 Z" fill="#12372A"/>
+  <path d="M26 22 C37 17, 53 27, 72 20 C76 18, 77 22, 75 27 L70 52 C57 58, 41 48, 26 55 Z" fill="#C5A880" opacity="0.4"/>
+  <circle cx="20" cy="14" r="4" fill="#C5A880"/>
+</svg>

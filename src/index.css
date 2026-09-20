@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Raya Primary Green Scale ─── */
+  --color-primary-50: #f0f6f3;
+  --color-primary-100: #dceae3;
+  --color-primary-200: #b9d5c7;
+  --color-primary-300: #8bbba5;
+  --color-primary-400: #579b7f;
+  --color-primary-500: #205341;
+  --color-primary-600: #174233;
+  --color-primary-700: #12372a; /* اللون الأساسي للهوية */
+  --color-primary-800: #0e2b21;
+  --color-primary-900: #0b221a;
+  --color-primary-950: #05130e;
+
+  /* ─── Raya Warm Sand & Gold Accent Scale ─── */
+  --color-accent-50: #fdfbf7;
+  --color-accent-100: #f4efe6; /* البيج الملكي الأساسي */
+  --color-accent-200: #e8ded0;
+  --color-accent-300: #d7c5b0;
+  --color-accent-400: #c5a880; /* الذهبي النحاسي المائل للفخامة */
+  --color-accent-500: #b38e5c;
+  --color-accent-600: #9c7546;
+  --color-accent-700: #7d5a36;
+  --color-accent-800: #5f432a;
+  --color-accent-900: #422e1d;
+
+  /* ─── Semantic Tokens (3-Layer Architecture) ─── */
+  --color-surface-bg: #f4efe6;
+  --color-surface-card: #ffffff;
+  --color-surface-card-warm: #faf7f2;
+  --color-surface-dark: #12372a;
+  --color-surface-dark-subtle: #0e2b21;
+  
+  --color-text-primary: #12372a;
+  --color-text-secondary: #335948;
+  --color-text-muted: #6b7f74;
+  --color-text-on-dark: #f4efe6;
+  --color-text-on-dark-muted: #b9d5c7;
+
+  --color-border-subtle: #e5dfd3;
+  --color-border-focus: #12372a;
+  --color-border-accent: #c5a880;
+
+  /* ─── Typography: Tajawal & Almarai ─── */
+  --font-sans: "Tajawal", "Almarai", system-ui, -apple-system, sans-serif;
+  --font-display: "Tajawal", sans-serif;
+
+  /* ─── Custom Keyframes ─── */
+  --animate-flag-float: flag-float 4s ease-in-out infinite;
+  --animate-gold-shimmer: gold-shimmer 3s ease-in-out infinite;
+  --animate-marquee: marquee 35s linear infinite;
+
+  @keyframes flag-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(1deg); }
+  }
+
+  @keyframes gold-shimmer {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(197, 168, 128, 0.4)); }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(50%); }
+  }
+
+  @keyframes infinite-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Infinite Marquee Track */
+.animate-infinite-scroll {
+  display: flex;
+  width: max-content;
+  animation: infinite-scroll 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-infinite-scroll:hover {
+  animation-play-state: paused;
+}
+
+
+/* Custom scrollbars and styling */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4efe6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5a880;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #12372a;
+}
+
+/* Glassmorphism utility */
+.glass-header {
+  background: rgba(244, 239, 230, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-dark {
+  background: rgba(18, 55, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Subtle ribbon background motif */
+.ribbon-wave-bg {
+  background-image: radial-gradient(circle at 10% 20%, rgba(197, 168, 128, 0.08) 0%, transparent 40%),
+                    radial-gradient(circle at 90% 80%, rgba(18, 55, 42, 0.06) 0%, transparent 50%);
+}
