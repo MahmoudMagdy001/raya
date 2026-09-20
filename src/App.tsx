@@ -13,7 +13,10 @@ import { ContactPage } from './features/contact/pages/ContactPage'
 import { BlogPage } from './features/blog/pages/BlogPage'
 import { BlogPostDetailPage } from './features/blog/pages/BlogPostDetailPage'
 
-// Admin
+// Admin & Auth
+import { AuthProvider } from './features/admin/context/AuthContext'
+import { AdminProtectedRoute } from './features/admin/components/AdminProtectedRoute'
+import { AdminLoginPage } from './features/admin/pages/AdminLoginPage'
 import { AdminLayout } from './components/layout/AdminLayout'
 import { AdminProjectsPage } from './features/admin/pages/AdminProjectsPage'
 import { AdminServicesPage } from './features/admin/pages/AdminServicesPage'
@@ -40,40 +43,50 @@ const PublicLayout: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <>
+    <AuthProvider>
       <ScrollToTop />
       <Routes>
-      {/* Public Routes */}
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/services/:slug" element={<ServiceDetailPage />} />
-        <Route path="/works" element={<WorksPage />} />
-        <Route path="/works/:slug" element={<CaseStudyDetailPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:slug" element={<BlogPostDetailPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-      </Route>
+        {/* Public Routes */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services/:slug" element={<ServiceDetailPage />} />
+          <Route path="/works" element={<WorksPage />} />
+          <Route path="/works/:slug" element={<CaseStudyDetailPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostDetailPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Route>
 
-      {/* Admin Dashboard Routes */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Navigate to="/admin/projects" replace />} />
-        <Route path="projects" element={<AdminProjectsPage />} />
-        <Route path="services" element={<AdminServicesPage />} />
-        <Route path="clients" element={<AdminClientsPage />} />
-        <Route path="reels" element={<AdminReelsPage />} />
-        <Route path="posts" element={<AdminPostsPage />} />
-        <Route path="inquiries" element={<AdminInquiriesPage />} />
-        <Route path="media" element={<AdminMediaPage />} />
-        <Route path="redirects" element={<AdminGenericPage title="التحويلات" subtitle="إدارة روابط 301 و 302" />} />
-        <Route path="settings" element={<AdminSettingsPage />} />
-      </Route>
+        {/* Admin Login Route (Public) */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-    </>
+        {/* Protected Admin Dashboard Routes */}
+        <Route
+          path="/admin"
+          element={
+            <AdminProtectedRoute>
+              <AdminLayout />
+            </AdminProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="/admin/projects" replace />} />
+          <Route path="projects" element={<AdminProjectsPage />} />
+          <Route path="services" element={<AdminServicesPage />} />
+          <Route path="clients" element={<AdminClientsPage />} />
+          <Route path="reels" element={<AdminReelsPage />} />
+          <Route path="posts" element={<AdminPostsPage />} />
+          <Route path="inquiries" element={<AdminInquiriesPage />} />
+          <Route path="media" element={<AdminMediaPage />} />
+          <Route path="redirects" element={<AdminGenericPage title="التحويلات" subtitle="إدارة روابط 301 و 302" />} />
+          <Route path="settings" element={<AdminSettingsPage />} />
+        </Route>
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </AuthProvider>
   )
 }
 
