@@ -4,6 +4,7 @@ import { getProjects } from '../../../lib/supabase'
 import { Project } from '../../../lib/types'
 import { INITIAL_PROJECTS } from '../../../data/initialData'
 import { ArrowUpLeft, Eye, TrendingUp, Sparkles, Filter } from 'lucide-react'
+import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
 export const WorksPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
@@ -30,7 +31,7 @@ export const WorksPage: React.FC = () => {
     : projects.filter(p => p.category_name === selectedCategory)
 
   return (
-    <div className="pb-20 bg-[#F4EFE6]">
+    <div className="bg-[#F4EFE6]">
       {/* Header */}
       <section className="pt-36 pb-20 bg-[#12372A] text-[#F4EFE6] text-center relative overflow-hidden">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
@@ -38,10 +39,21 @@ export const WorksPage: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
             <span>معرض الأعمال ودراسات المشاريع</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black">
-            أعمال رايـة وقصص النجاح
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F4EFE6]">
+            أعمال رايـة{' '}
+            <span className="relative inline-block text-[#C5A880]">
+              وقصص النجاح
+              <svg
+                className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+                viewBox="0 0 100 20"
+                preserveAspectRatio="none"
+                fill="none"
+              >
+                <path d="M0 15 Q50 0, 100 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </span>
           </h1>
-          <p className="text-lg sm:text-xl text-[#b9d5c7] max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-[#b9d5c7] max-w-2xl mx-auto leading-relaxed pt-1">
             نستعرض كيف تحولت التحديات إلى أفكار إبداعية حققت ملايين المشاهدات وأثراً مستداماً.
           </p>
         </div>
@@ -143,6 +155,9 @@ export const WorksPage: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Master CTA Section (Same as Home page) */}
+      <MasterCtaSection />
     </div>
   )
 }

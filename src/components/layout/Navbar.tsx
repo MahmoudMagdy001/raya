@@ -25,6 +25,7 @@ export const Navbar: React.FC = () => {
     { name: 'عن راية', path: '/about' },
     { name: 'خدماتنا', path: '/services' },
     { name: 'أعمالنا', path: '/works' },
+    { name: 'المدونة', path: '/blog' },
     { name: 'تواصل معنا', path: '/contact' }
   ]
 
@@ -32,6 +33,15 @@ export const Navbar: React.FC = () => {
     if (path === '/') return location.pathname === '/'
     if (path.startsWith('/#')) return false
     return location.pathname.startsWith(path)
+  }
+
+  const handleNavClick = (path: string) => {
+    if (location.pathname === path) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+    }
   }
 
   return (
@@ -45,7 +55,7 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" onClick={() => handleNavClick('/')} className="flex items-center gap-3 group">
             <img
               src="/logo.png"
               alt="شعار راية"
@@ -61,6 +71,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={link.name}
                   to={link.path}
+                  onClick={() => handleNavClick(link.path)}
                   className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 ${
                     active
                       ? 'text-[#C5A880] bg-white/10 shadow-xs'
@@ -77,6 +88,7 @@ export const Navbar: React.FC = () => {
           <div className="hidden sm:flex items-center gap-3">
             <Link
               to="/contact"
+              onClick={() => handleNavClick('/contact')}
               className="group relative inline-flex items-center gap-2 bg-[#C5A880] hover:bg-[#b0926b] text-[#12372A] px-5 py-2.5 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
             >
               <span>ابدأ مشروعك</span>
@@ -103,6 +115,10 @@ export const Navbar: React.FC = () => {
               <Link
                 key={link.name}
                 to={link.path}
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  handleNavClick(link.path)
+                }}
                 className="px-4 py-2.5 rounded-xl text-base font-bold text-[#F4EFE6] hover:text-[#C5A880] hover:bg-white/5 transition-colors"
               >
                 {link.name}
@@ -111,6 +127,10 @@ export const Navbar: React.FC = () => {
             <div className="pt-3 mt-2 border-t border-[#205341]/50 flex flex-col gap-3">
               <Link
                 to="/contact"
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  handleNavClick('/contact')
+                }}
                 className="w-full flex items-center justify-center gap-2 bg-[#C5A880] text-[#12372A] py-3 rounded-xl font-black shadow-lg"
               >
                 <Sparkles className="w-4 h-4 text-[#12372A]" />

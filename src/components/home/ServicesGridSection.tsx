@@ -12,19 +12,28 @@ type ServiceCategory = 'all' | 'creative' | 'tech'
 export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ services }) => {
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>('all')
 
+  const isCreative = (s: Service) =>
+    s.category === 'creative' ||
+    s.slug === 'short-form-content' ||
+    s.slug === 'events-coverage' ||
+    s.slug === 'documentaries-commercials' ||
+    s.slug === 'podcast-personal-branding' ||
+    s.slug === 'brand-identity-strategy'
+
+  const isTech = (s: Service) =>
+    s.category === 'tech' ||
+    s.slug === 'web-development' ||
+    s.slug === 'mobile-app-development' ||
+    s.slug === 'ai-solutions'
+
+  const creativeCount = services.filter(isCreative).length
+  const techCount = services.filter(isTech).length
+
   // Filter services based on category
   const filteredServices = services.filter((service) => {
     if (activeCategory === 'all') return true
-    if (activeCategory === 'creative') {
-      return service.slug === 'short-form-content' || service.slug === 'events-coverage'
-    }
-    if (activeCategory === 'tech') {
-      return (
-        service.slug === 'web-development' ||
-        service.slug === 'mobile-app-development' ||
-        service.slug === 'ai-solutions'
-      )
-    }
+    if (activeCategory === 'creative') return isCreative(service)
+    if (activeCategory === 'tech') return isTech(service)
     return true
   })
 
@@ -76,7 +85,7 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ servic
                 : 'bg-white text-[#12372A] border border-[#E5DFD3] hover:border-[#12372A]/30 hover:bg-[#FAF7F2]'
             }`}
           >
-            الإنتاج الفني وصناعة المحتوى (2)
+            الإنتاج الفني وصناعة المحتوى ({creativeCount})
           </button>
           <button
             onClick={() => setActiveCategory('tech')}
@@ -86,7 +95,7 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ servic
                 : 'bg-white text-[#12372A] border border-[#E5DFD3] hover:border-[#12372A]/30 hover:bg-[#FAF7F2]'
             }`}
           >
-            الأنظمة والحلول التقنية (3)
+            الأنظمة والحلول التقنية ({techCount})
           </button>
         </div>
 

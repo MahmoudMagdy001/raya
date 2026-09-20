@@ -75,13 +75,22 @@
       transform: translateX(-50%);
     }
   }
+
+  @keyframes infinite-scroll-reverse {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
 }
 
-/* Infinite Marquee Track */
+/* Infinite Marquee Tracks */
 .animate-infinite-scroll {
   display: flex;
   width: max-content;
-  animation: infinite-scroll 45s linear infinite;
+  animation: infinite-scroll 35s linear infinite;
   will-change: transform;
 }
 
@@ -89,11 +98,41 @@
   animation-play-state: paused;
 }
 
+.animate-infinite-scroll-reverse {
+  display: flex;
+  width: max-content;
+  animation: infinite-scroll-reverse 35s linear infinite;
+  will-change: transform;
+}
+
+.animate-infinite-scroll-reverse:hover {
+  animation-play-state: paused;
+}
+
+.animate-infinite-scroll-slow {
+  display: flex;
+  width: max-content;
+  animation: infinite-scroll 55s linear infinite;
+  will-change: transform;
+}
+
+.animate-infinite-scroll-slow:hover {
+  animation-play-state: paused;
+}
+
+.animate-infinite-scroll-slow-reverse {
+  display: flex;
+  width: max-content;
+  animation: infinite-scroll-reverse 55s linear infinite;
+  will-change: transform;
+}
+
+.animate-infinite-scroll-slow-reverse:hover {
+  animation-play-state: paused;
+}
+
 
 /* Custom scrollbars and styling */
-html {
-  scroll-behavior: smooth;
-}
 
 ::-webkit-scrollbar {
   width: 8px;

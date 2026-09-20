@@ -4,12 +4,22 @@ import { getProjectBySlug } from '../../../lib/supabase'
 import { Project } from '../../../lib/types'
 import { ArrowRight, Play, Eye, TrendingUp, Sparkles, MessageSquare, CheckCircle2 } from 'lucide-react'
 import { VideoModal } from '../../../components/ui/VideoModal'
+import { usePageSeo } from '../../../components/common/SEO'
 
 export const CaseStudyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const [project, setProject] = useState<Project | null>(null)
   const [loading, setLoading] = useState(true)
   const [videoModalOpen, setVideoModalOpen] = useState(false)
+
+  usePageSeo({
+    title: project?.meta_title || (project ? `${project.title} - دراسة حالة` : undefined),
+    description: project?.meta_description || project?.case_objective || project?.case_challenge,
+    keywords: project?.meta_keywords,
+    ogImage: project?.og_image || project?.cover_image,
+    canonicalUrl: project?.canonical_url,
+    noIndex: project?.no_index
+  })
 
   useEffect(() => {
     async function load() {
@@ -25,10 +35,10 @@ export const CaseStudyDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#F4EFE6]">
+      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#0B221A] text-[#F4EFE6]">
         <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-[#12372A] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm font-bold text-[#12372A]">جاري تحميل دراسة الحالة...</p>
+          <div className="w-12 h-12 border-4 border-[#C5A880] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm font-bold text-[#b9d5c7]">جاري تحميل دراسة الحالة...</p>
         </div>
       </div>
     )
@@ -36,9 +46,9 @@ export const CaseStudyDetailPage: React.FC = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#F4EFE6]">
+      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#0B221A] text-[#F4EFE6]">
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-bold text-[#12372A]">المشروع غير موجود</h2>
+          <h2 className="text-2xl font-bold text-[#F4EFE6]">المشروع غير موجود</h2>
           <Link to="/works" className="inline-flex items-center gap-2 text-[#C5A880] font-bold">
             <ArrowRight className="w-4 h-4" />
             <span>العودة لمعرض الأعمال</span>
@@ -49,46 +59,50 @@ export const CaseStudyDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="pt-28 pb-20 bg-[#F4EFE6]">
-      {/* Top Breadcrumb */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4">
-        <Link
-          to="/works"
-          className="inline-flex items-center gap-2 text-xs font-bold text-[#6b7f74] hover:text-[#12372A] transition-colors"
-        >
-          <ArrowRight className="w-4 h-4" />
-          <span>الرجوع لمعرض الأعمال والدراسات</span>
-        </Link>
-      </div>
+    <div className="pb-20 bg-[#F4EFE6]">
+      {/* Case Study Hero Header */}
+      <section className="pt-36 pb-14 sm:pb-16 bg-[#12372A] text-[#F4EFE6] relative overflow-hidden border-b border-[#205341]/50">
+        {/* Ambient Glows */}
+        <div className="pointer-events-none absolute -top-32 -left-32 w-96 h-96 bg-[#205341] rounded-full blur-3xl opacity-40" />
+        <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 bg-[#C5A880] rounded-full blur-3xl opacity-15" />
 
-      {/* Case Study Header */}
-      <section className="py-8">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
+          {/* Top Breadcrumb */}
+          <div>
+            <Link
+              to="/works"
+              className="inline-flex items-center gap-2 text-xs font-bold text-[#b9d5c7] hover:text-[#C5A880] transition-colors group"
+            >
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <span>الرجوع لمعرض الأعمال والدراسات</span>
+            </Link>
+          </div>
+
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-3 py-1 rounded-full bg-[#12372A] text-[#C5A880] text-xs font-black">
+            <span className="px-3 py-1 rounded-full bg-[#205341] text-[#C5A880] text-xs font-black border border-[#C5A880]/30">
               دراسة حالة معتمدة (The 6-Step Case Study)
             </span>
             {project.category_name && (
-              <span className="px-3 py-1 rounded-full bg-[#E5DFD3] text-[#12372A] text-xs font-bold">
+              <span className="px-3 py-1 rounded-full bg-white/10 text-[#F4EFE6] text-xs font-bold">
                 {project.category_name}
               </span>
             )}
-            <span className="text-xs font-bold text-[#6b7f74]">
-              العميل: <strong className="text-[#12372A]">{project.client_name}</strong>
+            <span className="text-xs font-bold text-[#b9d5c7]">
+              العميل: <strong className="text-[#F4EFE6]">{project.client_name}</strong>
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-[#12372A] leading-tight">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#F4EFE6] leading-tight tracking-tight">
             {project.title}
           </h1>
 
           {/* Metrics Highlight Banner */}
           {project.metrics && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-white rounded-2xl border border-[#E5DFD3] shadow-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 sm:p-6 bg-[#0B221A]/80 backdrop-blur-md rounded-2xl border border-[#205341]/60 shadow-lg mt-6">
               {project.metrics.views && (
                 <div>
-                  <span className="text-xs text-[#6b7f74] block">المشاهدات الكلية</span>
-                  <span className="text-2xl font-black text-[#12372A] flex items-center gap-1 mt-1">
+                  <span className="text-xs text-[#b9d5c7] block">المشاهدات الكلية</span>
+                  <span className="text-2xl font-black text-[#C5A880] flex items-center gap-1 mt-1">
                     <Eye className="w-5 h-5 text-[#C5A880]" />
                     {project.metrics.views}
                   </span>
@@ -96,17 +110,17 @@ export const CaseStudyDetailPage: React.FC = () => {
               )}
               {project.metrics.growth && (
                 <div>
-                  <span className="text-xs text-[#6b7f74] block">نسبة نمو التفاعل</span>
-                  <span className="text-2xl font-black text-[#205341] flex items-center gap-1 mt-1">
-                    <TrendingUp className="w-5 h-5 text-[#205341]" />
+                  <span className="text-xs text-[#b9d5c7] block">نسبة نمو التفاعل</span>
+                  <span className="text-2xl font-black text-[#F4EFE6] flex items-center gap-1 mt-1">
+                    <TrendingUp className="w-5 h-5 text-[#C5A880]" />
                     {project.metrics.growth}
                   </span>
                 </div>
               )}
               {project.metrics.engagement && (
                 <div>
-                  <span className="text-xs text-[#6b7f74] block">التفاعلات المسجلة</span>
-                  <span className="text-2xl font-black text-[#12372A] flex items-center gap-1 mt-1">
+                  <span className="text-xs text-[#b9d5c7] block">التفاعلات المسجلة</span>
+                  <span className="text-2xl font-black text-[#C5A880] flex items-center gap-1 mt-1">
                     <Sparkles className="w-5 h-5 text-[#C5A880]" />
                     {project.metrics.engagement}
                   </span>
@@ -114,9 +128,9 @@ export const CaseStudyDetailPage: React.FC = () => {
               )}
               {project.metrics.conversion && (
                 <div>
-                  <span className="text-xs text-[#6b7f74] block">زيادة المبيعات والطلبات</span>
-                  <span className="text-2xl font-black text-[#12372A] flex items-center gap-1 mt-1">
-                    <CheckCircle2 className="w-5 h-5 text-[#205341]" />
+                  <span className="text-xs text-[#b9d5c7] block">زيادة المبيعات والطلبات</span>
+                  <span className="text-2xl font-black text-[#F4EFE6] flex items-center gap-1 mt-1">
+                    <CheckCircle2 className="w-5 h-5 text-[#C5A880]" />
                     {project.metrics.conversion}
                   </span>
                 </div>
@@ -127,7 +141,7 @@ export const CaseStudyDetailPage: React.FC = () => {
       </section>
 
       {/* Main 6-Step Case Study Breakdown */}
-      <section className="py-8">
+      <section className="py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           {/* Step 1: The Challenge */}
           <div className="bg-white p-8 sm:p-10 rounded-3xl border border-[#E5DFD3] shadow-xs">

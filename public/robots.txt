@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block admin panel from indexing
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://raya.sa/sitemap.xml

@@ -66,10 +66,21 @@ export const ContactPage: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
             <span>ابدأ مشروعك القادم معنا</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black">
-            تواصل مع رايـة
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F4EFE6]">
+            تواصل مع{' '}
+            <span className="relative inline-block text-[#C5A880]">
+              رايـة
+              <svg
+                className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+                viewBox="0 0 100 20"
+                preserveAspectRatio="none"
+                fill="none"
+              >
+                <path d="M0 15 Q50 0, 100 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </span>
           </h1>
-          <p className="text-lg sm:text-xl text-[#b9d5c7] max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-[#b9d5c7] max-w-2xl mx-auto leading-relaxed pt-1">
             أرسل تفاصيل فكرتك أو البريف (Brief)، وسنقوم بتحليله والجلوس معك للانطلاق فوراً.
           </p>
         </div>

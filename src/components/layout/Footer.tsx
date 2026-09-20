@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { MapPin, Phone, Mail, Instagram, Linkedin, Youtube, ArrowUp } from 'lucide-react'
+import { getServices, getSiteSettings } from '../../lib/supabase'
+import { Service, SiteSettings } from '../../lib/types'
+import { INITIAL_SITE_SETTINGS } from '../../data/initialData'
 
 // Official WhatsApp Vector Icon
 const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
@@ -9,9 +12,93 @@ const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' 
   </svg>
 )
 
+const DEFAULT_SERVICES: Array<{ id?: string; title: string; slug: string }> = [
+  { id: '1', title: 'إنتاج المقاطع القصيرة', slug: 'short-form-content' },
+  { id: '2', title: 'تغطية المعارض والمؤتمرات', slug: 'events-coverage' },
+  { id: '3', title: 'الأفلام الوثائقية والإعلانات التجارية', slug: 'documentaries-commercials' },
+  { id: '4', title: 'صناعة المحتوى الشخصي والبودكاست', slug: 'podcast-personal-branding' },
+  { id: '5', title: 'إنشاء المواقع الإلكترونية والمنصات', slug: 'web-development' },
+  { id: '6', title: 'تطوير تطبيقات الجوال الذكية', slug: 'mobile-app-development' },
+  { id: '7', title: 'حلول وأنظمة الذكاء الاصطناعي', slug: 'ai-solutions' },
+  { id: '8', title: 'بناء الهوية البصرية والاستراتيجية', slug: 'brand-identity-strategy' }
+]
+
 export const Footer: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
+  const location = useLocation()
+
+  const [services, setServices] = useState<Service[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('raya_services')
+        if (raw) {
+          const parsed = JSON.parse(raw)
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return []
+  })
+
+  const [settings, setSettings] = useState<SiteSettings>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = localStorage.getItem('raya_site_settings')
+        if (raw) {
+          const parsed = JSON.parse(raw)
+          if (parsed && typeof parsed === 'object') return { ...INITIAL_SITE_SETTINGS, ...parsed }
+        }
+      } catch {
+        // ignore
+      }
+    }
+    return INITIAL_SITE_SETTINGS
+  })
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadData() {
+      const [servicesData, settingsData] = await Promise.all([
+        getServices(),
+        getSiteSettings()
+      ])
+      if (isMounted) {
+        if (servicesData && servicesData.length > 0) {
+          setServices(servicesData)
+        }
+        if (settingsData) {
+          setSettings(settingsData)
+        }
+      }
+    }
+
+    loadData()
+
+    const handleStorageUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent<{ key?: string }>
+      if (!customEvent.detail?.key || customEvent.detail.key === 'raya_services') {
+        getServices().then((data) => {
+          if (isMounted && data && data.length > 0) setServices(data)
+        })
+      }
+      if (!customEvent.detail?.key || customEvent.detail.key === 'raya_site_settings') {
+        getSiteSettings().then((data) => {
+          if (isMounted && data) setSettings(data)
+        })
+      }
+    }
+
+    window.addEventListener('raya_storage_updated', handleStorageUpdate)
+
+    return () => {
+      isMounted = false
+      window.removeEventListener('raya_storage_updated', handleStorageUpdate)
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +124,19 @@ export const Footer: React.FC = () => {
       behavior: 'smooth'
     })
   }
+
+  const handleLinkClick = (path: string) => {
+    if (location.pathname === path) {
+      scrollToTop()
+    }
+  }
+
+  const displayServices = (services.length > 0 ? services : DEFAULT_SERVICES).filter(
+    (s: any) => !s.status || s.status === 'published'
+  )
+
+  const cleanWhatsappNumber = (settings.whatsapp_number || '966501234567').replace(/[^0-9]/g, '')
+
   return (
     <footer className="relative bg-[#0B221A] text-[#F4EFE6] pt-16 pb-12 overflow-hidden border-t border-[#205341]/40">
       {/* Background Subtle Wave Accents */}
@@ -46,10 +146,10 @@ export const Footer: React.FC = () => {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 pb-14 border-b border-[#174233]">
-          {/* Column 1: Brand & Identity */}
-          <div className="space-y-4">
-            <Link to="/" className="inline-block">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-14 border-b border-[#174233]">
+          {/* Column 1: Brand & Identity (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
+            <Link to="/" onClick={() => handleLinkClick('/')} className="inline-block">
               <img
                 src="/logo.png"
                 alt="شعار راية"
@@ -57,150 +157,178 @@ export const Footer: React.FC = () => {
               />
             </Link>
 
-            <p className="text-sm text-[#b9d5c7] leading-relaxed">
-              راية شركة إنتاج إبداعي سعودية، متخصصة في صناعة المحتوى القصير والإنتاج الفني للعلامات التجارية والشركات والأشخاص. نحوّل أهدافكم إلى محتوى يصنع الفرق ويستحق الظهور.
+            <p className="text-sm text-[#b9d5c7] leading-relaxed max-w-sm">
+              {settings.site_description ||
+                'راية شركة إنتاج إبداعي سعودية، متخصصة في صناعة المحتوى القصير والإنتاج الفني للعلامات التجارية والشركات والأشخاص. نحوّل أهدافكم إلى محتوى يصنع الفرق ويستحق الظهور.'}
             </p>
-
           </div>
 
-          {/* Column 2: Services */}
-          <div>
-            <h4 className="text-base font-bold text-[#F4EFE6] mb-4 pb-1 border-b border-[#205341] inline-block">
-              خدمات راية
-            </h4>
-            <ul className="space-y-2.5 text-sm text-[#b9d5c7]">
+          {/* Column 2: Quick Navigation (2 cols) */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center mb-4 pb-2 border-b border-[#205341]">
+              <h4 className="text-base font-bold text-[#F4EFE6]">
+                روابط سريعة
+              </h4>
+            </div>
+            <ul className="space-y-2.5 p-0 m-0 list-none text-sm text-[#b9d5c7]">
               <li>
-                <Link to="/services/short-form-content" className="hover:text-[#C5A880] transition-colors flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/60" />
-                  إنتاج المقاطع القصيرة (Reels & Shorts)
+                <Link to="/" onClick={() => handleLinkClick('/')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>الرئيسية</span>
                 </Link>
               </li>
               <li>
-                <Link to="/services/events-coverage" className="hover:text-[#C5A880] transition-colors flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/60" />
-                  تغطية المعارض والمؤتمرات
+                <Link to="/about" onClick={() => handleLinkClick('/about')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>عن راية</span>
                 </Link>
               </li>
               <li>
-                <Link to="/services/web-development" className="hover:text-[#C5A880] transition-colors flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/60" />
-                  إنشاء وتطوير المواقع الإلكترونية
+                <Link to="/services" onClick={() => handleLinkClick('/services')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>خدماتنا</span>
                 </Link>
               </li>
               <li>
-                <Link to="/services/mobile-app-development" className="hover:text-[#C5A880] transition-colors flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/60" />
-                  تطوير تطبيقات الجوال الذكية
+                <Link to="/works" onClick={() => handleLinkClick('/works')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>أعمالنا</span>
                 </Link>
               </li>
               <li>
-                <Link to="/services/ai-solutions" className="hover:text-[#C5A880] transition-colors flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/60" />
-                  حلول وأنظمة الذكاء الاصطناعي
+                <Link to="/blog" onClick={() => handleLinkClick('/blog')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>المدونة</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" onClick={() => handleLinkClick('/contact')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>تواصل معنا</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Quick Navigation */}
-          <div>
-            <h4 className="text-base font-bold text-[#F4EFE6] mb-4 pb-1 border-b border-[#205341] inline-block">
-              روابط سريعة
-            </h4>
-            <ul className="space-y-2.5 text-sm text-[#b9d5c7]">
-              <li>
-                <Link to="/about" className="hover:text-[#C5A880] transition-colors">عن راية وقصة التأسيس</Link>
-              </li>
-              <li>
-                <Link to="/works" className="hover:text-[#C5A880] transition-colors">أعمالنا ودراسات المشاريع الستة</Link>
-              </li>
-              <li>
-                <Link to="/#workflow" className="hover:text-[#C5A880] transition-colors">طريقة عملنا (الـ 7 خطوات)</Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-[#C5A880] transition-colors">إرسال بريف مشروع (Brief)</Link>
-              </li>
-              <li>
-                <Link to="/admin/projects" className="hover:text-[#C5A880] transition-colors">بوابة الإدارة والمشرفين</Link>
-              </li>
+          {/* Column 3: Services (3 cols) */}
+          <div className="lg:col-span-3">
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#205341]">
+              <h4 className="text-base font-bold text-[#F4EFE6]">
+                خدمات راية
+              </h4>
+              <Link
+                to="/services"
+                onClick={() => handleLinkClick('/services')}
+                className="text-xs font-bold text-[#C5A880] hover:text-[#f3d7a4] transition-colors"
+              >
+                عرض الكل
+              </Link>
+            </div>
+            <ul className="space-y-2.5 p-0 m-0 list-none text-sm text-[#b9d5c7]">
+              {displayServices.map((service) => (
+                <li key={service.slug || service.id}>
+                  <Link
+                    to={`/services/${service.slug}`}
+                    onClick={() => handleLinkClick(`/services/${service.slug}`)}
+                    className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                    <span className="line-clamp-1">{service.title}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 4: Contact & Social */}
-          <div className="space-y-3">
-            <h4 className="text-base font-bold text-[#F4EFE6] mb-4 pb-1 border-b border-[#205341] inline-block">
-              تواصل معنا
-            </h4>
+          {/* Column 4: Contact & Social (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <div className="flex items-center mb-4 pb-2 border-b border-[#205341]">
+              <h4 className="text-base font-bold text-[#F4EFE6]">
+                تواصل معنا
+              </h4>
+            </div>
             <div className="space-y-3 text-sm text-[#b9d5c7]">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
-                <span>الرياض، المملكة العربية السعودية</span>
+                <span className="leading-relaxed">{settings.address || 'الرياض، المملكة العربية السعودية'}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#C5A880] shrink-0" />
-                <span dir="ltr">+966 50 123 4567</span>
+                <a href={`tel:${(settings.phone_number || '+966 50 123 4567').replace(/\s+/g, '')}`} className="hover:text-[#C5A880] transition-colors" dir="ltr">
+                  {settings.phone_number || '+966 50 123 4567'}
+                </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#C5A880] shrink-0" />
-                <span>info@raya.sa</span>
+                <a href={`mailto:${settings.email_address || 'info@raya.sa'}`} className="hover:text-[#C5A880] transition-colors">
+                  {settings.email_address || 'info@raya.sa'}
+                </a>
               </div>
             </div>
 
             {/* Social Icons */}
             <div className="pt-2 flex items-center gap-2.5">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6] font-bold text-xs"
-                aria-label="X"
-              >
-                𝕏
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
-                aria-label="YouTube"
-              >
-                <Youtube className="w-4 h-4" />
-              </a>
+              {settings.social_instagram && (
+                <a
+                  href={settings.social_instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+              )}
+              {settings.social_x && (
+                <a
+                  href={settings.social_x}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6] font-bold text-xs"
+                  aria-label="X"
+                >
+                  𝕏
+                </a>
+              )}
+              {settings.social_linkedin && (
+                <a
+                  href={settings.social_linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </a>
+              )}
+              {settings.social_youtube && (
+                <a
+                  href={settings.social_youtube}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
+                  aria-label="YouTube"
+                >
+                  <Youtube className="w-4 h-4" />
+                </a>
+              )}
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8bbba5]">
-          <p>© 2026 شركة راية للإنتاج والتسويق الإبداعي. جميع الحقوق محفوظة.</p>
+          <p>© 2026 {settings.site_name || 'شركة راية للإنتاج والتسويق الإبداعي'}. جميع الحقوق محفوظة.</p>
           <div className="flex items-center gap-6">
             <span>الرياض • المملكة العربية السعودية</span>
-            <span className="text-[#C5A880]">أفكار تصنع الفرق</span>
+            <span className="text-[#C5A880]">{settings.slogan_ar || 'أفكار تصنع الفرق'}</span>
           </div>
         </div>
       </div>
 
       {/* Floating WhatsApp Action Button (Right) */}
       <a
-        href="https://wa.me/966501234567?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AE%D8%AF%D9%85%D8%A7%D8%AA%20%D8%B1%D8%A7%D9%8A%D8%A9%20%D9%84%D9%84%D8%A5%D9%86%D8%AA%D8%A7%D8%AC%20%D8%A7%D9%84%D8%A5%D8%A8%D8%AF%D8%A7%D8%B9%D9%8A"
+        href={`https://wa.me/${cleanWhatsappNumber}?text=${encodeURIComponent('مرحباً، أود الاستفسار عن خدمات راية للإنتاج الإبداعي')}`}
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-6 right-6 z-40 w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xl hover:shadow-green-500/25 flex items-center justify-center transition-all duration-300 transform hover:scale-110 group"

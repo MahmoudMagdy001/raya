@@ -4,6 +4,7 @@ import { getServices } from '../../../lib/supabase'
 import { Service } from '../../../lib/types'
 import { INITIAL_SERVICES } from '../../../data/initialData'
 import { Film, Camera, Globe, Smartphone, Cpu, ArrowUpLeft, Check, Sparkles } from 'lucide-react'
+import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
 export const ServicesPage: React.FC = () => {
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
@@ -28,7 +29,7 @@ export const ServicesPage: React.FC = () => {
   }
 
   return (
-    <div className="pb-20">
+    <div>
       {/* Header */}
       <section className="pt-36 pb-20 bg-[#12372A] text-[#F4EFE6] text-center relative overflow-hidden">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
@@ -36,10 +37,21 @@ export const ServicesPage: React.FC = () => {
             <Sparkles className="w-3.5 h-3.5" />
             <span>حلول الإنتاج الشاملة</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black">
-            خدمات راية الإبداعية والتقنية
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F4EFE6]">
+            خدمات راية{' '}
+            <span className="relative inline-block text-[#C5A880]">
+              الإبداعية والتقنية
+              <svg
+                className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+                viewBox="0 0 100 20"
+                preserveAspectRatio="none"
+                fill="none"
+              >
+                <path d="M0 15 Q50 0, 100 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </span>
           </h1>
-          <p className="text-lg sm:text-xl text-[#b9d5c7] max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-[#b9d5c7] max-w-2xl mx-auto leading-relaxed pt-1">
             نجمع بين عمق التفكير الاستراتيجي وأحدث أدوات الإنتاج السينمائي والتقني.
           </p>
         </div>
@@ -137,6 +149,9 @@ export const ServicesPage: React.FC = () => {
           })}
         </div>
       </section>
+
+      {/* Master CTA Section (Same as Home page) */}
+      <MasterCtaSection />
     </div>
   )
 }

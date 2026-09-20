@@ -1,7 +1,111 @@
 import React from 'react'
+import { Client } from '../../lib/types'
 import { PARTNERS_DATA } from './PartnerLogos'
+import { Building2 } from 'lucide-react'
 
-export const ClientsSection: React.FC = () => {
+interface ClientsSectionProps {
+  clients?: Client[]
+}
+
+export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients }) => {
+  const activeClients = clients && clients.length > 0 
+    ? clients.filter(c => c.status !== 'draft') 
+    : []
+
+  // Create lookup for initial SVG icons
+  const iconLookup: Record<string, React.FC<{ className?: string }>> = {}
+  PARTNERS_DATA.forEach(p => {
+    iconLookup[p.id] = p.Icon
+    iconLookup[p.name] = p.Icon
+  })
+
+  // Deduplicate active clients and provide seamless fallback
+  const uniqueClients = React.useMemo(() => {
+    const list: Array<{ id: string; name: string; en_name?: string; logo_url?: string }> = 
+      activeClients.length > 0 
+        ? activeClients 
+        : PARTNERS_DATA.map(p => ({
+            id: p.id,
+            name: p.name,
+            en_name: p.enName,
+            logo_url: undefined
+          }))
+    
+    const seen = new Set<string>()
+    return list.filter(item => {
+      const key = item.name.trim().toLowerCase()
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+  }, [activeClients])
+
+  // Split into Row 1 and Row 2 regardless of total count
+  const { row1, row2 } = React.useMemo(() => {
+    if (uniqueClients.length === 0) return { row1: [], row2: [] }
+    
+    const half = Math.ceil(uniqueClients.length / 2)
+    const r1 = uniqueClients.slice(0, half)
+    const r2 = uniqueClients.slice(half)
+
+    // Expand items so track has at least 8 items for a continuous seamless loop
+    const ensureLoopLength = (arr: typeof uniqueClients) => {
+      if (arr.length === 0) return []
+      let res = [...arr]
+      while (res.length < 8) {
+        res = [...res, ...arr]
+      }
+      return res
+    }
+
+    return {
+      row1: ensureLoopLength(r1),
+      row2: ensureLoopLength(r2.length > 0 ? r2 : r1)
+    }
+  }, [uniqueClients])
+
+  // Render Card
+  const renderCard = (client: { id: string; name: string; en_name?: string; logo_url?: string }, key: string) => {
+    const MatchingIcon = iconLookup[client.id] || iconLookup[client.name]
+    return (
+      <div
+        key={key}
+        className="group w-44 sm:w-56 p-4 sm:p-5 bg-white rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-between text-center gap-3 hover:-translate-y-1.5 cursor-pointer relative overflow-hidden shrink-0 select-none"
+        title={client.name}
+      >
+        {/* Top Golden Hover Accent Line */}
+        <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+        {/* Brand Emblem / Logo Image */}
+        <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] group-hover:bg-[#12372A] text-[#12372A] group-hover:text-[#F4EFE6] flex items-center justify-center transition-all duration-300 shadow-xs group-hover:scale-110 shrink-0 overflow-hidden p-1.5">
+          {client.logo_url ? (
+            <img 
+              src={client.logo_url} 
+              alt={client.name} 
+              className="w-full h-full object-contain" 
+            />
+          ) : MatchingIcon ? (
+            <MatchingIcon className="w-7 h-7 transition-colors" />
+          ) : (
+            <Building2 className="w-6 h-6 transition-colors" />
+          )}
+        </div>
+
+        {/* Typography Brand Lockup */}
+        <div className="space-y-0.5 w-full">
+          <span className="text-xs sm:text-sm font-black text-[#12372A] group-hover:text-[#205341] block transition-colors leading-tight truncate">
+            {client.name}
+          </span>
+          {client.en_name && (
+            <span className="text-[9px] font-bold text-[#C5A880] tracking-wider uppercase block truncate">
+              {client.en_name}
+            </span>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <section className="pt-4 sm:pt-8 pb-16 sm:pb-24 bg-[#FAF7F2] border-b border-[#E5DFD3] relative overflow-hidden">
       {/* Subtle Ambient Glow */}
@@ -11,7 +115,7 @@ export const ClientsSection: React.FC = () => {
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] tracking-tight">
             علامات تجارية وكيانات{' '}
             <span className="relative inline-block text-[#C5A880]">
@@ -31,37 +135,37 @@ export const ClientsSection: React.FC = () => {
           </p>
         </div>
 
-        {/* 8 Distinctive Luxury Partner Brand Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 lg:gap-4 xl:gap-5 items-stretch justify-center">
-          {PARTNERS_DATA.map((partner) => {
-            const Icon = partner.Icon
-            return (
-              <div
-                key={partner.id}
-                className="group p-4 sm:p-5 bg-white rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-between text-center gap-3 hover:-translate-y-1.5 cursor-pointer relative overflow-hidden"
-                title={partner.name}
-              >
-                {/* Top Subtle Golden Hover Accent Line */}
-                <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        {/* Dual-Row Infinite Marquee Container */}
+        <div className="relative w-full overflow-hidden space-y-4 sm:space-y-5">
+          {/* Luxury Edge Faders */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-36 bg-gradient-to-l from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-36 bg-gradient-to-r from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
 
-                {/* Vector Brand Emblem */}
-                <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] group-hover:bg-[#12372A] text-[#12372A] group-hover:text-[#F4EFE6] flex items-center justify-center transition-all duration-300 shadow-xs group-hover:scale-110 shrink-0">
-                  <Icon className="w-7 h-7 transition-colors" />
-                </div>
-
-                {/* Typography Brand Lockup */}
-                <div className="space-y-0.5 w-full">
-                  <span className="text-xs sm:text-sm font-black text-[#12372A] group-hover:text-[#205341] block transition-colors leading-tight truncate">
-                    {partner.name}
-                  </span>
-                  <span className="text-[9px] font-bold text-[#C5A880] tracking-wider uppercase block truncate">
-                    {partner.enName}
-                  </span>
-                </div>
+          {/* Row 1: Infinite Auto-Scroll Left (شمال) */}
+          <div className="flex overflow-hidden select-none" dir="ltr">
+            <div className="animate-infinite-scroll flex shrink-0 items-center">
+              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
+                {row1.map((client, idx) => renderCard(client, `r1-track1-${client.id}-${idx}`))}
               </div>
-            )
-          })}
+              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4" aria-hidden="true">
+                {row1.map((client, idx) => renderCard(client, `r1-track2-${client.id}-${idx}`))}
+              </div>
+            </div>
+          </div>
+
+          {/* Row 2: Infinite Auto-Scroll Right (يمين) */}
+          <div className="flex overflow-hidden select-none" dir="ltr">
+            <div className="animate-infinite-scroll-reverse flex shrink-0 items-center">
+              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
+                {row2.map((client, idx) => renderCard(client, `r2-track1-${client.id}-${idx}`))}
+              </div>
+              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4" aria-hidden="true">
+                {row2.map((client, idx) => renderCard(client, `r2-track2-${client.id}-${idx}`))}
+              </div>
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   )

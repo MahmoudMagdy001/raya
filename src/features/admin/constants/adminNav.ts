@@ -2,14 +2,12 @@ import React from 'react'
 import { 
   FileText, 
   Layers, 
-  Tag, 
   Film, 
   Video, 
   Image, 
-  FolderOpen, 
   Inbox, 
-  ArrowRightLeft, 
-  Settings 
+  Settings,
+  Building2 
 } from 'lucide-react'
 
 export interface AdminLinkItem {
@@ -21,13 +19,11 @@ export interface AdminLinkItem {
 
 export const RAYA_ADMIN_LINKS: AdminLinkItem[] = [
   { to: '/admin/projects', label: 'المشاريع ودراسات الحالة', icon: Film },
-  { to: '/admin/services', label: 'الخدمات الإبداعية', icon: Layers },
-  { to: '/admin/reels', label: 'المحتوى القصير (Reels)', icon: Video },
-  { to: '/admin/offers', label: 'الباقات والعروض', icon: Tag },
-  { to: '/admin/inquiries', label: 'طلبات المشاريع (Inbox)', icon: Inbox, badgeCountKey: 'newInquiries' },
+  { to: '/admin/services', label: 'الخدمات الإبداعية والتقنية', icon: Layers },
+  { to: '/admin/clients', label: 'شركاء النجاح والعملاء', icon: Building2 },
+  { to: '/admin/reels', label: 'شريط الشووريل المتدفق (9:16)', icon: Video },
+  { to: '/admin/posts', label: 'المقالات والنشرات الفكرية', icon: FileText },
+  { to: '/admin/inquiries', label: 'طلبات المشاريع (Inbox)', icon: Inbox },
   { to: '/admin/media', label: 'مكتبة الوسائط', icon: Image },
-  { to: '/admin/categories', label: 'التصنيفات', icon: FolderOpen },
-  { to: '/admin/posts', label: 'المقالات والمدونة', icon: FileText },
-  { to: '/admin/redirects', label: 'التحويلات وإعادة التوجيه', icon: ArrowRightLeft },
-  { to: '/admin/settings', label: 'إعدادات الموقع والسيو', icon: Settings },
+  { to: '/admin/settings', label: 'إعدادات الموقع والهوية', icon: Settings },
 ]
