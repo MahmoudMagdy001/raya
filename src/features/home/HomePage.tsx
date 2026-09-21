@@ -22,19 +22,26 @@ export const HomePage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
   const [reels, setReels] = useState<ShowcaseReel[]>(INITIAL_SHOWCASE_REELS)
   const [clients, setClients] = useState<Client[]>(INITIAL_CLIENTS)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     async function loadData() {
-      const [s, p, r, c] = await Promise.all([
-        getServices(),
-        getProjects(),
-        getShowcaseReels(),
-        getClients()
-      ])
-      if (s) setServices(s)
-      if (p) setProjects(p)
-      if (r) setReels(r)
-      if (c) setClients(c)
+      try {
+        const [s, p, r, c] = await Promise.all([
+          getServices(),
+          getProjects(),
+          getShowcaseReels(),
+          getClients()
+        ])
+        if (s) setServices(s)
+        if (p) setProjects(p)
+        if (r) setReels(r)
+        if (c) setClients(c)
+      } catch (err) {
+        console.error('Error loading home data:', err)
+      } finally {
+        setLoading(false)
+      }
     }
     loadData()
   }, [])
@@ -43,12 +50,12 @@ export const HomePage: React.FC = () => {
     <div className="flex flex-col">
       <HeroSection />
       <EquationSection />
-      <ShowcaseReelSection reels={reels} />
+      <ShowcaseReelSection reels={reels} loading={loading} />
       <PhilosophySection />
-      <ServicesGridSection services={services} />
+      <ServicesGridSection services={services} loading={loading} />
       <WorkflowSection />
-      <FeaturedWorksSection projects={projects} />
-      <ClientsSection clients={clients} />
+      <FeaturedWorksSection projects={projects} loading={loading} />
+      <ClientsSection clients={clients} loading={loading} />
       <MasterCtaSection />
     </div>
   )

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getShowcaseReels, createShowcaseReel, updateShowcaseReel, deleteShowcaseReel } from '../../../lib/supabase'
 import { ShowcaseReel } from '../../../lib/types'
-import { INITIAL_SHOWCASE_REELS } from '../../../data/initialData'
 import { ImagePickerField } from '../components/ImagePickerField'
 import { 
   Plus, 
@@ -13,9 +12,11 @@ import {
   Eye
 } from 'lucide-react'
 import { VideoModal } from '../../../components/ui/VideoModal'
+import { AdminGridSkeleton } from '../../../components/ui/skeleton'
 
 export const AdminReelsPage: React.FC = () => {
-  const [reels, setReels] = useState<ShowcaseReel[]>(INITIAL_SHOWCASE_REELS)
+  const [reels, setReels] = useState<ShowcaseReel[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingReel, setEditingReel] = useState<ShowcaseReel | null>(null)
   const [previewVideo, setPreviewVideo] = useState<{ url: string; title: string } | null>(null)
@@ -36,8 +37,12 @@ export const AdminReelsPage: React.FC = () => {
   })
 
   const loadData = async () => {
-    const data = await getShowcaseReels()
-    if (data) setReels(data)
+    try {
+      const data = await getShowcaseReels()
+      if (data) setReels(data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -157,12 +162,15 @@ export const AdminReelsPage: React.FC = () => {
       </div>
 
       {/* Reels Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-        {reels.map((reel) => (
-          <div
-            key={reel.id}
-            className="group bg-white rounded-3xl overflow-hidden border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-          >
+      {loading ? (
+        <AdminGridSkeleton count={5} />
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+          {reels.map((reel) => (
+            <div
+              key={reel.id}
+              className="group bg-white rounded-3xl overflow-hidden border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
             {/* Visual 9:16 Aspect ratio container */}
             <div className="relative aspect-[9/16] bg-[#0B221A] overflow-hidden">
               <img
@@ -239,7 +247,8 @@ export const AdminReelsPage: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </>
   ) : (
     <>

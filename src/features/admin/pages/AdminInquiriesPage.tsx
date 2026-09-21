@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { supabase } from '../../../lib/supabase'
 import { ProjectInquiry } from '../../../lib/types'
+import { AdminTableSkeleton } from '../../../components/ui/skeleton'
 import { 
   Phone, 
   Mail, 
@@ -92,10 +93,7 @@ export const AdminInquiriesPage: React.FC = () => {
 
       {/* Loading state */}
       {loading ? (
-        <div className="bg-white rounded-3xl border border-[#E5DFD3] p-12 text-center">
-          <RefreshCw className="w-8 h-8 text-[#C5A880] animate-spin mx-auto mb-3" />
-          <p className="text-sm font-bold text-[#12372A]">جاري جلب الطلبات من قاعدة البيانات...</p>
-        </div>
+        <AdminTableSkeleton rows={4} hasThumbnail={false} />
       ) : inquiries.length === 0 ? (
         /* Empty State */
         <div className="bg-white rounded-3xl border-2 border-dashed border-[#E5DFD3] p-12 sm:p-16 text-center space-y-4">

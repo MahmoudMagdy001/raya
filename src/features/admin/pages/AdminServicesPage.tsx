@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getServices, createService, updateService, deleteService } from '../../../lib/supabase'
 import { Service } from '../../../lib/types'
-import { INITIAL_SERVICES } from '../../../data/initialData'
 import { 
   Plus, 
   Edit3, 
@@ -14,9 +13,11 @@ import {
 } from 'lucide-react'
 import { SeoFormFields } from '../components/SeoFormFields'
 import { ImagePickerField } from '../components/ImagePickerField'
+import { AdminGridSkeleton } from '../../../components/ui/skeleton'
 
 export const AdminServicesPage: React.FC = () => {
-  const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
+  const [services, setServices] = useState<Service[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const [activeFilter, setActiveFilter] = useState<'all' | 'creative' | 'tech'>('all')
   const [modalOpen, setModalOpen] = useState(false)
   const [editingService, setEditingService] = useState<Service | null>(null)
@@ -41,8 +42,12 @@ export const AdminServicesPage: React.FC = () => {
   const [newDeliverable, setNewDeliverable] = useState('')
 
   const loadData = async () => {
-    const data = await getServices()
-    if (data) setServices(data)
+    try {
+      const data = await getServices()
+      if (data) setServices(data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -449,12 +454,15 @@ export const AdminServicesPage: React.FC = () => {
       </div>
 
       {/* Services Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredServices.map((service) => (
-          <div
-            key={service.id}
-            className="bg-white rounded-3xl border border-[#E5DFD3] p-6 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group"
-          >
+      {loading ? (
+        <AdminGridSkeleton count={6} />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredServices.map((service) => (
+            <div
+              key={service.id}
+              className="bg-white rounded-3xl border border-[#E5DFD3] p-6 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden group"
+            >
             {/* Top Bar with Badge & Category */}
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -548,7 +556,8 @@ export const AdminServicesPage: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

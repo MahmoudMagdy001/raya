@@ -4,14 +4,22 @@ import { Service } from '../../../lib/types'
 import { INITIAL_SERVICES } from '../../../data/initialData'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { ServiceCard } from '../components/ServiceCard'
+import { ServiceCardSkeleton } from '../../../components/ui/skeleton'
 
 export const ServicesPage: React.FC = () => {
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     async function load() {
-      const data = await getServices()
-      if (data && data.length > 0) setServices(data)
+      try {
+        const data = await getServices()
+        if (data && data.length > 0) setServices(data)
+      } catch (err) {
+        console.error('Error loading services:', err)
+      } finally {
+        setLoading(false)
+      }
     }
     load()
   }, [])
@@ -47,13 +55,21 @@ export const ServicesPage: React.FC = () => {
       {/* Services List with Detailed Breakdown */}
       <section className="py-20 sm:py-24 bg-[#F4EFE6] border-t border-[#E5DFD3]/60 relative">
         <div className="max-w-7xl 2xl:max-w-[1380px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={service.id || service.slug || index}
-              service={service}
-              index={index}
-            />
-          ))}
+          {loading ? (
+            <>
+              <ServiceCardSkeleton mode="detailed" />
+              <ServiceCardSkeleton mode="detailed" />
+              <ServiceCardSkeleton mode="detailed" />
+            </>
+          ) : (
+            services.map((service, index) => (
+              <ServiceCard
+                key={service.id || service.slug || index}
+                service={service}
+                index={index}
+              />
+            ))
+          )}
         </div>
       </section>
 

@@ -15,6 +15,7 @@ import {
 import { VideoModal } from '../../../components/ui/VideoModal'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { usePageSeo } from '../../../components/common/SEO'
+import { CaseStudyDetailSkeleton } from '../../../components/ui/skeleton'
 
 export const CaseStudyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -49,14 +50,7 @@ export const CaseStudyDetailPage: React.FC = () => {
   }, [slug])
 
   if (loading) {
-    return (
-      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#12372A] text-[#F4EFE6] font-sans antialiased">
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 border-4 border-[#C5A880] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm font-bold tracking-wider text-[#b9d5c7]">جاري تحميل تفاصيل العمل ودراسة الحالة...</p>
-        </div>
-      </div>
-    )
+    return <CaseStudyDetailSkeleton />
   }
 
   if (!project) {

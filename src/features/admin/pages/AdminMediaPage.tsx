@@ -28,9 +28,11 @@ import {
   Save
 } from 'lucide-react'
 import { VideoModal } from '../../../components/ui/VideoModal'
+import { AdminGridSkeleton } from '../../../components/ui/skeleton'
 
 export const AdminMediaPage: React.FC = () => {
   const [media, setMedia] = useState<MediaItem[]>(INITIAL_MEDIA)
+  const [loading, setLoading] = useState<boolean>(true)
   const [filterType, setFilterType] = useState<'all' | 'image' | 'video'>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [uploading, setUploading] = useState(false)
@@ -64,8 +66,12 @@ export const AdminMediaPage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const loadData = async () => {
-    const data = await getMediaItems()
-    if (data) setMedia(data)
+    try {
+      const data = await getMediaItems()
+      if (data) setMedia(data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -652,12 +658,15 @@ export const AdminMediaPage: React.FC = () => {
       </div>
 
       {/* Media Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {filteredMedia.map((item) => (
-          <div
-            key={item.id}
-            className="group relative bg-white rounded-2xl border border-[#E5DFD3] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-          >
+      {loading ? (
+        <AdminGridSkeleton count={10} />
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {filteredMedia.map((item) => (
+            <div
+              key={item.id}
+              className="group relative bg-white rounded-2xl border border-[#E5DFD3] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+            >
             {/* Thumbnail Preview Area */}
             <div
               onClick={() => setPreviewMedia(item)}
@@ -770,7 +779,8 @@ export const AdminMediaPage: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
 
       {filteredMedia.length === 0 && (
         <div className="bg-white p-12 rounded-3xl border border-[#E5DFD3] text-center space-y-3">

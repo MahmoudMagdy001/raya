@@ -7,11 +7,18 @@ import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
 export const WorksPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     async function load() {
-      const data = await getProjects()
-      if (data && data.length > 0) setProjects(data)
+      try {
+        const data = await getProjects()
+        if (data && data.length > 0) setProjects(data)
+      } catch (err) {
+        console.error('Error loading projects:', err)
+      } finally {
+        setLoading(false)
+      }
     }
     load()
   }, [])
@@ -45,7 +52,7 @@ export const WorksPage: React.FC = () => {
       </section>
 
       {/* Featured Works Section - Exact same as Home page (Cards, Video Modal, Quick View Modal, Tabs) */}
-      <FeaturedWorksSection projects={projects} hideHeader={true} />
+      <FeaturedWorksSection projects={projects} hideHeader={true} loading={loading} />
 
       {/* Master CTA Section (Same as Home page) */}
       <MasterCtaSection />

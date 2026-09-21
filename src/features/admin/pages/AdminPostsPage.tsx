@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getPosts, createPost, updatePost, deletePost } from '../../../lib/supabase'
 import { Post } from '../../../lib/types'
-import { INITIAL_POSTS } from '../../../data/initialData'
 import { ImagePickerField } from '../components/ImagePickerField'
 import { 
   Plus, 
@@ -14,9 +13,11 @@ import {
   X
 } from 'lucide-react'
 import { SeoFormFields } from '../components/SeoFormFields'
+import { AdminGridSkeleton } from '../../../components/ui/skeleton'
 
 export const AdminPostsPage: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS)
+  const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingPost, setEditingPost] = useState<Post | null>(null)
 
@@ -39,8 +40,12 @@ export const AdminPostsPage: React.FC = () => {
   const [tagInput, setTagInput] = useState('')
 
   const loadData = async () => {
-    const data = await getPosts()
-    if (data) setPosts(data)
+    try {
+      const data = await getPosts()
+      if (data) setPosts(data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -190,12 +195,15 @@ export const AdminPostsPage: React.FC = () => {
       </div>
 
       {/* Posts List Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="bg-white rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
-          >
+      {loading ? (
+        <AdminGridSkeleton count={6} />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-white rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden"
+            >
             <div>
               {/* Cover Image */}
               <div className="relative h-48 w-full bg-[#0B221A] overflow-hidden">
@@ -290,7 +298,8 @@ export const AdminPostsPage: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </>
   ) : (
     <>

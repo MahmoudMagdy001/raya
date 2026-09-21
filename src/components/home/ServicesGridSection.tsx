@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Service } from '../../lib/types'
 import { ArrowUpLeft, Check } from 'lucide-react'
+import { ServiceCardSkeleton } from '../ui/skeleton'
 
 interface ServicesGridSectionProps {
   services: Service[]
+  loading?: boolean
 }
 
 type ServiceCategory = 'all' | 'creative' | 'tech'
 
-export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ services }) => {
+export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ services, loading = false }) => {
   const [activeCategory, setActiveCategory] = useState<ServiceCategory>('all')
 
   const isCreative = (s: Service) =>
@@ -100,27 +102,36 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ servic
         </div>
 
         {/* Services Grid (Bento Grid on 'all', or uniform columns when filtered) */}
-        <div
-          className={
-            activeCategory === 'all'
-              ? 'grid grid-cols-1 md:grid-cols-12 gap-8'
-              : activeCategory === 'creative'
-              ? 'grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto'
-              : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
-          }
-        >
-          {filteredServices.map((service, index) => {
-            // Bento spans for 'all' mode: Row 1 is 7 + 5 = 12. Row 2 is 4 + 4 + 4 = 12.
-            const bentoSpan =
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <ServiceCardSkeleton mode="grid" bentoSpan="md:col-span-12 lg:col-span-7" />
+            <ServiceCardSkeleton mode="grid" bentoSpan="md:col-span-12 lg:col-span-5" />
+            <ServiceCardSkeleton mode="grid" bentoSpan="md:col-span-6 lg:col-span-4" />
+            <ServiceCardSkeleton mode="grid" bentoSpan="md:col-span-6 lg:col-span-4" />
+            <ServiceCardSkeleton mode="grid" bentoSpan="md:col-span-12 lg:col-span-4" />
+          </div>
+        ) : (
+          <div
+            className={
               activeCategory === 'all'
-                ? index === 0
-                  ? 'md:col-span-12 lg:col-span-7'
-                  : index === 1
-                  ? 'md:col-span-12 lg:col-span-5'
-                  : 'md:col-span-6 lg:col-span-4'
-                : ''
+                ? 'grid grid-cols-1 md:grid-cols-12 gap-8'
+                : activeCategory === 'creative'
+                ? 'grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto'
+                : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
+            }
+          >
+            {filteredServices.map((service, index) => {
+              // Bento spans for 'all' mode: Row 1 is 7 + 5 = 12. Row 2 is 4 + 4 + 4 = 12.
+              const bentoSpan =
+                activeCategory === 'all'
+                  ? index === 0
+                    ? 'md:col-span-12 lg:col-span-7'
+                    : index === 1
+                    ? 'md:col-span-12 lg:col-span-5'
+                    : 'md:col-span-6 lg:col-span-4'
+                  : ''
 
-            return (
+              return (
               <div
                 key={service.id}
                 className={`group bg-white rounded-3xl p-6 sm:p-7 border border-[#E5DFD3] hover:border-[#C5A880] shadow-sm hover:shadow-2xl hover:shadow-[#12372A]/8 transition-all duration-300 flex flex-col justify-between transform hover:-translate-y-1.5 ${bentoSpan}`}
@@ -196,7 +207,8 @@ export const ServicesGridSection: React.FC<ServicesGridSectionProps> = ({ servic
               </div>
             )
           })}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   )

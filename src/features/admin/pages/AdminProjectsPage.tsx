@@ -18,9 +18,11 @@ import {
   Layers
 } from 'lucide-react'
 import { SeoFormFields } from '../components/SeoFormFields'
+import { AdminTableSkeleton } from '../../../components/ui/skeleton'
 
 export const AdminProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
+  const [loading, setLoading] = useState<boolean>(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [activeTab, setActiveTab] = useState<'info' | 'case_study' | 'deliverables' | 'workflow' | 'metrics' | 'seo'>('info')
@@ -90,8 +92,12 @@ export const AdminProjectsPage: React.FC = () => {
   }
 
   const loadData = async () => {
-    const data = await getProjects()
-    if (data) setProjects(data)
+    try {
+      const data = await getProjects()
+      if (data) setProjects(data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -269,138 +275,142 @@ export const AdminProjectsPage: React.FC = () => {
           </div>
 
           {/* Projects Table */}
-          <div className="bg-white rounded-3xl border border-[#E5DFD3] overflow-hidden shadow-xs">
-            <div className="overflow-x-auto">
-              <table className="w-full text-right border-collapse">
-                <thead>
-                  <tr className="border-b border-[#E5DFD3] bg-[#FAF7F2] text-[11px] font-bold text-[#8C6D46] uppercase">
-                    <th className="py-4 px-5">المشروع</th>
-                    <th className="py-4 px-5">العميل والتصنيف</th>
-                    <th className="py-4 px-5">الأبعاد</th>
-                    <th className="py-4 px-5">مميز في الرئيسية</th>
-                    <th className="py-4 px-5">المشاهدات والنمو</th>
-                    <th className="py-4 px-5">الحالة</th>
-                    <th className="py-4 px-5 text-center">الإجراءات</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#E5DFD3]/60 text-sm">
-                  {projects.map((proj) => (
-                    <tr key={proj.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
-                      {/* Thumbnail & Title */}
-                      <td className="py-4 px-5">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={proj.cover_image}
-                            alt={proj.title}
-                            className="w-14 h-14 rounded-2xl object-cover border border-[#E5DFD3] shadow-xs shrink-0"
-                          />
+          {loading ? (
+            <AdminTableSkeleton rows={6} />
+          ) : (
+            <div className="bg-white rounded-3xl border border-[#E5DFD3] overflow-hidden shadow-xs">
+              <div className="overflow-x-auto">
+                <table className="w-full text-right border-collapse">
+                  <thead>
+                    <tr className="border-b border-[#E5DFD3] bg-[#FAF7F2] text-[11px] font-bold text-[#8C6D46] uppercase">
+                      <th className="py-4 px-5">المشروع</th>
+                      <th className="py-4 px-5">العميل والتصنيف</th>
+                      <th className="py-4 px-5">الأبعاد</th>
+                      <th className="py-4 px-5">مميز في الرئيسية</th>
+                      <th className="py-4 px-5">المشاهدات والنمو</th>
+                      <th className="py-4 px-5">الحالة</th>
+                      <th className="py-4 px-5 text-center">الإجراءات</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#E5DFD3]/60 text-sm">
+                    {projects.map((proj) => (
+                      <tr key={proj.id} className="hover:bg-[#FAF7F2]/60 transition-colors">
+                        {/* Thumbnail & Title */}
+                        <td className="py-4 px-5">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={proj.cover_image}
+                              alt={proj.title}
+                              className="w-14 h-14 rounded-2xl object-cover border border-[#E5DFD3] shadow-xs shrink-0"
+                            />
+                            <div>
+                              <span className="font-bold text-[#12372A] block line-clamp-1">
+                                {proj.title}
+                              </span>
+                              <span className="text-xs text-[#6b7f74]">
+                                slug: /{proj.slug}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Client & Category */}
+                        <td className="py-4 px-5">
                           <div>
-                            <span className="font-bold text-[#12372A] block line-clamp-1">
-                              {proj.title}
+                            <span className="font-bold text-[#12372A] block">
+                              {proj.client_name}
                             </span>
-                            <span className="text-[11px] text-[#8C6D46] font-mono block mt-0.5">
-                              /works/{proj.slug}
+                            <span className="text-xs text-[#C5A880] font-semibold">
+                              {proj.category_name}
                             </span>
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      {/* Client & Category */}
-                      <td className="py-4 px-5">
-                        <span className="text-xs font-bold text-[#12372A] block">
-                          {proj.client_name}
-                        </span>
-                        <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#12372A]/8 text-[#12372A]">
-                          {proj.category_name || 'عام'}
-                        </span>
-                      </td>
-
-                      {/* Aspect Ratio */}
-                      <td className="py-4 px-5">
-                        <span className="px-2.5 py-1 rounded-lg text-xs font-bold font-mono bg-[#EAE4D9]/80 text-[#12372A]">
-                          {proj.video_aspect_ratio || '9:16'}
-                        </span>
-                      </td>
-
-                      {/* Featured Toggle */}
-                      <td className="py-4 px-5">
-                        <button
-                          onClick={() => toggleFeatured(proj)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition-all ${
-                            proj.is_featured
-                              ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                              : 'bg-gray-100 text-gray-500 border border-gray-200'
-                          }`}
-                        >
-                          <Star className={`w-3.5 h-3.5 ${proj.is_featured ? 'fill-amber-500 text-amber-500' : ''}`} />
-                          <span>{proj.is_featured ? 'نعم (بالرئيسية)' : 'معرض الأعمال'}</span>
-                        </button>
-                      </td>
-
-                      {/* Metrics */}
-                      <td className="py-4 px-5">
-                        <div className="flex items-center gap-2 text-xs">
-                          <span className="font-bold text-[#12372A] flex items-center gap-1">
-                            <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
-                            {proj.metrics?.views || '+500K'}
+                        {/* Aspect Ratio */}
+                        <td className="py-4 px-5">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-[#FAF7F2] text-[#12372A] border border-[#E5DFD3]">
+                            {proj.video_aspect_ratio}
                           </span>
-                          {proj.metrics?.growth && (
-                            <span className="text-emerald-700 font-bold flex items-center gap-0.5">
-                              <TrendingUp className="w-3.5 h-3.5" />
-                              {proj.metrics.growth}
+                        </td>
+
+                        {/* Featured Toggle */}
+                        <td className="py-4 px-5">
+                          <button
+                            onClick={() => toggleFeatured(proj)}
+                            className={`p-2 rounded-xl transition-all cursor-pointer ${
+                              proj.is_featured
+                                ? 'bg-amber-100/80 text-amber-700 hover:bg-amber-200'
+                                : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                            }`}
+                            title={proj.is_featured ? 'مشروع مميز (انقر للإلغاء)' : 'مشروع عادي (انقر للتمييز)'}
+                          >
+                            <Star className="w-4 h-4 fill-current" />
+                          </button>
+                        </td>
+
+                        {/* Metrics */}
+                        <td className="py-4 px-5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-[#12372A] flex items-center gap-1">
+                              <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
+                              {proj.metrics?.views || '+500K'}
                             </span>
-                          )}
-                        </div>
-                      </td>
+                            <span className="text-xs font-bold text-emerald-600 flex items-center gap-0.5">
+                              <TrendingUp className="w-3 h-3" />
+                              {proj.metrics?.growth || '+35%'}
+                            </span>
+                          </div>
+                        </td>
 
-                      {/* Status */}
-                      <td className="py-4 px-5">
-                        <button
-                          onClick={() => toggleStatus(proj)}
-                          className={`px-3 py-1 rounded-full text-xs font-bold cursor-pointer transition-colors ${
-                            proj.status === 'published'
-                              ? 'bg-emerald-100 text-emerald-800'
-                              : 'bg-amber-100 text-amber-800'
-                          }`}
-                        >
-                          {proj.status === 'published' ? 'منشور' : 'مسودة'}
-                        </button>
-                      </td>
+                        {/* Status Toggle */}
+                        <td className="py-4 px-5">
+                          <button
+                            onClick={() => toggleStatus(proj)}
+                            className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                              proj.status === 'published'
+                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                : 'bg-amber-50 text-amber-700 border border-amber-200'
+                            }`}
+                          >
+                            {proj.status === 'published' ? 'منشور' : 'مسودة'}
+                          </button>
+                        </td>
 
-                      {/* Actions */}
-                      <td className="py-4 px-5">
-                        <div className="flex items-center justify-center gap-2">
-                          <a
-                            href={`/works/${proj.slug}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="p-2 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3] hover:bg-[#12372A] hover:text-[#F3D7A4] text-[#12372A] transition-colors"
-                            title="معاينة الصفحة"
-                          >
-                            <ExternalLink className="w-4 h-4" />
-                          </a>
-                          <button
-                            onClick={() => handleOpenEdit(proj)}
-                            className="p-2 rounded-xl bg-white border border-[#E5DFD3] hover:bg-[#12372A] hover:text-[#F3D7A4] text-[#12372A] transition-all cursor-pointer shadow-xs"
-                            title="تعديل المشروع ودراسة الحالة"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(proj.id, proj.title)}
-                            className="p-2 rounded-xl bg-white border border-rose-200 hover:bg-rose-500 hover:text-white text-rose-600 transition-all cursor-pointer shadow-xs"
-                            title="حذف المشروع"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                        {/* Actions */}
+                        <td className="py-4 px-5 text-center">
+                          <div className="flex items-center justify-center gap-2">
+                            <a
+                              href={`/works/${proj.slug}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="p-2 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3] hover:bg-[#12372A] hover:text-[#F3D7A4] text-[#12372A] transition-colors"
+                              title="معاينة الصفحة"
+                            >
+                              <ExternalLink className="w-4 h-4" />
+                            </a>
+                            <button
+                              onClick={() => handleOpenEdit(proj)}
+                              className="p-2 rounded-xl bg-white border border-[#E5DFD3] hover:bg-[#12372A] hover:text-[#F3D7A4] text-[#12372A] transition-all cursor-pointer shadow-xs"
+                              title="تعديل المشروع ودراسة الحالة"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(proj.id, proj.title)}
+                              className="p-2 rounded-xl bg-white border border-rose-200 hover:bg-rose-500 hover:text-white text-rose-600 transition-all cursor-pointer shadow-xs"
+                              title="حذف المشروع"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
         </>
       ) : (
         <>

@@ -14,6 +14,7 @@ import {
   BookOpen
 } from 'lucide-react'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
+import { BlogHeroSkeleton, BlogCardSkeleton } from '../../../components/ui/skeleton'
 
 export const BlogPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS)
@@ -143,9 +144,13 @@ export const BlogPage: React.FC = () => {
       {/* Posts Section */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         {loading ? (
-          <div className="py-24 text-center space-y-4">
-            <div className="w-12 h-12 border-4 border-[#C5A880] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-sm font-bold text-[#5a7769]">جاري تحميل المقالات...</p>
+          <div className="space-y-12">
+            <BlogHeroSkeleton />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <BlogCardSkeleton />
+              <BlogCardSkeleton />
+              <BlogCardSkeleton />
+            </div>
           </div>
         ) : filteredPosts.length === 0 ? (
           <div className="py-24 text-center space-y-4 bg-white rounded-3xl border border-[#E5DFD3] p-12">

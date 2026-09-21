@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { ShowcaseReel } from '../../lib/types'
 import { Play, Eye, Heart } from 'lucide-react'
 import { VideoModal } from '../ui/VideoModal'
+import { ReelCardSkeleton } from '../ui/skeleton'
 
 interface ShowcaseReelSectionProps {
   reels: ShowcaseReel[]
+  loading?: boolean
 }
 
 interface ReelCardProps {
@@ -68,7 +70,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, onOpen }) => (
   </div>
 )
 
-export const ShowcaseReelSection: React.FC<ShowcaseReelSectionProps> = ({ reels }) => {
+export const ShowcaseReelSection: React.FC<ShowcaseReelSectionProps> = ({ reels, loading = false }) => {
   const [activeVideo, setActiveVideo] = useState<ShowcaseReel | null>(null)
 
   const baseReels = reels && reels.length > 0 ? reels : []
@@ -99,32 +101,40 @@ export const ShowcaseReelSection: React.FC<ShowcaseReelSectionProps> = ({ reels 
         <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-14 bg-gradient-to-l from-[#FAF7F2]/50 to-transparent z-10" />
         <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-14 bg-gradient-to-r from-[#FAF7F2]/50 to-transparent z-10" />
 
-        {/* Marquee Scroller */}
-        <div className="flex overflow-hidden select-none" dir="ltr">
-          <div className="animate-infinite-scroll flex shrink-0 items-center">
-            {/* Track 1 */}
-            <div className="flex shrink-0 gap-6 pr-6 items-center">
-              {trackItems.map((reel, idx) => (
-                <ReelCard
-                  key={`track1-${reel.id}-${idx}`}
-                  reel={reel}
-                  onOpen={setActiveVideo}
-                />
-              ))}
-            </div>
+        {loading ? (
+          <div className="flex gap-6 px-6 overflow-hidden select-none" dir="ltr">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <ReelCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : (
+          /* Marquee Scroller */
+          <div className="flex overflow-hidden select-none" dir="ltr">
+            <div className="animate-infinite-scroll flex shrink-0 items-center">
+              {/* Track 1 */}
+              <div className="flex shrink-0 gap-6 pr-6 items-center">
+                {trackItems.map((reel, idx) => (
+                  <ReelCard
+                    key={`track1-${reel.id}-${idx}`}
+                    reel={reel}
+                    onOpen={setActiveVideo}
+                  />
+                ))}
+              </div>
 
-            {/* Track 2 (Clone for infinite seamless loop) */}
-            <div className="flex shrink-0 gap-6 pr-6 items-center" aria-hidden="true">
-              {trackItems.map((reel, idx) => (
-                <ReelCard
-                  key={`track2-${reel.id}-${idx}`}
-                  reel={reel}
-                  onOpen={setActiveVideo}
-                />
-              ))}
+              {/* Track 2 (Clone for infinite seamless loop) */}
+              <div className="flex shrink-0 gap-6 pr-6 items-center" aria-hidden="true">
+                {trackItems.map((reel, idx) => (
+                  <ReelCard
+                    key={`track2-${reel.id}-${idx}`}
+                    reel={reel}
+                    onOpen={setActiveVideo}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
 

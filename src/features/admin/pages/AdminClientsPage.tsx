@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getClients, createClientRecord, updateClientRecord, deleteClientRecord } from '../../../lib/supabase'
 import { Client } from '../../../lib/types'
-import { INITIAL_CLIENTS } from '../../../data/initialData'
 import { 
   Plus, 
   Trash2, 
@@ -11,9 +10,11 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { ImagePickerField } from '../components/ImagePickerField'
+import { AdminGridSkeleton } from '../../../components/ui/skeleton'
 
 export const AdminClientsPage: React.FC = () => {
-  const [clients, setClients] = useState<Client[]>(INITIAL_CLIENTS)
+  const [clients, setClients] = useState<Client[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingClient, setEditingClient] = useState<Client | null>(null)
 
@@ -28,8 +29,12 @@ export const AdminClientsPage: React.FC = () => {
   })
 
   const loadData = async () => {
-    const data = await getClients()
-    if (data) setClients(data)
+    try {
+      const data = await getClients()
+      if (data) setClients(data)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -136,12 +141,15 @@ export const AdminClientsPage: React.FC = () => {
       </div>
 
       {/* Clients Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-        {clients.map((client) => (
-          <div
-            key={client.id}
-            className="group bg-white p-5 rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between text-center relative overflow-hidden"
-          >
+      {loading ? (
+        <AdminGridSkeleton count={8} />
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {clients.map((client) => (
+            <div
+              key={client.id}
+              className="group bg-white p-5 rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between text-center relative overflow-hidden"
+            >
             {/* Golden top accent */}
             <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -221,7 +229,8 @@ export const AdminClientsPage: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </>
   ) : (
     <>

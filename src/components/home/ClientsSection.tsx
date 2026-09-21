@@ -3,21 +3,28 @@ import { Client } from '../../lib/types'
 import { PARTNERS_DATA } from './PartnerLogos'
 import { Building2 } from 'lucide-react'
 import { getClients } from '../../lib/supabase'
+import { ClientLogoSkeleton } from '../ui/skeleton'
 
 interface ClientsSectionProps {
   clients?: Client[]
+  loading?: boolean
 }
 
-export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propClients }) => {
+export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propClients, loading: propLoading }) => {
   const [clients, setClients] = useState<Client[]>(propClients || [])
+  const [internalLoading, setInternalLoading] = useState<boolean>(!propClients || propClients.length === 0)
+
+  const isLoading = propLoading !== undefined ? propLoading : internalLoading
 
   useEffect(() => {
     if (propClients && propClients.length > 0) {
       setClients(propClients)
+      setInternalLoading(false)
     } else {
+      setInternalLoading(true)
       getClients().then(data => {
         if (data && data.length > 0) setClients(data)
-      }).catch(console.error)
+      }).catch(console.error).finally(() => setInternalLoading(false))
     }
   }, [propClients])
 
@@ -74,8 +81,8 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
     }
   }, [uniqueClients])
 
-  // Don't render section if no clients exist in database
-  if (uniqueClients.length === 0) {
+  // Don't render section if no clients exist and not loading
+  if (uniqueClients.length === 0 && !isLoading) {
     return null
   }
 
@@ -151,35 +158,50 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
         </div>
 
         {/* Dual-Row Infinite Marquee Container */}
-        <div className="relative w-full overflow-hidden space-y-4 sm:space-y-5">
-          {/* Luxury Edge Faders */}
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-36 bg-gradient-to-l from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-36 bg-gradient-to-r from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
+        {isLoading ? (
+          <div className="relative w-full overflow-hidden space-y-4 sm:space-y-5">
+            <div className="flex gap-3 sm:gap-4 overflow-hidden select-none" dir="ltr">
+              {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <ClientLogoSkeleton key={`sk-r1-${i}`} />
+              ))}
+            </div>
+            <div className="flex gap-3 sm:gap-4 overflow-hidden select-none" dir="ltr">
+              {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <ClientLogoSkeleton key={`sk-r2-${i}`} />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="relative w-full overflow-hidden space-y-4 sm:space-y-5">
+            {/* Luxury Edge Faders */}
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-36 bg-gradient-to-l from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-36 bg-gradient-to-r from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
 
-          {/* Row 1: Infinite Auto-Scroll Left (شمال) */}
-          <div className="flex overflow-hidden select-none" dir="ltr">
-            <div className="animate-infinite-scroll flex shrink-0 items-center">
-              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
-                {row1.map((client, idx) => renderCard(client, `r1-track1-${client.id}-${idx}`))}
+            {/* Row 1: Infinite Auto-Scroll Left (شمال) */}
+            <div className="flex overflow-hidden select-none" dir="ltr">
+              <div className="animate-infinite-scroll flex shrink-0 items-center">
+                <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
+                  {row1.map((client, idx) => renderCard(client, `r1-track1-${client.id}-${idx}`))}
+                </div>
+                <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4" aria-hidden="true">
+                  {row1.map((client, idx) => renderCard(client, `r1-track2-${client.id}-${idx}`))}
+                </div>
               </div>
-              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4" aria-hidden="true">
-                {row1.map((client, idx) => renderCard(client, `r1-track2-${client.id}-${idx}`))}
+            </div>
+
+            {/* Row 2: Infinite Auto-Scroll Right (يمين) */}
+            <div className="flex overflow-hidden select-none" dir="ltr">
+              <div className="animate-infinite-scroll-reverse flex shrink-0 items-center">
+                <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
+                  {row2.map((client, idx) => renderCard(client, `r2-track1-${client.id}-${idx}`))}
+                </div>
+                <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4" aria-hidden="true">
+                  {row2.map((client, idx) => renderCard(client, `r2-track2-${client.id}-${idx}`))}
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Row 2: Infinite Auto-Scroll Right (يمين) */}
-          <div className="flex overflow-hidden select-none" dir="ltr">
-            <div className="animate-infinite-scroll-reverse flex shrink-0 items-center">
-              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
-                {row2.map((client, idx) => renderCard(client, `r2-track1-${client.id}-${idx}`))}
-              </div>
-              <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4" aria-hidden="true">
-                {row2.map((client, idx) => renderCard(client, `r2-track2-${client.id}-${idx}`))}
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
 
       </div>
     </section>
