@@ -14,7 +14,9 @@ import {
   Star,
   TrendingUp,
   Eye,
-  Globe
+  Globe,
+  CheckCircle2,
+  Layers
 } from 'lucide-react'
 import { SeoFormFields } from '../components/SeoFormFields'
 
@@ -22,8 +24,12 @@ export const AdminProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
-  const [activeTab, setActiveTab] = useState<'info' | 'case_study' | 'metrics' | 'seo'>('info')
+  const [activeTab, setActiveTab] = useState<'info' | 'case_study' | 'deliverables' | 'workflow' | 'metrics' | 'seo'>('info')
   const [caseStep, setCaseStep] = useState<number>(1)
+  const [newDelivTitle, setNewDelivTitle] = useState('')
+  const [newDelivNote, setNewDelivNote] = useState('')
+  const [newStepTitle, setNewStepTitle] = useState('')
+  const [newStepDesc, setNewStepDesc] = useState('')
 
   // Form State
   const [formData, setFormData] = useState<Partial<Project>>({
@@ -44,8 +50,45 @@ export const AdminProjectsPage: React.FC = () => {
     case_production: '',
     case_final_content: '',
     case_takeaway: '',
+    scope_of_work: '',
+    quality_standard: '',
+    quote: '',
+    deliverables: [],
+    workflow_steps: [],
     status: 'published'
   })
+
+  const handleAddDeliverable = () => {
+    if (!newDelivTitle.trim()) return
+    const list = formData.deliverables ? [...formData.deliverables] : []
+    list.push({ title: newDelivTitle.trim(), note: newDelivNote.trim() || undefined })
+    setFormData({ ...formData, deliverables: list })
+    setNewDelivTitle('')
+    setNewDelivNote('')
+  }
+
+  const handleRemoveDeliverable = (index: number) => {
+    const list = (formData.deliverables || []).filter((_, i) => i !== index)
+    setFormData({ ...formData, deliverables: list })
+  }
+
+  const handleAddWorkflowStep = () => {
+    if (!newStepTitle.trim() || !newStepDesc.trim()) return
+    const list = formData.workflow_steps ? [...formData.workflow_steps] : []
+    list.push({ 
+      title: newStepTitle.trim(), 
+      desc: newStepDesc.trim(), 
+      description: newStepDesc.trim() 
+    })
+    setFormData({ ...formData, workflow_steps: list })
+    setNewStepTitle('')
+    setNewStepDesc('')
+  }
+
+  const handleRemoveWorkflowStep = (index: number) => {
+    const list = (formData.workflow_steps || []).filter((_, i) => i !== index)
+    setFormData({ ...formData, workflow_steps: list })
+  }
 
   const loadData = async () => {
     const data = await getProjects()
@@ -60,6 +103,10 @@ export const AdminProjectsPage: React.FC = () => {
     setEditingProject(null)
     setActiveTab('info')
     setCaseStep(1)
+    setNewDelivTitle('')
+    setNewDelivNote('')
+    setNewStepTitle('')
+    setNewStepDesc('')
     setFormData({
       title: '',
       slug: '',
@@ -78,6 +125,11 @@ export const AdminProjectsPage: React.FC = () => {
       case_production: '',
       case_final_content: '',
       case_takeaway: '',
+      scope_of_work: '',
+      quality_standard: '',
+      quote: '',
+      deliverables: [],
+      workflow_steps: [],
       status: 'published'
     })
     setModalOpen(true)
@@ -88,6 +140,10 @@ export const AdminProjectsPage: React.FC = () => {
     setEditingProject(project)
     setActiveTab('info')
     setCaseStep(1)
+    setNewDelivTitle('')
+    setNewDelivNote('')
+    setNewStepTitle('')
+    setNewStepDesc('')
     setFormData({
       ...project,
       title: project.title || '',
@@ -97,6 +153,7 @@ export const AdminProjectsPage: React.FC = () => {
       category_name: project.category_name || '',
       cover_image: project.cover_image || '',
       video_url: project.video_url || '',
+      video_aspect_ratio: project.video_aspect_ratio || '9:16',
       gallery: Array.isArray(project.gallery) ? project.gallery : [],
       metrics: project.metrics || { views: '+500K', growth: '+35%', engagement: '45K', conversion: '+28%' },
       case_challenge: project.case_challenge || '',
@@ -105,6 +162,11 @@ export const AdminProjectsPage: React.FC = () => {
       case_production: project.case_production || '',
       case_final_content: project.case_final_content || '',
       case_takeaway: project.case_takeaway || '',
+      scope_of_work: project.scope_of_work || '',
+      quality_standard: project.quality_standard || '',
+      quote: project.quote || '',
+      deliverables: Array.isArray(project.deliverables) ? project.deliverables : [],
+      workflow_steps: Array.isArray(project.workflow_steps) ? project.workflow_steps : [],
       status: project.status || 'published',
       meta_title: project.meta_title || '',
       meta_description: project.meta_description || '',
@@ -147,6 +209,11 @@ export const AdminProjectsPage: React.FC = () => {
         case_production: formData.case_production || '',
         case_final_content: formData.case_final_content || '',
         case_takeaway: formData.case_takeaway || '',
+        scope_of_work: formData.scope_of_work || '',
+        quality_standard: formData.quality_standard || '',
+        quote: formData.quote || '',
+        deliverables: formData.deliverables || [],
+        workflow_steps: formData.workflow_steps || [],
         status: formData.status || 'published'
       })
     }
@@ -378,7 +445,7 @@ export const AdminProjectsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveTab('info')}
-                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all ${
+                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all shrink-0 ${
                   activeTab === 'info'
                     ? 'border-[#12372A] text-[#12372A]'
                     : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
@@ -389,37 +456,61 @@ export const AdminProjectsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setActiveTab('case_study')}
-                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all flex items-center gap-1.5 ${
+                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
                   activeTab === 'case_study'
                     ? 'border-[#12372A] text-[#12372A]'
                     : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
-                <span>2. دراسة الحالة الستة (The 6 Steps)</span>
+                <span>2. دراسة الحالة (The 6 Steps)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('deliverables')}
+                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+                  activeTab === 'deliverables'
+                    ? 'border-[#12372A] text-[#12372A]'
+                    : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
+                }`}
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A880]" />
+                <span>3. مخرجات وتسليمات العمل ({formData.deliverables?.length || 0})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('workflow')}
+                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+                  activeTab === 'workflow'
+                    ? 'border-[#12372A] text-[#12372A]'
+                    : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5 text-[#C5A880]" />
+                <span>4. مسار وطريقة العمل ({formData.workflow_steps?.length || 0})</span>
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('metrics')}
-                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all ${
+                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all shrink-0 ${
                   activeTab === 'metrics'
                     ? 'border-[#12372A] text-[#12372A]'
                     : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
                 }`}
               >
-                3. المقاييس والأرقام المحققة
+                5. المقاييس والأرقام المحققة
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab('seo')}
-                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all flex items-center gap-1.5 ${
+                className={`py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
                   activeTab === 'seo'
                     ? 'border-[#12372A] text-[#12372A]'
                     : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
                 }`}
               >
                 <Globe className="w-3.5 h-3.5 text-[#8C6D46]" />
-                <span>4. تحسين محركات البحث (SEO & Social)</span>
+                <span>6. تحسين محركات البحث (SEO)</span>
               </button>
             </div>
 
@@ -522,6 +613,33 @@ export const AdminProjectsPage: React.FC = () => {
                         placeholder="https://assets.mixkit.co/...mp4"
                         className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none text-left"
                         dir="ltr"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-[#12372A] mb-1">
+                        نطاق العمل ومجال التنفيذ (Scope of Work)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.scope_of_work || ''}
+                        onChange={(e) => setFormData({ ...formData, scope_of_work: e.target.value })}
+                        placeholder="مثال: حملة إطلاق متكاملة، إنتاج 8 مقاطع، وجلسات تصوير"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#12372A] mb-1">
+                        معيار الجودة والتسليم (Quality Standard)
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.quality_standard || ''}
+                        onChange={(e) => setFormData({ ...formData, quality_standard: e.target.value })}
+                        placeholder="مثال: تسليم سينمائي 4K ProRes مع هندسة صوتية مخصصة"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none"
                       />
                     </div>
                   </div>
@@ -653,10 +771,228 @@ export const AdminProjectsPage: React.FC = () => {
                       />
                     </div>
                   )}
+
+                  {/* Project Quote */}
+                  <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#E5DFD3] space-y-2">
+                    <h4 className="text-sm font-bold text-[#12372A]">اقتباس أو كلمة مميزة حول المشروع (Highlight Quote)</h4>
+                    <p className="text-xs text-[#6b7f74]">شهادة أو كلمة مقتبسة من العميل أو الفريق تلخص الأثر وتظهر كـ Quote فخم في صفحة دراسة الحالة.</p>
+                    <textarea
+                      rows={2}
+                      value={formData.quote || ''}
+                      onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
+                      placeholder="مثال: «استطاعت راية أن تحوّل قصة علامتنا التجارية إلى محتوى ملهم ومؤثر وصل لملايين المشاهدين في أيام قليلة.»"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none bg-white"
+                    />
+                  </div>
                 </div>
               )}
 
-              {/* TAB 3: METRICS */}
+              {/* TAB 3: DELIVERABLES */}
+              {activeTab === 'deliverables' && (
+                <div className="space-y-6">
+                  <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#E5DFD3]">
+                    <h4 className="text-sm font-bold text-[#12372A] mb-1">
+                      مخرجات وتسليمات المشروع (Deliverables)
+                    </h4>
+                    <p className="text-xs text-[#6b7f74]">
+                      أضف التسليمات الفعلية الخاصة بهذا المشروع بالتحديد. ستظهر كبطاقات تسليم مرقمة وأنيقة في صفحة دراسة الحالة. في حال تركها فارغة لن يظهر قسم المخرجات في الصفحة.
+                    </p>
+                  </div>
+
+                  {/* Add Form */}
+                  <div className="p-5 rounded-2xl bg-[#12372A]/5 border border-[#12372A]/15 space-y-4">
+                    <h5 className="text-xs font-bold text-[#12372A] flex items-center gap-1.5">
+                      <Plus className="w-4 h-4 text-[#C5A880]" />
+                      <span>إضافة مخرج / تسليم جديد</span>
+                    </h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#12372A] mb-1">
+                          عنوان المخرج والتسليم *
+                        </label>
+                        <input
+                          type="text"
+                          value={newDelivTitle}
+                          onChange={(e) => setNewDelivTitle(e.target.value)}
+                          placeholder="مثال: 5 مقاطع ريلز فائقة الدقة 4K"
+                          className="w-full px-3.5 py-2 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#12372A] mb-1">
+                          ملاحظة أو مواصفات فنية (اختياري)
+                        </label>
+                        <input
+                          type="text"
+                          value={newDelivNote}
+                          onChange={(e) => setNewDelivNote(e.target.value)}
+                          placeholder="مثال: صيغ 9:16 و 16:9 مع ترجمة مدمجة"
+                          className="w-full px-3.5 py-2 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none bg-white"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddDeliverable}
+                      disabled={!newDelivTitle.trim()}
+                      className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-[#12372A] hover:bg-[#205341] disabled:opacity-50 text-[#F3D7A4] text-xs font-bold transition-all cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>إضافة المخرج للقائمة</span>
+                    </button>
+                  </div>
+
+                  {/* List */}
+                  {formData.deliverables && formData.deliverables.length > 0 ? (
+                    <div className="space-y-2.5">
+                      <span className="text-xs font-bold text-[#12372A] block">
+                        قائمة التسليمات المضافة ({formData.deliverables.length}):
+                      </span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {formData.deliverables.map((item, idx) => {
+                          const deliv = typeof item === 'string' ? { title: item, note: undefined } : item
+                          return (
+                            <div
+                              key={idx}
+                              className="flex items-start justify-between gap-3 p-3.5 rounded-2xl bg-white border border-[#E5DFD3] shadow-xs"
+                            >
+                              <div className="flex items-start gap-2.5">
+                                <span className="w-6 h-6 rounded-lg bg-[#FAF7F2] border border-[#E5DFD3] text-[#8C6D46] font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                  {String(idx + 1).padStart(2, '0')}
+                                </span>
+                                <div>
+                                  <h6 className="text-xs font-bold text-[#12372A] leading-relaxed">
+                                    {deliv.title}
+                                  </h6>
+                                  {deliv.note && (
+                                    <p className="text-[11px] text-[#6b7f74] mt-0.5">
+                                      {deliv.note}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveDeliverable(idx)}
+                                className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-colors cursor-pointer shrink-0"
+                                title="حذف هذا المخرج"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-8 text-center rounded-2xl bg-[#FAF7F2] border border-dashed border-[#E5DFD3] text-xs text-[#6b7f74]">
+                      لم يتم إضافة أي مخرجات أو تسليمات لهذا المشروع حتى الآن.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TAB 4: WORKFLOW */}
+              {activeTab === 'workflow' && (
+                <div className="space-y-6">
+                  <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#E5DFD3]">
+                    <h4 className="text-sm font-bold text-[#12372A] mb-1">
+                      خطوات ومسار تنفيذ المشروع (Workflow Steps)
+                    </h4>
+                    <p className="text-xs text-[#6b7f74]">
+                      حدد منهجية ومراحل العمل المخصصة لهذا المشروع بالتحديد، لتظهر في الخط الزمني (Timeline) لصفحة دراسة الحالة بدلاً من الخطوات العامة المكررة. في حال عدم إدخال خطوات سيتم إخفاء القسم تلقائياً.
+                    </p>
+                  </div>
+
+                  {/* Add Form */}
+                  <div className="p-5 rounded-2xl bg-[#12372A]/5 border border-[#12372A]/15 space-y-4">
+                    <h5 className="text-xs font-bold text-[#12372A] flex items-center gap-1.5">
+                      <Plus className="w-4 h-4 text-[#C5A880]" />
+                      <span>إضافة مرحلة أو خطوة جديدة للعمل</span>
+                    </h5>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#12372A] mb-1">
+                          عنوان الخطوة أو المرحلة *
+                        </label>
+                        <input
+                          type="text"
+                          value={newStepTitle}
+                          onChange={(e) => setNewStepTitle(e.target.value)}
+                          placeholder="مثال: التخطيط والرؤية البصرية"
+                          className="w-full px-3.5 py-2 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#12372A] mb-1">
+                          تفاصيل وشرح الخطوة *
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={newStepDesc}
+                          onChange={(e) => setNewStepDesc(e.target.value)}
+                          placeholder="مثال: تفكيك أهداف العميل، صياغة لوحة الإلهام (Moodboard)، وإعداد نصوص الاسكربت الموجه."
+                          className="w-full px-3.5 py-2 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none bg-white"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddWorkflowStep}
+                      disabled={!newStepTitle.trim() || !newStepDesc.trim()}
+                      className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-[#12372A] hover:bg-[#205341] disabled:opacity-50 text-[#F3D7A4] text-xs font-bold transition-all cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>إضافة الخطوة للمسار</span>
+                    </button>
+                  </div>
+
+                  {/* List */}
+                  {formData.workflow_steps && formData.workflow_steps.length > 0 ? (
+                    <div className="space-y-2.5">
+                      <span className="text-xs font-bold text-[#12372A] block">
+                        مراحل العمل المضافة ({formData.workflow_steps.length}):
+                      </span>
+                      <div className="space-y-2.5">
+                        {formData.workflow_steps.map((step, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start justify-between gap-4 p-4 rounded-2xl bg-white border border-[#E5DFD3] shadow-xs"
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="w-8 h-8 rounded-xl bg-[#12372A] text-[#F3D7A4] font-mono text-xs font-black flex items-center justify-center shrink-0">
+                                {String(idx + 1).padStart(2, '0')}
+                              </span>
+                              <div>
+                                <h6 className="text-xs font-bold text-[#12372A]">
+                                  {step.title}
+                                </h6>
+                                <p className="text-xs text-[#6b7f74] mt-1 leading-relaxed">
+                                  {step.desc || step.description}
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveWorkflowStep(idx)}
+                              className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-colors cursor-pointer shrink-0"
+                              title="حذف هذه الخطوة"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-8 text-center rounded-2xl bg-[#FAF7F2] border border-dashed border-[#E5DFD3] text-xs text-[#6b7f74]">
+                      لم يتم إضافة أي خطوات مخصصة لهذا المشروع حتى الآن.
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* TAB 5: METRICS */}
               {activeTab === 'metrics' && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>

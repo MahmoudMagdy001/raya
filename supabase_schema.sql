@@ -62,6 +62,12 @@ CREATE TABLE IF NOT EXISTS public.projects (
     case_production TEXT,
     case_final_content TEXT,
     case_takeaway TEXT,
+    -- Dynamic Custom Fields & Builders
+    quote TEXT,
+    scope_of_work TEXT,
+    quality_standard TEXT,
+    deliverables JSONB DEFAULT '[]'::jsonb,
+    workflow_steps JSONB DEFAULT '[]'::jsonb,
     status TEXT NOT NULL DEFAULT 'published', -- 'published' | 'draft'
     -- SEO Specialist Fields
     meta_title TEXT,
@@ -490,7 +496,8 @@ INSERT INTO public.clients (name, en_name, display_order, status) VALUES
 ('وجد كولكشن', 'WAJD HAUTE', 5, 'published'),
 ('سمو للعطور', 'SUMOU PARFUMS', 6, 'published'),
 ('رسيل كافيه', 'RASEEL COFFEE', 7, 'published'),
-('قمة الذكاء الاصطناعي', 'AI SUMMIT', 8, 'published');
+('قمة الذكاء الاصطناعي', 'AI SUMMIT', 8, 'published')
+ON CONFLICT (name) DO NOTHING;
 
 -- Showcase Reels Seeds (5 Vertical Video Reels)
 INSERT INTO public.showcase_reels (

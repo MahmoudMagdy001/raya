@@ -85,6 +85,11 @@ export interface Project extends SeoMetadata {
   case_production?: string
   case_final_content?: string
   case_takeaway?: string
+  quote?: string
+  scope_of_work?: string
+  quality_standard?: string
+  deliverables?: Array<string | { title: string; note?: string }>
+  workflow_steps?: Array<{ title: string; desc: string; description?: string }>
   status: 'published' | 'draft'
   created_at?: string
 }

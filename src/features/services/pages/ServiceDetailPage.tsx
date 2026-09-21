@@ -76,10 +76,10 @@ export const ServiceDetailPage: React.FC = () => {
     const words = title.trim().split(/\s+/)
     if (words.length <= 1) {
       return (
-        <span className="relative inline-block text-[#C5A880]">
+        <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-3">
           {title}
           <svg
-            className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+            className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
             viewBox="0 0 100 20"
             preserveAspectRatio="none"
             fill="none"
@@ -96,10 +96,10 @@ export const ServiceDetailPage: React.FC = () => {
     return (
       <>
         {firstPart}{' '}
-        <span className="relative inline-block text-[#C5A880]">
+        <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-3">
           {lastPart}
           <svg
-            className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+            className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
             viewBox="0 0 100 20"
             preserveAspectRatio="none"
             fill="none"
@@ -182,12 +182,12 @@ export const ServiceDetailPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             {/* Right Meta Column (4 cols) */}
             <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#12372A] tracking-tight leading-snug">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#12372A] leading-[1.35] sm:leading-[1.45]">
                 نظرة استراتيجية{' '}
-                <span className="relative inline-block text-[#C5A880]">
+                <span className="relative inline-block text-[#C5A880] pb-1.5 sm:pb-2">
                   والقيمة المضافة
                   <svg
-                    className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                    className="absolute -bottom-1 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -245,12 +245,12 @@ export const ServiceDetailPage: React.FC = () => {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
             {/* Section Header (Matching Home Page) */}
             <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] leading-[1.35] sm:leading-[1.45] lg:leading-[1.5]">
                 مخرجات الخدمة{' '}
-                <span className="relative inline-block text-[#C5A880]">
+                <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
                   والتسليمات
                   <svg
-                    className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                    className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -259,7 +259,7 @@ export const ServiceDetailPage: React.FC = () => {
                   </svg>
                 </span>
               </h2>
-              <p className="mt-3 text-base sm:text-lg text-[#5a7769] max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-4 sm:mt-5 text-base sm:text-lg text-[#5a7769] max-w-2xl mx-auto leading-relaxed">
                 مخرجات دقيقة معدة بأعلى معايير الإتقان الفني لتمنح علامتك الحضور والتأثير الذي تستحقه.
               </p>
             </div>
@@ -316,13 +316,13 @@ export const ServiceDetailPage: React.FC = () => {
         <section className="py-14 sm:py-20 bg-[#F4EFE6] border-t border-[#E5DFD3]/70 text-[#12372A]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
             {/* Header (Matching Home Page WorkflowSection) */}
-            <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12 space-y-3">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] tracking-tight">
+            <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] leading-[1.35] sm:leading-[1.45] lg:leading-[1.5]">
                 طريقة عملنا —{' '}
-                <span className="relative inline-block text-[#C5A880]">
+                <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
                   لهذه الخدمة
                   <svg
-                    className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                    className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -331,7 +331,7 @@ export const ServiceDetailPage: React.FC = () => {
                   </svg>
                 </span>
               </h2>
-              <p className="text-base sm:text-lg text-[#5a7769] leading-relaxed">
+              <p className="mt-4 sm:mt-5 text-base sm:text-lg text-[#5a7769] max-w-2xl mx-auto leading-relaxed">
                 كيف ننتقل بالفكرة من التخطيط الأولي إلى التنفيذ الكامل والاعتماد النهائي.
               </p>
             </div>
@@ -374,13 +374,13 @@ export const ServiceDetailPage: React.FC = () => {
       <section className="py-14 sm:py-20 bg-[#FAF7F2] border-t border-[#E5DFD3]/70 text-[#12372A]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
           {/* Header (Matching Home Page) */}
-          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] tracking-tight">
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] leading-[1.35] sm:leading-[1.45] lg:leading-[1.5]">
               لماذا تختار راية{' '}
-              <span className="relative inline-block text-[#C5A880]">
+              <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
                 لهذه الخدمة؟
                 <svg
-                  className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                  className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
                   viewBox="0 0 100 20"
                   preserveAspectRatio="none"
                   fill="none"
@@ -389,7 +389,7 @@ export const ServiceDetailPage: React.FC = () => {
                 </svg>
               </span>
             </h2>
-            <p className="mt-3 text-base sm:text-lg text-[#5a7769] max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-4 sm:mt-5 text-base sm:text-lg text-[#5a7769] max-w-2xl mx-auto leading-relaxed">
               ركائز عمل تضمن تحويل كل استثمار في المحتوى والإنتاج إلى عوائد وأثر حقيقي ملموس.
             </p>
           </div>
