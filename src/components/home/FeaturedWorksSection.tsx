@@ -5,7 +5,8 @@ import {
   ArrowUpLeft,
   Eye,
   TrendingUp,
-  Sparkles,
+  Flame,
+  Award,
   Play,
   Layers,
   CheckCircle2,
@@ -210,7 +211,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                         <div className="text-right overflow-hidden">
                           <span className="text-[9px] font-bold text-[#b9d5c7] block truncate">التفاعل</span>
                           <div className="flex items-center gap-1 text-xs sm:text-sm font-black text-[#C5A880] mt-0.5">
-                            <Sparkles className="w-3 h-3 text-[#C5A880] shrink-0" />
+                            <Flame className="w-3 h-3 text-[#C5A880] shrink-0" />
                             <span className="truncate">{project.metrics.engagement}</span>
                           </div>
                         </div>
@@ -218,7 +219,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                         <div className="text-right overflow-hidden">
                           <span className="text-[9px] font-bold text-[#b9d5c7] block truncate">الرضا</span>
                           <div className="flex items-center gap-1 text-xs sm:text-sm font-black text-[#C5A880] mt-0.5">
-                            <Sparkles className="w-3 h-3 text-[#C5A880] shrink-0" />
+                            <CheckCircle2 className="w-3 h-3 text-[#C5A880] shrink-0" />
                             <span className="truncate">99.4%</span>
                           </div>
                         </div>
@@ -276,7 +277,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                 <div className="flex items-center justify-between gap-3 mb-3">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="px-3 py-1 rounded-full bg-[#C5A880] text-[#12372A] text-[11px] font-black flex items-center gap-1.5 shadow-sm">
-                      <Sparkles className="w-3.5 h-3.5 text-[#12372A]" />
+                      <Layers className="w-3.5 h-3.5 text-[#12372A]" />
                       <span>منهجية راية (6 خطوات)</span>
                     </span>
                     {quickViewProject.category_name && (
@@ -346,7 +347,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                       <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-2">
                         <span className="text-[10px] font-bold text-[#b9d5c7] block">التفاعل المباشر</span>
                         <div className="flex items-center gap-1.5 text-sm sm:text-base font-black text-[#C5A880] mt-0.5">
-                          <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
+                          <Flame className="w-3.5 h-3.5 text-[#C5A880]" />
                           <span>{quickViewProject.metrics.engagement}</span>
                         </div>
                       </div>
@@ -453,7 +454,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                         ٦
                       </span>
                       <div className="flex items-center gap-2 text-xs font-black text-[#C5A880]">
-                        <Sparkles className="w-4 h-4" />
+                        <Award className="w-4 h-4" />
                         <span>الأثر والنتائج المحققة بالأرقام</span>
                       </div>
                     </div>

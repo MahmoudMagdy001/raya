@@ -8,7 +8,7 @@ import {
   Play, 
   Eye, 
   TrendingUp, 
-  Sparkles, 
+  Flame, 
   CheckCircle2, 
   Film
 } from 'lucide-react'
@@ -236,7 +236,7 @@ export const CaseStudyDetailPage: React.FC = () => {
                   <div>
                     <span className="text-xs text-[#b9d5c7] block">التفاعلات المسجلة</span>
                     <span className="text-2xl font-black text-[#C5A880] flex items-center gap-1.5 mt-1">
-                      <Sparkles className="w-5 h-5 text-[#C5A880]" />
+                      <Flame className="w-5 h-5 text-[#C5A880]" />
                       {project.metrics.engagement}
                     </span>
                   </div>

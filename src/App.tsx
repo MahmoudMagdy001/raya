@@ -12,6 +12,7 @@ import { CaseStudyDetailPage } from './features/portfolio/pages/CaseStudyDetailP
 import { ContactPage } from './features/contact/pages/ContactPage'
 import { BlogPage } from './features/blog/pages/BlogPage'
 import { BlogPostDetailPage } from './features/blog/pages/BlogPostDetailPage'
+import { PrivacyPage } from './features/privacy/pages/PrivacyPage'
 
 // Admin & Auth
 import { AuthProvider } from './features/admin/context/AuthContext'
@@ -57,6 +58,7 @@ export const App: React.FC = () => {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostDetailPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
         </Route>
 
         {/* Admin Login Route (Public) */}

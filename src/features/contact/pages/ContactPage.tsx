@@ -13,7 +13,7 @@ import {
   Building2,
   Calendar,
   FileText,
-  Sparkles,
+  Bot,
   ShieldCheck,
   Film,
   Camera,
@@ -73,7 +73,7 @@ export const ContactPage: React.FC = () => {
     {
       id: 'حلول وأنظمة الذكاء الاصطناعي',
       label: 'حلول وأنظمة الذكاء الاصطناعي',
-      icon: Sparkles,
+      icon: Bot,
       badge: 'تقنيات الجيل القادم'
     }
   ]
@@ -424,7 +424,7 @@ export const ContactPage: React.FC = () => {
                       <span>رد أولي خلال 24 ساعة</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs font-semibold text-[#546b60]">
-                      <Sparkles className="w-4 h-4 text-[#C5A880] shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
                       <span>جلسة استشارية أولى مجاناً</span>
                     </div>
                   </div>

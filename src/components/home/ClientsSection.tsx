@@ -1,16 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Client } from '../../lib/types'
 import { PARTNERS_DATA } from './PartnerLogos'
 import { Building2 } from 'lucide-react'
+import { getClients } from '../../lib/supabase'
 
 interface ClientsSectionProps {
   clients?: Client[]
 }
 
-export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients }) => {
-  const activeClients = clients && clients.length > 0 
-    ? clients.filter(c => c.status !== 'draft') 
-    : []
+export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propClients }) => {
+  const [clients, setClients] = useState<Client[]>(propClients || [])
+
+  useEffect(() => {
+    if (propClients && propClients.length > 0) {
+      setClients(propClients)
+    } else {
+      getClients().then(data => {
+        if (data && data.length > 0) setClients(data)
+      }).catch(console.error)
+    }
+  }, [propClients])
+
+  const activeClients = useMemo(() => {
+    return (clients || []).filter(c => c.status !== 'draft')
+  }, [clients])
 
   // Create lookup for initial SVG icons
   const iconLookup: Record<string, React.FC<{ className?: string }>> = {}
@@ -19,17 +32,14 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients }) => {
     iconLookup[p.name] = p.Icon
   })
 
-  // Deduplicate active clients and provide seamless fallback
-  const uniqueClients = React.useMemo(() => {
-    const list: Array<{ id: string; name: string; en_name?: string; logo_url?: string }> = 
-      activeClients.length > 0 
-        ? activeClients 
-        : PARTNERS_DATA.map(p => ({
-            id: p.id,
-            name: p.name,
-            en_name: p.enName,
-            logo_url: undefined
-          }))
+  // Deduplicate active clients strictly from database
+  const uniqueClients = useMemo(() => {
+    const list = activeClients.map(c => ({
+      id: c.id,
+      name: c.name,
+      en_name: c.en_name,
+      logo_url: c.logo_url
+    }))
     
     const seen = new Set<string>()
     return list.filter(item => {
@@ -41,7 +51,7 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients }) => {
   }, [activeClients])
 
   // Split into Row 1 and Row 2 regardless of total count
-  const { row1, row2 } = React.useMemo(() => {
+  const { row1, row2 } = useMemo(() => {
     if (uniqueClients.length === 0) return { row1: [], row2: [] }
     
     const half = Math.ceil(uniqueClients.length / 2)
@@ -63,6 +73,11 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients }) => {
       row2: ensureLoopLength(r2.length > 0 ? r2 : r1)
     }
   }, [uniqueClients])
+
+  // Don't render section if no clients exist in database
+  if (uniqueClients.length === 0) {
+    return null
+  }
 
   // Render Card
   const renderCard = (client: { id: string; name: string; en_name?: string; logo_url?: string }, key: string) => {

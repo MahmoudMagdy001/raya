@@ -26,7 +26,7 @@ export const AdminPostsPage: React.FC = () => {
     slug: '',
     excerpt: '',
     content: '',
-    cover_image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1200&q=80',
+    cover_image: '',
     author: 'فريق راية الإبداعي',
     category: 'صناعة المحتوى',
     tags: ['تسويق', 'فيديو'],

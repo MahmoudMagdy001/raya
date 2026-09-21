@@ -12,7 +12,7 @@ import {
   Tag, 
   ArrowUpLeft, 
   Check, 
-  Sparkles,
+  Lightbulb,
   ChevronLeft
 } from 'lucide-react'
 
@@ -293,7 +293,7 @@ export const BlogPostDetailPage: React.FC = () => {
           {/* CTA Box inside Article */}
           <div className="p-8 sm:p-10 rounded-2xl bg-gradient-to-br from-[#0B221A] to-[#12372A] text-[#F4EFE6] space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#205341] text-[#F3D7A4] text-xs font-bold">
-              <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
+              <Lightbulb className="w-3.5 h-3.5 text-[#C5A880]" />
               <span>جاهز لتطبيق هذه الاستراتيجية في مشروعك؟</span>
             </div>
             <h3 className="text-2xl sm:text-3xl font-black text-[#F4EFE6]">

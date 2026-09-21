@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, ArrowUpLeft, Sparkles } from 'lucide-react'
+import { Menu, X, ArrowUpLeft } from 'lucide-react'
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -133,8 +133,8 @@ export const Navbar: React.FC = () => {
                 }}
                 className="w-full flex items-center justify-center gap-2 bg-[#C5A880] text-[#12372A] py-3 rounded-xl font-black shadow-lg"
               >
-                <Sparkles className="w-4 h-4 text-[#12372A]" />
                 <span>ابدأ مشروعك معنا</span>
+                <ArrowUpLeft className="w-4 h-4 text-[#12372A]" />
               </Link>
             </div>
           </div>

@@ -7,7 +7,6 @@ import {
   Plus, 
   Trash2, 
   Edit3, 
-  Sparkles, 
   ArrowRight,
   Film, 
   ExternalLink,
@@ -37,7 +36,7 @@ export const AdminProjectsPage: React.FC = () => {
     slug: '',
     client_name: '',
     category_name: 'إنتاج المقاطع القصيرة',
-    cover_image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+    cover_image: '',
     video_url: '',
     video_aspect_ratio: '9:16',
     is_featured: true,
@@ -112,7 +111,7 @@ export const AdminProjectsPage: React.FC = () => {
       slug: '',
       client_name: '',
       category_name: 'إنتاج المقاطع القصيرة',
-      cover_image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+      cover_image: '',
       video_url: '',
       video_aspect_ratio: '9:16',
       is_featured: true,
@@ -196,7 +195,7 @@ export const AdminProjectsPage: React.FC = () => {
         slug,
         client_name: formData.client_name || 'عميل راية',
         category_name: formData.category_name || 'إنتاج المقاطع القصيرة',
-        cover_image: formData.cover_image || 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+        cover_image: formData.cover_image || '',
         video_url: formData.video_url || '',
         video_aspect_ratio: formData.video_aspect_ratio || '9:16',
         is_featured: formData.is_featured ?? true,
@@ -462,7 +461,7 @@ export const AdminProjectsPage: React.FC = () => {
                     : 'border-transparent text-[#6b7f74] hover:text-[#12372A]'
                 }`}
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
+                <Layers className="w-3.5 h-3.5 text-[#C5A880]" />
                 <span>2. دراسة الحالة (The 6 Steps)</span>
               </button>
               <button

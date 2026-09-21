@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { Shield, Lock, Mail, Eye, EyeOff, ArrowRight, AlertCircle, Sparkles } from 'lucide-react'
+import { Shield, Lock, Mail, Eye, EyeOff, ArrowRight, AlertCircle, KeyRound } from 'lucide-react'
 
 export const AdminLoginPage: React.FC = () => {
   const [email, setEmail] = useState('')
@@ -72,7 +72,7 @@ export const AdminLoginPage: React.FC = () => {
           </div>
 
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#205341]/40 border border-[#C5A880]/20 text-[11px] font-bold text-[#C5A880]">
-            <Sparkles className="w-3 h-3" />
+            <KeyRound className="w-3 h-3" />
             <span>بوابة الإدارة المركزية</span>
           </div>
 

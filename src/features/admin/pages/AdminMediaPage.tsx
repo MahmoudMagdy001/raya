@@ -21,7 +21,7 @@ import {
   X,
   Edit3,
   Globe,
-  Sparkles,
+  Eye,
   Tag,
   Info,
   ArrowRight,
@@ -392,7 +392,7 @@ export const AdminMediaPage: React.FC = () => {
             {/* Google Images Result Simulator */}
             <div className="bg-white p-4 rounded-3xl border border-[#E5DFD3] shadow-xs space-y-3">
               <div className="flex items-center gap-2 text-xs font-bold text-[#12372A]">
-                <Sparkles className="w-4 h-4 text-[#8C6D46]" />
+                <Eye className="w-4 h-4 text-[#8C6D46]" />
                 <span>محاكاة الظهور في Google Images</span>
               </div>
               <div className="bg-[#FAF7F2] p-3 rounded-2xl border border-slate-200 flex items-center gap-3">

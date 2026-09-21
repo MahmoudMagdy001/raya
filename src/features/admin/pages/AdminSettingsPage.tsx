@@ -3,7 +3,7 @@ import { getSiteSettings, updateSiteSettings, getProjects, getServices, getPosts
 import { SiteSettings } from '../../../lib/types'
 import { INITIAL_SITE_SETTINGS } from '../../../data/initialData'
 import {
-  Save, CheckCircle2, Settings, Globe, Phone, Share2, Search, Sparkles, BarChart3,
+  Save, CheckCircle2, Settings, Globe, Phone, Share2, Search, Eye, BarChart3,
   Bot, Map, Copy, Download, RefreshCw, Check, Link, FileText
 } from 'lucide-react'
 import { generateRobotsTxt, generateSitemapXml, downloadTextFile, copyToClipboard } from '../../../lib/seoTools'
@@ -242,7 +242,7 @@ export const AdminSettingsPage: React.FC = () => {
               {/* Google SERP Preview */}
               <div className="bg-[#FAF7F2] p-5 rounded-2xl border border-[#E5DFD3]">
                 <div className="flex items-center gap-2 mb-3 text-xs font-black text-[#12372A]">
-                  <Sparkles className="w-4 h-4 text-[#8C6D46]" />
+                  <Eye className="w-4 h-4 text-[#8C6D46]" />
                   <span>محاكاة ظهور الصفحة الرئيسية في نتائج بحث Google</span>
                 </div>
                 <div className="bg-white p-4 rounded-xl border border-[#E5DFD3] text-right" dir="rtl">

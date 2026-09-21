@@ -1,10 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Play, ArrowUpLeft } from 'lucide-react'
 import { VideoModal } from '../ui/VideoModal'
+import { getShowcaseReels, getProjects } from '../../lib/supabase'
 
 export const HeroSection: React.FC = () => {
   const [showreelOpen, setShowreelOpen] = useState(false)
+  const [videoUrl, setVideoUrl] = useState<string>('')
+  const [videoTitle, setVideoTitle] = useState<string>('شووريل راية للإنتاج والتسويق الإبداعي')
+
+  useEffect(() => {
+    // Dynamically fetch showreel video from Supabase CMS
+    const fetchShowreel = async () => {
+      try {
+        const reels = await getShowcaseReels()
+        const featuredReel = reels.find(r => r.status === 'published' && r.video_url) || reels.find(r => r.video_url)
+        if (featuredReel && featuredReel.video_url) {
+          setVideoUrl(featuredReel.video_url)
+          setVideoTitle(featuredReel.title || 'شووريل راية للإنتاج والتسويق الإبداعي')
+          return
+        }
+
+        // Fallback to featured project video if available
+        const projects = await getProjects()
+        const featuredProject = projects.find(p => p.is_featured && p.video_url) || projects.find(p => p.video_url)
+        if (featuredProject && featuredProject.video_url) {
+          setVideoUrl(featuredProject.video_url)
+          setVideoTitle(featuredProject.title || 'شووريل راية للإنتاج والتسويق الإبداعي')
+        }
+      } catch (err) {
+        console.warn('Could not load dynamic showreel:', err)
+      }
+    }
+    fetchShowreel()
+  }, [])
 
   return (
     <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#0B221A] text-[#F4EFE6]">
@@ -50,28 +79,30 @@ export const HeroSection: React.FC = () => {
             <ArrowUpLeft className="w-5 h-5 text-[#12372A]" />
           </Link>
 
-          <button
-            onClick={() => setShowreelOpen(true)}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#12372A]/80 hover:bg-[#12372A] text-[#F4EFE6] border border-[#C5A880]/40 hover:border-[#C5A880] px-7 py-4 rounded-full text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-md"
-          >
-            <div className="w-7 h-7 rounded-full bg-[#C5A880] text-[#12372A] flex items-center justify-center">
-              <Play className="w-3.5 h-3.5 fill-[#12372A] text-[#12372A] translate-x-0.5" />
-            </div>
-            <span>شاهد الشووريل (Showreel)</span>
-          </button>
+          {videoUrl && (
+            <button
+              onClick={() => setShowreelOpen(true)}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#12372A]/80 hover:bg-[#12372A] text-[#F4EFE6] border border-[#C5A880]/40 hover:border-[#C5A880] px-7 py-4 rounded-full text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-md"
+            >
+              <div className="w-7 h-7 rounded-full bg-[#C5A880] text-[#12372A] flex items-center justify-center">
+                <Play className="w-3.5 h-3.5 fill-[#12372A] text-[#12372A] translate-x-0.5" />
+              </div>
+              <span>شاهد الشووريل (Showreel)</span>
+            </button>
+          )}
         </div>
-
-
       </div>
 
       {/* Showreel Modal */}
-      <VideoModal
-        isOpen={showreelOpen}
-        onClose={() => setShowreelOpen(false)}
-        videoUrl="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-person-in-front-of-a-stage-light-41584-large.mp4"
-        title="شووريل راية للإنتاج والتسويق الإبداعي 2026"
-        aspectRatio="16:9"
-      />
+      {videoUrl && (
+        <VideoModal
+          isOpen={showreelOpen}
+          onClose={() => setShowreelOpen(false)}
+          videoUrl={videoUrl}
+          title={videoTitle}
+          aspectRatio="16:9"
+        />
+      )}
     </section>
   )
 }

@@ -4,7 +4,7 @@ import {
   Share2, 
   Smartphone, 
   Monitor, 
-  Sparkles, 
+  Eye, 
   Link as LinkIcon,
   EyeOff
 } from 'lucide-react'
@@ -68,7 +68,7 @@ export const SeoFormFields: React.FC<SeoFormFieldsProps> = ({
   const displayTitle = (safeMetaTitle.trim() || safeFallbackTitle.trim() || 'صفحة بدون عنوان') + ' | راية'
   const displayDescription = safeMetaDescription.trim() || safeFallbackDescription.trim() || 'اكتشف المزيد من التفاصيل والإنتاجات الإبداعية المتميزة مع راية.'
   const displayUrl = `https://raya.sa${pathPrefix}${safeUrlSlug}`
-  const displayImage = safeOgImage.trim() || fallbackImage || 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80'
+  const displayImage = safeOgImage.trim() || fallbackImage || 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=1200&q=80'
 
   // Character counter helper logic
   const titleLength = safeMetaTitle.length
@@ -145,7 +145,7 @@ export const SeoFormFields: React.FC<SeoFormFieldsProps> = ({
       <div className="bg-white rounded-2xl border border-[#E5DFD3] p-4 shadow-xs">
         <div className="flex items-center justify-between mb-3 border-b border-[#F0EBE1] pb-2.5">
           <div className="flex items-center gap-2 text-xs font-bold text-[#12372A]">
-            <Sparkles className="w-4 h-4 text-[#8C6D46]" />
+            <Eye className="w-4 h-4 text-[#8C6D46]" />
             <span>
               {previewMode === 'google' ? 'محاكاة نتيجة البحث في Google (SERP Preview)' : 'محاكاة بطاقة المشاركة (Social Card - Open Graph)'}
             </span>
@@ -226,7 +226,7 @@ export const SeoFormFields: React.FC<SeoFormFieldsProps> = ({
                 alt="Social Card Preview" 
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1200&q=80'
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=1200&q=80'
                 }}
               />
               <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">

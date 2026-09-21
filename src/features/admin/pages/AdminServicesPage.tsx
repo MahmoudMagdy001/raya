@@ -31,7 +31,7 @@ export const AdminServicesPage: React.FC = () => {
     badge: 'خدمة حصرية',
     category: 'creative',
     icon_name: 'Film',
-    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80',
+    image: '',
     deliverables: [],
     status: 'published',
     display_order: 1
@@ -60,7 +60,7 @@ export const AdminServicesPage: React.FC = () => {
       badge: 'جديد',
       category: 'creative',
       icon_name: 'Film',
-      image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80',
+      image: '',
       deliverables: ['تسليم بجودة 4K فائقة الدقة', 'ملفات مهيأة لمنصات التواصل'],
       status: 'published',
       display_order: services.length + 1

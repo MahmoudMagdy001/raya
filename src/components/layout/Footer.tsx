@@ -207,6 +207,12 @@ export const Footer: React.FC = () => {
                   <span>تواصل معنا</span>
                 </Link>
               </li>
+              <li>
+                <Link to="/privacy" onClick={() => handleLinkClick('/privacy')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
+                  <span>سياسة الخصوصية</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -318,7 +324,17 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8bbba5]">
-          <p>© 2026 {settings.site_name || 'شركة راية للإنتاج والتسويق الإبداعي'}. جميع الحقوق محفوظة.</p>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+            <p>© 2026 {settings.site_name || 'شركة راية للإنتاج والتسويق الإبداعي'}. جميع الحقوق محفوظة.</p>
+            <span className="hidden sm:inline text-[#205341]">•</span>
+            <Link
+              to="/privacy"
+              onClick={() => handleLinkClick('/privacy')}
+              className="text-[#b9d5c7] hover:text-[#C5A880] transition-colors underline-offset-4 hover:underline font-medium"
+            >
+              سياسة الخصوصية
+            </Link>
+          </div>
           <div className="flex items-center gap-6">
             <span>الرياض • المملكة العربية السعودية</span>
             <span className="text-[#C5A880]">{settings.slogan_ar || 'أفكار تصنع الفرق'}</span>

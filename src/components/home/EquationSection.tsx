@@ -1,5 +1,5 @@
 import React from 'react'
-import { Target, Lightbulb, ClipboardList, Camera, Sparkles, ChevronLeft } from 'lucide-react'
+import { Target, Lightbulb, ClipboardList, Camera, Award, ChevronLeft } from 'lucide-react'
 
 export const EquationSection: React.FC = () => {
   const equationSteps = [
@@ -7,7 +7,7 @@ export const EquationSection: React.FC = () => {
     { label: 'فكرة', icon: Lightbulb },
     { label: 'تخطيط', icon: ClipboardList },
     { label: 'تنفيذ', icon: Camera },
-    { label: 'محتوى نهائي', icon: Sparkles }
+    { label: 'محتوى نهائي', icon: Award }
   ]
 
   const subValues = [
