@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Sparkles } from 'lucide-react'
 import { CORE_VALUES } from '../../../data/initialData'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
@@ -55,11 +54,6 @@ export const AboutPage: React.FC = () => {
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#205341] rounded-full blur-3xl opacity-40 pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#205341]/60 text-[#F3D7A4] border border-[#C5A880]/30 text-xs font-bold shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
-            <span>الهوية والرؤية الوطنية</span>
-          </div>
-
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F4EFE6]">
             عن رايـة —{' '}
             <span className="relative inline-block text-[#C5A880]">

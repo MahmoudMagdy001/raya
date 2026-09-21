@@ -5,7 +5,6 @@ import { Post } from '../../../lib/types'
 import { INITIAL_POSTS } from '../../../data/initialData'
 import { usePageSeo } from '../../../components/common/SEO'
 import { 
-  Sparkles, 
   Clock, 
   Eye, 
   ArrowUpLeft, 
@@ -72,17 +71,11 @@ export const BlogPage: React.FC = () => {
   return (
     <div className="bg-[#FAF7F2]">
       {/* Header Section */}
-      <section className="pt-36 pb-20 bg-[#12372A] text-[#F4EFE6] relative overflow-hidden">
-        {/* Ambient Glow */}
-        <div className="pointer-events-none absolute -top-40 -left-40 w-96 h-96 bg-[#C5A880]/15 rounded-full blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-40 -right-40 w-96 h-96 bg-[#205341]/20 rounded-full blur-3xl" />
+      <section className="relative pt-36 pb-20 bg-[#12372A] text-[#F4EFE6] overflow-hidden text-center">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#12372A] via-[#12372A] to-[#0B221A]" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#205341] rounded-full blur-3xl opacity-40 pointer-events-none" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#205341] text-[#C5A880] text-xs font-bold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>نوافذ الفكر والمعرفة الإبداعية</span>
-          </div>
-
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F4EFE6]">
             مدونة راية{' '}
             <span className="relative inline-block text-[#C5A880]">

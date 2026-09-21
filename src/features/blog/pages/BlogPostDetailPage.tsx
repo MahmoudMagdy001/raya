@@ -110,7 +110,8 @@ export const BlogPostDetailPage: React.FC = () => {
     <div className="pb-24 bg-[#FAF7F2]">
       {/* Header / Hero Section */}
       <section className="pt-36 pb-16 bg-[#12372A] text-[#F4EFE6] relative overflow-hidden">
-        <div className="pointer-events-none absolute -top-40 -left-40 w-96 h-96 bg-[#C5A880]/15 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#12372A] via-[#12372A] to-[#0B221A]" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#205341] rounded-full blur-3xl opacity-40 pointer-events-none" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Back to Blog */}

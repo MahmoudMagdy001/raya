@@ -62,9 +62,8 @@ export const CaseStudyDetailPage: React.FC = () => {
     <div className="pb-20 bg-[#F4EFE6]">
       {/* Case Study Hero Header */}
       <section className="pt-36 pb-14 sm:pb-16 bg-[#12372A] text-[#F4EFE6] relative overflow-hidden border-b border-[#205341]/50">
-        {/* Ambient Glows */}
-        <div className="pointer-events-none absolute -top-32 -left-32 w-96 h-96 bg-[#205341] rounded-full blur-3xl opacity-40" />
-        <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 bg-[#C5A880] rounded-full blur-3xl opacity-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#12372A] via-[#12372A] to-[#0B221A]" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#205341] rounded-full blur-3xl opacity-40 pointer-events-none" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6">
           {/* Top Breadcrumb */}

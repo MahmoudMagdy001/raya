@@ -18,9 +18,10 @@ import { VideoModal } from '../ui/VideoModal'
 
 interface FeaturedWorksSectionProps {
   projects: Project[]
+  hideHeader?: boolean
 }
 
-export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ projects }) => {
+export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ projects, hideHeader = false }) => {
   // Category Filtering
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   // Video Modal State
@@ -44,7 +45,9 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
   }, [projects, selectedCategory])
 
   return (
-    <section className="pt-16 sm:pt-24 pb-8 sm:pb-12 bg-[#FAF7F2] border-t border-[#E5DFD3] relative overflow-hidden">
+    <section className={`bg-[#FAF7F2] relative overflow-hidden ${
+      hideHeader ? 'py-12 sm:py-16' : 'pt-16 sm:pt-24 pb-8 sm:pb-12 border-t border-[#E5DFD3]'
+    }`}>
       {/* Ambient Lighting & Luxury Atmosphere */}
       <div className="pointer-events-none absolute -top-40 -left-40 w-96 h-96 bg-[#C5A880]/10 rounded-full blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 w-96 h-96 bg-[#12372A]/5 rounded-full blur-3xl" />
@@ -53,25 +56,27 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
       <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
         
         {/* Section Header (Matching Services Header) */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] tracking-tight">
-            أعمال مختارة{' '}
-            <span className="relative inline-block text-[#C5A880]">
-              ودراسات حالة
-              <svg
-                className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
-                viewBox="0 0 100 20"
-                preserveAspectRatio="none"
-                fill="none"
-              >
-                <path d="M0 15 Q50 0, 100 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
-              </svg>
-            </span>
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#5a7769] leading-relaxed">
-            مشاريع استراتيجية تجاوزنا فيها المألوف، ودمجنا الإخراج السينمائي بالحلول التقنية لنحقق أرقام نمو موثقة لشركائنا.
-          </p>
-        </div>
+        {!hideHeader && (
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#12372A] tracking-tight">
+              أعمال مختارة{' '}
+              <span className="relative inline-block text-[#C5A880]">
+                ودراسات حالة
+                <svg
+                  className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                  viewBox="0 0 100 20"
+                  preserveAspectRatio="none"
+                  fill="none"
+                >
+                  <path d="M0 15 Q50 0, 100 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+                </svg>
+              </span>
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-[#5a7769] leading-relaxed">
+              مشاريع استراتيجية تجاوزنا فيها المألوف، ودمجنا الإخراج السينمائي بالحلول التقنية لنحقق أرقام نمو موثقة لشركائنا.
+            </p>
+          </div>
+        )}
 
         {/* Filter Tabs (Matching Services Filter Tabs) */}
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12 sm:mb-14">
