@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { BlogHeroSkeleton, BlogCardSkeleton } from '../../../components/ui/skeleton'
+import { toArabicNumerals } from '../../../lib/arabicNumerals'
 
 export const BlogPage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>(INITIAL_POSTS)
@@ -63,7 +64,7 @@ export const BlogPage: React.FC = () => {
     if (!dateStr) return 'مؤخراً'
     try {
       const d = new Date(dateStr)
-      return d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
+      return toArabicNumerals(d.toLocaleDateString('ar-SA-u-nu-arab', { year: 'numeric', month: 'long', day: 'numeric' }))
     } catch {
       return 'مؤخراً'
     }
@@ -134,7 +135,7 @@ export const BlogPage: React.FC = () => {
                     : 'bg-white text-[#12372A] border border-[#E5DFD3] hover:border-[#12372A]/30 hover:bg-[#FAF7F2]'
                 }`}
               >
-                {cat === 'all' ? `جميع المقالات (${publishedPosts.length})` : cat}
+                {cat === 'all' ? `جميع المقالات (${toArabicNumerals(publishedPosts.length)})` : cat}
               </button>
             ))}
           </div>
@@ -196,7 +197,7 @@ export const BlogPage: React.FC = () => {
                         </span>
                         <span className="flex items-center gap-1 font-medium">
                           <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
-                          {featuredPost.reading_time || 4} دقائق قراءة
+                          {toArabicNumerals(featuredPost.reading_time || 4)} دقائق قراءة
                         </span>
                         <span className="flex items-center gap-1 font-medium">
                           <Calendar className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -276,12 +277,12 @@ export const BlogPage: React.FC = () => {
                           <div className="flex items-center gap-3 text-xs text-[#7d9f8e] mb-3">
                             <span className="flex items-center gap-1">
                               <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
-                              {post.reading_time || 4} د
+                              {toArabicNumerals(post.reading_time || 4)} د
                             </span>
                             <span>•</span>
                             <span className="flex items-center gap-1">
                               <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
-                              {post.views_count || 0} قراءة
+                              {toArabicNumerals(post.views_count || 0)} قراءة
                             </span>
                           </div>
 

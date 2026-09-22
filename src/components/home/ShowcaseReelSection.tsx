@@ -3,6 +3,7 @@ import { ShowcaseReel } from '../../lib/types'
 import { Play, Eye, Heart } from 'lucide-react'
 import { VideoModal } from '../ui/VideoModal'
 import { ReelCardSkeleton } from '../ui/skeleton'
+import { toArabicNumerals } from '../../lib/arabicNumerals'
 
 interface ShowcaseReelSectionProps {
   reels: ShowcaseReel[]
@@ -35,7 +36,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, onOpen }) => (
     <div className="absolute top-4 right-4 left-4 flex items-center justify-between">
       <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[#F4EFE6] text-xs font-semibold flex items-center gap-1.5 border border-white/10">
         <Eye className="w-3 h-3 text-[#C5A880]" />
-        <span>{reel.views_label || '1.5M+'}</span>
+        <span>{reel.views_label ? toArabicNumerals(reel.views_label) : '١.٥M+'}</span>
       </span>
       <span className="px-2.5 py-1 rounded-full bg-[#12372A]/80 backdrop-blur-md text-[#C5A880] text-[10px] font-bold uppercase tracking-wider">
         {reel.platform}
@@ -63,7 +64,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, onOpen }) => (
       {reel.likes_count && (
         <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#b9d5c7]">
           <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
-          <span>{(reel.likes_count / 1000).toFixed(0)}k إعجاب</span>
+          <span>{toArabicNumerals((reel.likes_count / 1000).toFixed(0))} ألف إعجاب</span>
         </div>
       )}
     </div>

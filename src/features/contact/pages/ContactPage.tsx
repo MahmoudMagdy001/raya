@@ -36,7 +36,7 @@ export const ContactPage: React.FC = () => {
     phone: '',
     email: '',
     services_requested: ['إنتاج المقاطع القصيرة (Reels & Shorts)'],
-    estimated_budget: '15,000 - 30,000 ريال',
+    estimated_budget: '١٥,٠٠٠ - ٣٠,٠٠٠ ريال',
     deadline: 'خلال شهر',
     project_details: ''
   })
@@ -79,10 +79,10 @@ export const ContactPage: React.FC = () => {
   ]
 
   const budgets = [
-    'أقل من 10,000 ريال',
-    '10,000 - 25,000 ريال',
-    '25,000 - 50,000 ريال',
-    'أكثر من 50,000 ريال'
+    'أقل من ١٠,٠٠٠ ريال',
+    '١٠,٠٠٠ - ٢٥,٠٠٠ ريال',
+    '٢٥,٠٠٠ - ٥٠,٠٠٠ ريال',
+    'أكثر من ٥٠,٠٠٠ ريال'
   ]
 
   const toggleService = (srv: string) => {
@@ -421,7 +421,7 @@ export const ContactPage: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-2 text-xs font-semibold text-[#546b60]">
                       <Clock className="w-4 h-4 text-[#C5A880] shrink-0" />
-                      <span>رد أولي خلال 24 ساعة</span>
+                      <span>رد أولي خلال ٢٤ ساعة</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs font-semibold text-[#546b60]">
                       <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />

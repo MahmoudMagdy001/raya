@@ -228,7 +228,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                           <span className="text-[9px] font-bold text-[#b9d5c7] block truncate">الرضا</span>
                           <div className="flex items-center gap-1 text-xs sm:text-sm font-black text-[#C5A880] mt-0.5">
                             <CheckCircle2 className="w-3 h-3 text-[#C5A880] shrink-0" />
-                            <span className="truncate">99.4%</span>
+                            <span className="truncate">٩٩.٤٪</span>
                           </div>
                         </div>
                       )}
@@ -286,7 +286,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="px-3 py-1 rounded-full bg-[#C5A880] text-[#12372A] text-[11px] font-black flex items-center gap-1.5 shadow-sm">
                       <Layers className="w-3.5 h-3.5 text-[#12372A]" />
-                      <span>منهجية راية (6 خطوات)</span>
+                      <span>منهجية راية (٦ خطوات)</span>
                     </span>
                     {quickViewProject.category_name && (
                       <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[#F4EFE6] text-[11px] font-bold border border-white/15">
@@ -347,7 +347,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
                         <span className="text-[10px] font-bold text-[#b9d5c7] block">معدل الرضا</span>
                         <div className="flex items-center gap-1.5 text-sm sm:text-base font-black text-[#C5A880] mt-0.5">
                           <CheckCircle2 className="w-3.5 h-3.5 text-[#C5A880]" />
-                          <span>99.4%</span>
+                          <span>٩٩.٤٪</span>
                         </div>
                       </div>
                     )}

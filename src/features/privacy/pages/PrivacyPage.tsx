@@ -114,11 +114,11 @@ export const PrivacyPage: React.FC = () => {
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-[#8bbba5]">
             <div className="flex items-center gap-1.5 bg-[#0B221A]/70 px-3 py-1.5 rounded-lg border border-[#205341]/50">
               <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span>آخر تحديث: مارس 2026</span>
+              <span>آخر تحديث: مارس ٢٠٢٦</span>
             </div>
             <div className="flex items-center gap-1.5 bg-[#0B221A]/70 px-3 py-1.5 rounded-lg border border-[#205341]/50">
               <Tag className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span>الإصدار: 2.1</span>
+              <span>الإصدار: ٢.١</span>
             </div>
             <div className="flex items-center gap-1.5 bg-[#0B221A]/70 px-3 py-1.5 rounded-lg border border-[#205341]/50">
               <Lock className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -270,7 +270,7 @@ export const PrivacyPage: React.FC = () => {
                     أهلاً بك في منصة <strong>شركة راية للإنتاج والتسويق الإبداعي</strong> («راية»، «نحن»، «لنا»). تم إعداد هذه السياسة لتوضيح الممارسات والإجراءات التي نتبعها في جمع البيانات الشخصية واستخدامها وحمايتها وتخزينها عند زيارتك لموقعنا الإلكتروني أو استخدام خدماتنا في الإنتاج المرئي، الحملات الإعلانية، أو طلبات تقديم المشاريع.
                   </p>
                   <p>
-                    تلتزم شركة راية التزاماً تاماً بأحكام <strong>نظام حماية البيانات الشخصية الصادر بالمرسوم الملكي رقم (م/19) وتعديلاته بالمرسوم الملكي رقم (م/148)</strong> ولائحته التنفيذية المعمول بها في المملكة العربية السعودية، وتحت إشراف الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا - SDAIA).
+                    تلتزم شركة راية التزاماً تاماً بأحكام <strong>نظام حماية البيانات الشخصية الصادر بالمرسوم الملكي رقم (م/١٩) وتعديلاته بالمرسوم الملكي رقم (م/١٤٨)</strong> ولائحته التنفيذية المعمول بها في المملكة العربية السعودية، وتحت إشراف الهيئة السعودية للبيانات والذكاء الاصطناعي (سدايا - SDAIA).
                   </p>
                   
                   <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] flex items-start gap-3">
@@ -451,14 +451,14 @@ export const PrivacyPage: React.FC = () => {
 
                   <div className="space-y-3 pt-1">
                     <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3]">
-                      <h4 className="font-bold text-[#12372A] text-sm mb-1">1. ملفات أساسية وضرورية (Essential Cookies)</h4>
+                      <h4 className="font-bold text-[#12372A] text-sm mb-1">١. ملفات أساسية وضرورية (Essential Cookies)</h4>
                       <p className="text-xs sm:text-sm text-[#6B7F74]">
                         لا غنى عنها لعمل وظائف الموقع الأساسية، مثل حفظ خيارات الأمان وجلسة التصفح وتمرير الاستمارات.
                       </p>
                     </div>
 
                     <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3]">
-                      <h4 className="font-bold text-[#12372A] text-sm mb-1">2. ملفات تحليلية وتحسين الأداء (Analytics Cookies)</h4>
+                      <h4 className="font-bold text-[#12372A] text-sm mb-1">٢. ملفات تحليلية وتحسين الأداء (Analytics Cookies)</h4>
                       <p className="text-xs sm:text-sm text-[#6B7F74]">
                         تساعدنا في فهم كيفية تفاعل الزوار مع صفحات الأعمال والخدمات بشكل مجهّل بالكامل، مما يمكننا من تحسين تجربة التصفح.
                       </p>
@@ -494,7 +494,7 @@ export const PrivacyPage: React.FC = () => {
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs sm:text-sm text-[#6B7F74]">
                     <li className="flex items-center gap-2 p-3 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3]">
                       <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
-                      <span>تشفير اتصالات HTTPS وبروتوكولات TLS 1.3</span>
+                      <span>تشفير اتصالات HTTPS وبروتوكولات TLS ١.٣</span>
                     </li>
                     <li className="flex items-center gap-2 p-3 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3]">
                       <CheckCircle2 className="w-4 h-4 text-[#C5A880] shrink-0" />
@@ -585,7 +585,7 @@ export const PrivacyPage: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1">
                       <h4 className="font-bold text-[#12372A] text-sm flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#C5A880]" />
-                        <span>1. الحق في العلم</span>
+                        <span>١. الحق في العلم</span>
                       </h4>
                       <p className="text-xs text-[#6B7F74] leading-relaxed">
                         معرفة المسوغ النظامي والغرض من جمع ومعالجة بياناتك والجهات التي قد تُفصح لها.
@@ -595,7 +595,7 @@ export const PrivacyPage: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1">
                       <h4 className="font-bold text-[#12372A] text-sm flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#C5A880]" />
-                        <span>2. الحق في الوصول والاطلاع</span>
+                        <span>٢. الحق في الوصول والاطلاع</span>
                       </h4>
                       <p className="text-xs text-[#6B7F74] leading-relaxed">
                         الحصول على نسخة من بياناتك الشخصية المتاحة لدينا بصيغة واضحة ومقروءة.
@@ -605,7 +605,7 @@ export const PrivacyPage: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1">
                       <h4 className="font-bold text-[#12372A] text-sm flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#C5A880]" />
-                        <span>3. الحق في التصحيح والتحديث</span>
+                        <span>٣. الحق في التصحيح والتحديث</span>
                       </h4>
                       <p className="text-xs text-[#6B7F74] leading-relaxed">
                         طلب تعديل أي بيانات غير دقيقة أو غير مكتملة أو تحديث سجلات التواصل.
@@ -615,7 +615,7 @@ export const PrivacyPage: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1">
                       <h4 className="font-bold text-[#12372A] text-sm flex items-center gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#C5A880]" />
-                        <span>4. الحق في الإتلاف والمسح</span>
+                        <span>٤. الحق في الإتلاف والمسح</span>
                       </h4>
                       <p className="text-xs text-[#6B7F74] leading-relaxed">
                         طلب إتلاف ومسح بياناتك الشخصية عند انتهاء الحاجة إليها أو عند سحب موافقتك.
@@ -625,7 +625,7 @@ export const PrivacyPage: React.FC = () => {
 
                   <div className="p-4 rounded-2xl bg-[#F0F6F3] border border-[#205341]/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <p className="text-xs sm:text-sm text-[#335948]">
-                      لممارسة أي من هذه الحقوق، يرجى إرسال طلبك عبر البريد الرسمي وسيقوم فريقنا بالرد عليك خلال مدة أقصاها <strong>30 يوماً</strong>.
+                      لممارسة أي من هذه الحقوق، يرجى إرسال طلبك عبر البريد الرسمي وسيقوم فريقنا بالرد عليك خلال مدة أقصاها <strong>٣٠ يوماً</strong>.
                     </p>
                     <a
                       href="mailto:privacy@raya.sa"

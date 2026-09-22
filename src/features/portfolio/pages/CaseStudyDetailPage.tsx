@@ -16,6 +16,7 @@ import { VideoModal } from '../../../components/ui/VideoModal'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { usePageSeo } from '../../../components/common/SEO'
 import { CaseStudyDetailSkeleton } from '../../../components/ui/skeleton'
+import { toArabicNumerals } from '../../../lib/arabicNumerals'
 
 export const CaseStudyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -334,7 +335,7 @@ export const CaseStudyDetailPage: React.FC = () => {
                 <div className="space-y-3 pt-2">
                   <div className="flex items-center gap-3">
                     <span className="text-xs font-black tracking-widest text-[#C5A880] uppercase">
-                      01 / THE CHALLENGE
+                      ٠١ / THE CHALLENGE
                     </span>
                   </div>
                   <h3 className="text-2xl font-black text-[#12372A]">
@@ -351,7 +352,7 @@ export const CaseStudyDetailPage: React.FC = () => {
                 <div className="space-y-3 pt-2 border-t border-[#E5DFD3]/70">
                   <div className="flex items-center gap-3 pt-4">
                     <span className="text-xs font-black tracking-widest text-[#C5A880] uppercase">
-                      02 / THE OBJECTIVE
+                      ٠٢ / THE OBJECTIVE
                     </span>
                   </div>
                   <h3 className="text-2xl font-black text-[#12372A]">
@@ -368,7 +369,7 @@ export const CaseStudyDetailPage: React.FC = () => {
                 <div className="space-y-3 pt-2 border-t border-[#E5DFD3]/70">
                   <div className="flex items-center gap-3 pt-4">
                     <span className="text-xs font-black tracking-widest text-[#C5A880] uppercase">
-                      03 / THE IDEA & CONCEPT
+                      ٠٣ / THE IDEA & CONCEPT
                     </span>
                   </div>
                   <h3 className="text-2xl font-black text-[#12372A]">
@@ -385,7 +386,7 @@ export const CaseStudyDetailPage: React.FC = () => {
                 <div className="space-y-3 pt-2 border-t border-[#E5DFD3]/70">
                   <div className="flex items-center gap-3 pt-4">
                     <span className="text-xs font-black tracking-widest text-[#C5A880] uppercase">
-                      04 / THE PRODUCTION & CRAFT
+                      ٠٤ / THE PRODUCTION & CRAFT
                     </span>
                   </div>
                   <h3 className="text-2xl font-black text-[#12372A]">
@@ -479,7 +480,7 @@ export const CaseStudyDetailPage: React.FC = () => {
                   {project.video_url && (
                     <span className="inline-flex items-center gap-2 bg-[#12372A]/80 border border-[#C5A880]/40 text-xs font-bold px-4 py-2 rounded-full backdrop-blur-md text-[#C5A880]">
                       <Film className="w-3.5 h-3.5" />
-                      <span>مشاهدة الفيديو بجودة 4K</span>
+                      <span>مشاهدة الفيديو بجودة ٤K</span>
                     </span>
                   )}
                 </div>
@@ -543,7 +544,7 @@ export const CaseStudyDetailPage: React.FC = () => {
             <div className="divide-y divide-[#E5DFD3]">
               {project.deliverables.map((item, index) => {
                 const parsed = parseDeliverable(item)
-                const num = String(index + 1).padStart(2, '0')
+                const num = toArabicNumerals(String(index + 1).padStart(2, '0'))
 
                 return (
                   <div
@@ -617,7 +618,7 @@ export const CaseStudyDetailPage: React.FC = () => {
               {project.workflow_steps.map((st, i) => (
                 <div key={st.title + i} className="relative z-10 space-y-4">
                   <div className="w-12 h-12 rounded-full bg-[#12372A] text-[#C5A880] border-2 border-[#C5A880] font-black text-sm flex items-center justify-center shadow-md">
-                    {String(i + 1).padStart(2, '0')}
+                    {toArabicNumerals(String(i + 1).padStart(2, '0'))}
                   </div>
                   <h4 className="text-base font-bold text-[#12372A] leading-snug">{st.title}</h4>
                   <p className="text-xs sm:text-sm text-[#6b7f74] leading-relaxed">{st.desc}</p>
@@ -630,7 +631,7 @@ export const CaseStudyDetailPage: React.FC = () => {
               {project.workflow_steps.map((st, i) => (
                 <div key={st.title + i} className="relative space-y-2">
                   <span className="absolute -right-[34px] top-0 w-8 h-8 rounded-full bg-[#12372A] text-[#C5A880] font-black text-xs flex items-center justify-center border-2 border-[#C5A880]">
-                    {i + 1}
+                    {toArabicNumerals(i + 1)}
                   </span>
                   <h4 className="text-base font-bold text-[#12372A] leading-snug">{st.title}</h4>
                   <p className="text-sm text-[#6b7f74] leading-relaxed">{st.desc}</p>

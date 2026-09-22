@@ -390,7 +390,7 @@ export const ServiceDetailPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 pt-4">
             <div className="space-y-4">
-              <span className="text-3xl font-black text-[#C5A880]/40 select-none">01</span>
+              <span className="text-3xl font-black text-[#C5A880]/40 select-none">٠١</span>
               <h3 className="text-lg sm:text-xl font-bold text-[#12372A] leading-snug">الفكرة والاستراتيجية أولاً</h3>
               <p className="text-sm sm:text-base text-[#6b7f74] leading-relaxed">
                 لا نبدأ التصوير أو التنفيذ قبل هندسة الفكرة واختيار أذكى زاوية تفاعل تلائم جمهورك والمنصات المستهدفة.
@@ -398,7 +398,7 @@ export const ServiceDetailPage: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <span className="text-3xl font-black text-[#C5A880]/40 select-none">02</span>
+              <span className="text-3xl font-black text-[#C5A880]/40 select-none">٠٢</span>
               <h3 className="text-lg sm:text-xl font-bold text-[#12372A] leading-snug">حرفية سينمائية لا تقبل المساومة</h3>
               <p className="text-sm sm:text-base text-[#6b7f74] leading-relaxed">
                 نستخدم أحدث معدات التصوير السينمائي، الإضاءة المدروسة، وهندسة الصوت لنقدم جودة تليق بقيمة علامتك التجارية.
@@ -406,7 +406,7 @@ export const ServiceDetailPage: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <span className="text-3xl font-black text-[#C5A880]/40 select-none">03</span>
+              <span className="text-3xl font-black text-[#C5A880]/40 select-none">٠٣</span>
               <h3 className="text-lg sm:text-xl font-bold text-[#12372A] leading-snug">صناعة أثر ملموس ومستمر</h3>
               <p className="text-sm sm:text-base text-[#6b7f74] leading-relaxed">
                 كل مخرج نصنعه مهيأ لتجاوز خوارزميات المنصات وتحقيق أهدافك التسويقية والتجارية، وتمديد أثر علامتك لأطول فترة.

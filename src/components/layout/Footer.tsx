@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Instagram, Linkedin, Youtube, ArrowUp } from 'luci
 import { getServices, getSiteSettings } from '../../lib/supabase'
 import { Service, SiteSettings } from '../../lib/types'
 import { INITIAL_SITE_SETTINGS } from '../../data/initialData'
+import { toArabicNumerals } from '../../lib/arabicNumerals'
 
 // Official WhatsApp Vector Icon
 const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' }) => (
@@ -261,7 +262,7 @@ export const Footer: React.FC = () => {
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#C5A880] shrink-0" />
                 <a href={`tel:${(settings.phone_number || '+966 50 123 4567').replace(/\s+/g, '')}`} className="hover:text-[#C5A880] transition-colors" dir="ltr">
-                  {settings.phone_number || '+966 50 123 4567'}
+                  {toArabicNumerals(settings.phone_number || '+966 50 123 4567')}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
@@ -325,7 +326,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8bbba5]">
           <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-            <p>© 2026 {settings.site_name || 'شركة راية للإنتاج والتسويق الإبداعي'}. جميع الحقوق محفوظة.</p>
+            <p>© {toArabicNumerals(2026)} {settings.site_name || 'شركة راية للإنتاج والتسويق الإبداعي'}. جميع الحقوق محفوظة.</p>
             <span className="hidden sm:inline text-[#205341]">•</span>
             <Link
               to="/privacy"

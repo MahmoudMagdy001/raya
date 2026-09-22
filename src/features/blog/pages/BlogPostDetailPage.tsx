@@ -4,6 +4,7 @@ import { getPostBySlug, getPosts } from '../../../lib/supabase'
 import { Post } from '../../../lib/types'
 import { usePageSeo } from '../../../components/common/SEO'
 import { BlogPostDetailSkeleton } from '../../../components/ui/skeleton'
+import { toArabicNumerals } from '../../../lib/arabicNumerals'
 import { 
   ArrowRight, 
   Clock, 
@@ -32,24 +33,21 @@ export const BlogPostDetailPage: React.FC = () => {
   const [copied, setCopied] = useState(false)
 
   usePageSeo({
-    title: post?.meta_title || (post ? `${post.title} | مدونة راية` : 'مدونة راية'),
-    description: post?.meta_description || post?.excerpt,
-    keywords: post?.meta_keywords || (post?.tags ? post.tags.join(', ') : undefined),
-    ogImage: post?.og_image || post?.cover_image,
-    canonicalUrl: post?.canonical_url,
-    noIndex: post?.no_index
+    title: post ? `${post.title} | مدونة راية` : 'المقال | مدونة راية',
+    description: post?.excerpt || 'رؤى وتحليلات في صناعة المحتوى والتسويق الإبداعي من راية.',
+    keywords: post?.tags?.join(', ') || 'تسويق, محتوى, إنتاج'
   })
 
   useEffect(() => {
     async function load() {
       if (!slug) return
       setLoading(true)
-      const p = await getPostBySlug(slug)
-      setPost(p || null)
+      const data = await getPostBySlug(slug)
+      setPost(data ?? null)
 
       const all = await getPosts()
       if (all) {
-        const others = all.filter((item) => item.slug !== slug && (!item.status || item.status === 'published'))
+        const others = all.filter((p) => p.slug !== slug && (!p.status || p.status === 'published'))
         setRelatedPosts(others.slice(0, 3))
       }
       setLoading(false)
@@ -62,7 +60,7 @@ export const BlogPostDetailPage: React.FC = () => {
     if (!dateStr) return 'مؤخراً'
     try {
       const d = new Date(dateStr)
-      return d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })
+      return toArabicNumerals(d.toLocaleDateString('ar-SA-u-nu-arab', { year: 'numeric', month: 'long', day: 'numeric' }))
     } catch {
       return 'مؤخراً'
     }
@@ -124,7 +122,7 @@ export const BlogPostDetailPage: React.FC = () => {
             </span>
             <span className="flex items-center gap-1.5 text-[#b9d5c7]">
               <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
-              {post.reading_time || 4} دقائق قراءة
+              {toArabicNumerals(post.reading_time || 4)} دقائق قراءة
             </span>
             <span className="text-[#205341]">•</span>
             <span className="flex items-center gap-1.5 text-[#b9d5c7]">
@@ -134,7 +132,7 @@ export const BlogPostDetailPage: React.FC = () => {
             <span className="text-[#205341]">•</span>
             <span className="flex items-center gap-1.5 text-[#b9d5c7]">
               <Eye className="w-3.5 h-3.5 text-[#C5A880]" />
-              {post.views_count || 0} قراءة
+              {toArabicNumerals(post.views_count || 0)} قراءة
             </span>
           </div>
 

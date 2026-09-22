@@ -169,7 +169,7 @@ export const AboutPage: React.FC = () => {
                     OUR MISSION
                   </span>
                   <span className="text-2xl font-black text-[#C5A880]/50 group-hover:text-[#C5A880] transition-colors duration-300 font-sans tracking-widest">
-                    01
+                    ٠١
                   </span>
                 </div>
 
@@ -210,7 +210,7 @@ export const AboutPage: React.FC = () => {
                     OUR VISION
                   </span>
                   <span className="text-2xl font-black text-[#C5A880]/50 group-hover:text-[#C5A880] transition-colors duration-300 font-sans tracking-widest">
-                    02
+                    ٠٢
                   </span>
                 </div>
 
@@ -233,7 +233,7 @@ export const AboutPage: React.FC = () => {
               {/* Card Footer */}
               <div className="mt-8 pt-5 border-t border-[#E5DFD3]/80">
                 <span className="inline-block px-3.5 py-2 rounded-xl bg-[#FAF7F2] border border-[#E5DFD3] text-xs font-bold text-[#12372A]">
-                  مواكبة تطلعات رؤية السعودية 2030
+                  مواكبة تطلعات رؤية السعودية ٢٠٣٠
                 </span>
               </div>
             </div>

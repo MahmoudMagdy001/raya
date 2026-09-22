@@ -5,25 +5,25 @@ export const PhilosophySection: React.FC = () => {
 
   const pillars = [
     {
-      step: '01',
+      step: '٠١',
       title: 'وضوح الهدف',
       desc: 'دراسة طبيعة المنشأة أو المنتج وتحديد الرسالة الأساسية ومؤشرات الأداء بدقة تامة قبل بدء التصوير.',
       highlight: 'البداية السليمة',
       tags: ['تحديد الجمهور بدقة', 'مؤشرات الأداء KPIs']
     },
     {
-      step: '02',
+      step: '٠٢',
       title: 'قوة الفكرة',
       desc: 'الخروج من الصندوق وكسر التكرار والملل الإعلاني عبر زوايا طرح جريئة تصنع الدهشة وتخاطب المشاعر.',
       highlight: 'سر التميز',
       tags: ['صناعة الـ Hook الجذاب', 'سرد قصصي مبتكر']
     },
     {
-      step: '03',
+      step: '٠٣',
       title: 'ذكاء التنفيذ',
       desc: 'إخراج بصري عالي الدقة بمعدات تصوير سينمائية وهندسة صوتية وتصحيح لوني استثنائي دون هدر للموارد.',
       highlight: 'الحرفية الفنية',
-      tags: ['تصوير سينمائي 4K', 'مونتاج إيقاعي محكم']
+      tags: ['تصوير سينمائي ٤K', 'مونتاج إيقاعي محكم']
     }
   ]
 
@@ -77,7 +77,7 @@ export const PhilosophySection: React.FC = () => {
               <div className="flex items-center gap-3.5 p-4 rounded-2xl bg-white/70 border border-[#E5DFD3]/80 hover:border-[#C5A880]/50 transition-colors shadow-xs">
                 <span className="text-[#C5A880] font-bold text-xl select-none leading-none shrink-0">—</span>
                 <span className="text-sm sm:text-base font-bold text-[#12372A]">
-                  فهم عميق لثقافة السوق السعودي وتوجهات الجيل الشاب ورؤية 2030.
+                  فهم عميق لثقافة السوق السعودي وتوجهات الجيل الشاب ورؤية ٢٠٣٠.
                 </span>
               </div>
             </div>

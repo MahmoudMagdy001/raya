@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Check
 } from 'lucide-react'
+import { toArabicNumerals } from '../../lib/arabicNumerals'
 
 interface WorkflowStep {
   stepNum: string
@@ -20,7 +21,7 @@ export const WorkflowSection: React.FC = () => {
 
   const steps: WorkflowStep[] = [
     {
-      stepNum: '01',
+      stepNum: '٠١',
       stepAr: '١',
       title: 'نفهم المشروع',
       highlight: 'البداية السليمة',
@@ -29,7 +30,7 @@ export const WorkflowSection: React.FC = () => {
       quote: '«المشروع الناجح يبدأ بالاستماع العميق وتحديد البوصلة قبل بدء التصوير.»'
     },
     {
-      stepNum: '02',
+      stepNum: '٠٢',
       stepAr: '٢',
       title: 'نحدد الهدف',
       highlight: 'وضوح الغاية',
@@ -38,16 +39,16 @@ export const WorkflowSection: React.FC = () => {
       quote: '«كل لقطة نصنعها في راية لها غاية استراتيجية تخدم نمو علامتك التجارية.»'
     },
     {
-      stepNum: '03',
+      stepNum: '٠٣',
       stepAr: '٣',
       title: 'نطوّر الفكرة',
       highlight: 'سر الجاذبية',
-      desc: 'نحوّل الهدف المجرد إلى فكرة إبداعية وسيناريو مشوق يكسر الملل، مع تصميم الـ Hook في أول 3 ثوانٍ ليجبر المشاهد على التوقف والاندماج.',
+      desc: 'نحوّل الهدف المجرد إلى فكرة إبداعية وسيناريو مشوق يكسر الملل، مع تصميم الـ Hook في أول ٣ ثوانٍ ليجبر المشاهد على التوقف والاندماج.',
       tags: ['صياغة السيناريو الكامل', 'لوحة المزاج البصري', 'تصميم الـ Hook الخاطف'],
       quote: '«الفكرة القوية تخطف الانتباه في ثوانٍ معدودة وتترك أثراً يمتد في الذاكرة.»'
     },
     {
-      stepNum: '04',
+      stepNum: '٠٤',
       stepAr: '٤',
       title: 'نخطط للتنفيذ',
       highlight: 'الدقة اللوجستية',
@@ -56,16 +57,16 @@ export const WorkflowSection: React.FC = () => {
       quote: '«كل دقيقة تخطيط مسبق تضمن تنفيذاً سلساً وجودة بصرية تليق بك.»'
     },
     {
-      stepNum: '05',
+      stepNum: '٠٥',
       stepAr: '٥',
       title: 'نبدأ الإنتاج',
       highlight: 'الحرفية السينمائية',
       desc: 'ننزل إلى الميدان بكاميرات سينمائية عالية الدقة وعدسات فاخرة وطاقم إخراج وإضاءة سعودي محترف يحوّل السيناريو إلى مشاهد حية تخطف الأنظار.',
-      tags: ['تصوير سينمائي 4K', 'إضاءة سينمائية متقدمة', 'تسجيل صوتي نقي'],
+      tags: ['تصوير سينمائي ٤K', 'إضاءة سينمائية متقدمة', 'تسجيل صوتي نقي'],
       quote: '«الضوء، الزاوية، والعمق.. نصنع مشهداً سينمائياً يرفع مكانة علامتك فوراً.»'
     },
     {
-      stepNum: '06',
+      stepNum: '٠٦',
       stepAr: '٦',
       title: 'نراجع ونطوّر',
       highlight: 'اللمسة الأخيرة',
@@ -74,7 +75,7 @@ export const WorkflowSection: React.FC = () => {
       quote: '«المونتاج هو السحر الذي يجمع كل الخيوط ليخرج العمل في أبهى صورة.»'
     },
     {
-      stepNum: '07',
+      stepNum: '٠٧',
       stepAr: '٧',
       title: 'نسلّم النتيجة',
       highlight: 'الجاهزية التامة',
@@ -98,7 +99,7 @@ export const WorkflowSection: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl font-black text-[#F4EFE6] tracking-tight">
             طريقة عملنا —{' '}
             <span className="relative inline-block text-[#C5A880]">
-              الـ 7 خطوات
+              الـ ٧ خطوات
               <svg
                 className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
                 viewBox="0 0 100 20"
@@ -154,7 +155,7 @@ export const WorkflowSection: React.FC = () => {
             <div className="lg:col-span-7 space-y-5">
               <div className="flex items-center gap-2.5">
                 <span className="px-2.5 py-0.5 rounded-full bg-[#174233] text-[#C5A880] text-xs font-bold">
-                  المرحلة {activeStep + 1} من 7
+                  المرحلة {toArabicNumerals(activeStep + 1)} من ٧
                 </span>
                 <span className="text-xs text-[#8bbba5] font-medium">
                   {current.highlight}

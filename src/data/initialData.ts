@@ -39,12 +39,12 @@ export const INITIAL_MEDIA: MediaItem[] = []
 
 // ─── Static UI constants (not from DB) ────────────────────────────────────────
 export const CORE_VALUES = [
-  { number: '01', title: 'الهدف (Purpose)', desc: 'البوصلة التي تقود كل قرار نتخذه؛ لا حركة بدون غاية محددة واستراتيجية واضحة.', icon: 'Target' },
-  { number: '02', title: 'الإبداع (Creativity)', desc: 'ابتكار زوايا نظر غير مألوفة تتجاوز المكرر وتخلق الدهشة البصرية والتأثير.', icon: 'Lightbulb' },
-  { number: '03', title: 'الجودة (Quality)', desc: 'حرفية لا تقبل التنازل في أدق تفاصيل الإضاءة، الكادر، المونتاج، وهندسة الصوت.', icon: 'Award' },
-  { number: '04', title: 'التعاون (Collaboration)', desc: 'العمل جنباً إلى جنب مع العميل بروح الفريق الواحد والشراكة الصادقة المستدامة.', icon: 'Users' },
-  { number: '05', title: 'الوضوح (Clarity)', desc: 'شفافية مطلقة في طرح الأفكار، خطط الإنتاج، الميزانيات، والنتائج المتوقعة.', icon: 'Eye' },
-  { number: '06', title: 'التطوير (Continuous Growth)', desc: 'استثمار دائم في أحدث أدوات الذكاء الاصطناعي وتقنيات التصوير السينمائي.', icon: 'TrendingUp' }
+  { number: '٠١', title: 'الهدف (Purpose)', desc: 'البوصلة التي تقود كل قرار نتخذه؛ لا حركة بدون غاية محددة واستراتيجية واضحة.', icon: 'Target' },
+  { number: '٠٢', title: 'الإبداع (Creativity)', desc: 'ابتكار زوايا نظر غير مألوفة تتجاوز المكرر وتخلق الدهشة البصرية والتأثير.', icon: 'Lightbulb' },
+  { number: '٠٣', title: 'الجودة (Quality)', desc: 'حرفية لا تقبل التنازل في أدق تفاصيل الإضاءة، الكادر، المونتاج، وهندسة الصوت.', icon: 'Award' },
+  { number: '٠٤', title: 'التعاون (Collaboration)', desc: 'العمل جنباً إلى جنب مع العميل بروح الفريق الواحد والشراكة الصادقة المستدامة.', icon: 'Users' },
+  { number: '٠٥', title: 'الوضوح (Clarity)', desc: 'شفافية مطلقة في طرح الأفكار، خطط الإنتاج، الميزانيات، والنتائج المتوقعة.', icon: 'Eye' },
+  { number: '٠٦', title: 'التطوير (Continuous Growth)', desc: 'استثمار دائم في أحدث أدوات الذكاء الاصطناعي وتقنيات التصوير السينمائي.', icon: 'TrendingUp' }
 ]
 
 export const WORKFLOW_STEPS = [
