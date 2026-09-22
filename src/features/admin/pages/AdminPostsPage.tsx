@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getPosts, createPost, updatePost, deletePost } from '../../../lib/supabase'
 import { Post } from '../../../lib/types'
 import { ImagePickerField } from '../components/ImagePickerField'
+import { TipTapEditor } from '../components/TipTapEditor'
 import { 
   Plus, 
   Trash2, 
@@ -429,16 +430,18 @@ export const AdminPostsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#12372A] mb-1">
-                  المحتوى الكامل للمقال *
-                </label>
-                <textarea
-                  required
-                  rows={6}
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-[#12372A]">
+                    المحتوى الكامل للمقال *
+                  </label>
+                  <span className="text-[11px] text-[#6b7f74]">
+                    محرر نصوص متكامل مع رفع الصور وتنسيق الفقرات
+                  </span>
+                </div>
+                <TipTapEditor
                   value={formData.content || ''}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  placeholder="اكتب المحتوى الكامل للمقال هنا..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none"
+                  onChange={(content) => setFormData({ ...formData, content })}
+                  placeholder="اكتب المحتوى الكامل للمقال هنا ونسّقه بالصور والعناوين والقوائم..."
                 />
               </div>
 

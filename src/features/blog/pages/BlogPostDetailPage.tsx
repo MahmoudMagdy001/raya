@@ -210,61 +210,69 @@ export const BlogPostDetailPage: React.FC = () => {
 
         {/* Article Body */}
         <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#E5DFD3] shadow-sm space-y-8">
-          <div className="prose prose-lg max-w-none text-[#2d473b] leading-relaxed space-y-6">
-            {post.content.split('\n\n').map((paragraph, idx) => {
-              const trimmed = paragraph.trim()
-              if (!trimmed) return null
+          {post.content && (post.content.trim().startsWith('<') || /<[a-z][\s\S]*>/i.test(post.content)) ? (
+            <div
+              className="raya-article-content text-[#2d473b] leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+          ) : (
+            <div className="prose prose-lg max-w-none text-[#2d473b] leading-relaxed space-y-6">
+              {post.content.split('\n\n').map((paragraph, idx) => {
+                const trimmed = paragraph.trim()
+                if (!trimmed) return null
 
-              // Heading 2
-              if (trimmed.startsWith('## ')) {
+                // Heading 2
+                if (trimmed.startsWith('## ')) {
+                  return (
+                    <h2 key={idx} className="text-2xl sm:text-3xl font-black text-[#12372A] pt-4 pb-2 border-b border-[#E5DFD3]">
+                      {trimmed.replace('## ', '')}
+                    </h2>
+                  )
+                }
+
+                // Heading 3
+                if (trimmed.startsWith('### ')) {
+                  return (
+                    <h3 key={idx} className="text-xl sm:text-2xl font-black text-[#12372A] pt-2">
+                      {trimmed.replace('### ', '')}
+                    </h3>
+                  )
+                }
+
+                // Quote block
+                if (trimmed.startsWith('> ')) {
+                  return (
+                    <blockquote key={idx} className="border-r-4 border-[#C5A880] pr-4 py-2 bg-[#FAF7F2] rounded-l-xl text-base sm:text-lg font-bold text-[#12372A] italic my-4">
+                      {trimmed.replace('> ', '')}
+                    </blockquote>
+                  )
+                }
+
+                // Bullet points
+                if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                  const items = trimmed.split('\n').filter(Boolean)
+                  return (
+                    <ul key={idx} className="space-y-2.5 my-4">
+                      {items.map((item, itemIdx) => (
+                        <li key={itemIdx} className="flex items-start gap-2.5 text-sm sm:text-base text-[#3d5a4c]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880] shrink-0 mt-2.5" />
+                          <span>{item.replace(/^[-*]\s*/, '')}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                }
+
+                // Regular paragraph
                 return (
-                  <h2 key={idx} className="text-2xl sm:text-3xl font-black text-[#12372A] pt-4 pb-2 border-b border-[#E5DFD3]">
-                    {trimmed.replace('## ', '')}
-                  </h2>
+                  <p key={idx} className="text-base sm:text-lg text-[#3d5a4c] leading-loose">
+                    {trimmed}
+                  </p>
                 )
-              }
+              })}
+            </div>
+          )}
 
-              // Heading 3
-              if (trimmed.startsWith('### ')) {
-                return (
-                  <h3 key={idx} className="text-xl sm:text-2xl font-black text-[#12372A] pt-2">
-                    {trimmed.replace('### ', '')}
-                  </h3>
-                )
-              }
-
-              // Quote block
-              if (trimmed.startsWith('> ')) {
-                return (
-                  <blockquote key={idx} className="border-r-4 border-[#C5A880] pr-4 py-2 bg-[#FAF7F2] rounded-l-xl text-base sm:text-lg font-bold text-[#12372A] italic my-4">
-                    {trimmed.replace('> ', '')}
-                  </blockquote>
-                )
-              }
-
-              // Bullet points
-              if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-                const items = trimmed.split('\n').filter(Boolean)
-                return (
-                  <ul key={idx} className="space-y-2.5 my-4">
-                    {items.map((item, itemIdx) => (
-                      <li key={itemIdx} className="flex items-start gap-2.5 text-sm sm:text-base text-[#3d5a4c]">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880] shrink-0 mt-2.5" />
-                        <span>{item.replace(/^[-*]\s*/, '')}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )
-              }
-
-              // Regular paragraph
-              return (
-                <p key={idx} className="text-base sm:text-lg text-[#3d5a4c] leading-loose">
-                  {trimmed}
-                </p>
-              )
-            })}
-          </div>
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
