@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { Link, useLocation, Outlet } from 'react-router-dom'
 import { RAYA_ADMIN_LINKS } from '../../features/admin/constants/adminNav'
 import { useAuth } from '../../features/admin/context/AuthContext'
-import { Menu, X, ArrowUpLeft, Shield, ExternalLink, LogOut, User } from 'lucide-react'
+import { Menu, X, LogOut } from 'lucide-react'
 
 export const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
-  const { user, logout } = useAuth()
+  const { logout } = useAuth()
 
   return (
     <div className="min-h-screen bg-[#F4EFE6] text-[#12372A] flex flex-col md:flex-row">
@@ -21,13 +21,12 @@ export const AdminLayout: React.FC = () => {
           {/* Brand header */}
           <div className="p-6 border-b border-[#174233] flex items-center justify-between">
             <Link to="/admin/projects" className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#205341] flex items-center justify-center text-[#C5A880]">
-                <Shield className="w-5 h-5" />
-              </div>
-              <div>
-                <span className="text-xl font-black text-[#F4EFE6] block">إدارة رايـة</span>
-                <span className="text-[10px] text-[#C5A880] tracking-widest uppercase">Admin Workspace</span>
-              </div>
+              <img
+                src="/logo.png"
+                alt="شعار راية"
+                className="h-9 w-auto object-contain brightness-0 invert"
+              />
+              <span className="text-xl font-black text-[#F4EFE6]">إدارة رايـة</span>
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -38,7 +37,7 @@ export const AdminLayout: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-250px)]">
+          <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-140px)]">
             {RAYA_ADMIN_LINKS.map((link) => {
               const IconComp = link.icon
               const isActive = location.pathname.startsWith(link.to)
@@ -68,33 +67,11 @@ export const AdminLayout: React.FC = () => {
           </nav>
         </div>
 
-        {/* Sidebar Footer: User info, public site & logout */}
-        <div className="p-4 border-t border-[#174233] bg-[#05130E] space-y-2.5">
-          {/* Admin User Badge */}
-          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#12372A]/60 border border-[#174233]">
-            <div className="w-8 h-8 rounded-lg bg-[#205341] text-[#C5A880] flex items-center justify-center text-xs font-black shrink-0">
-              <User className="w-4 h-4" />
-            </div>
-            <div className="overflow-hidden min-w-0">
-              <span className="block text-xs font-bold text-[#F4EFE6] truncate">{user?.name || 'مسؤول راية'}</span>
-              <span className="block text-[10px] text-[#8ea79b] truncate">{user?.email || 'admin@raya.sa'}</span>
-            </div>
-          </div>
-
-          <Link
-            to="/"
-            className="flex items-center justify-between px-4 py-2 rounded-xl bg-[#12372A] hover:bg-[#174233] text-xs font-bold text-[#F4EFE6] transition-colors"
-          >
-            <div className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span>معاينة الموقع العام</span>
-            </div>
-            <ArrowUpLeft className="w-3.5 h-3.5" />
-          </Link>
-
+        {/* Sidebar Footer: Logout only */}
+        <div className="p-4 border-t border-[#174233] bg-[#05130E]">
           <button
             onClick={logout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/40 text-xs font-bold transition-colors cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/40 text-xs font-bold transition-colors cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>تسجيل الخروج</span>
@@ -116,22 +93,6 @@ export const AdminLayout: React.FC = () => {
             <h1 className="text-base sm:text-lg font-black text-[#12372A]">
               لوحة التحكم المركزية — راية للإنتاج والتسويق
             </h1>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#205341]/10 text-[#205341] text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-[#205341] animate-ping" />
-              <span>قاعدة البيانات متصلة</span>
-            </span>
-
-            <button
-              onClick={logout}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold border border-red-200 transition-colors cursor-pointer"
-              title="تسجيل الخروج"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">تسجيل الخروج</span>
-            </button>
           </div>
         </header>
 
