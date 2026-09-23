@@ -410,7 +410,7 @@ export const AdminMediaPage: React.FC = () => {
                   />
                 </div>
                 <div className="overflow-hidden leading-tight flex-1">
-                  <div className="text-[10px] text-slate-500 font-mono">raya.sa • {seoFormData.dimensions || '1920×1080'}</div>
+                  <div className="text-[10px] text-slate-500 font-mono">raya-tawny.vercel.app • {seoFormData.dimensions || '1920×1080'}</div>
                   <div className="text-xs font-bold text-[#1a0dab] truncate">
                     {seoFormData.alt_text || seoFormData.name || 'عنوان الصورة في بحث جوجل'}
                   </div>

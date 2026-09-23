@@ -6,4 +6,4 @@ Disallow: /admin
 Disallow: /admin/
 
 # Sitemap location
-Sitemap: https://raya.sa/sitemap.xml
+Sitemap: https://raya-tawny.vercel.app/sitemap.xml

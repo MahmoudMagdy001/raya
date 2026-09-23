@@ -253,7 +253,7 @@ export const AdminSettingsPage: React.FC = () => {
                     <div>
                       <div className="text-xs font-medium text-[#202124]">راية للإنتاج والتسويق الإبداعي</div>
                       <div className="text-[11px] text-[#5f6368] ltr text-right" dir="ltr">
-                        {(settings.site_url || 'https://raya.sa').replace(/\/$/, '')}
+                        {(settings.site_url || 'https://raya-tawny.vercel.app').replace(/\/$/, '')}
                       </div>
                     </div>
                   </div>
@@ -368,7 +368,7 @@ export const AdminSettingsPage: React.FC = () => {
                   value={settings.site_url || ''}
                   onChange={(e) => setSettings({ ...settings, site_url: e.target.value })}
                   dir="ltr"
-                  placeholder="https://raya.sa"
+                  placeholder="https://raya-tawny.vercel.app"
                   className="w-full px-4 py-2.5 rounded-xl border border-[#E5DFD3] text-sm text-left focus:border-[#12372A] focus:outline-none font-mono"
                 />
                 <p className="text-[10px] text-[#6b7f74] mt-1">يُستخدم لبناء روابط sitemap.xml و robots.txt تلقائياً.</p>

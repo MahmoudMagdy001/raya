@@ -5,7 +5,7 @@ import { SiteSettings, Project, Service, Post } from './types'
 // ==============================================================================
 
 export function generateRobotsTxt(settings: SiteSettings): string {
-  const siteUrl = (settings.site_url || 'https://raya.sa').replace(/\/$/, '')
+  const siteUrl = (settings.site_url || 'https://raya-tawny.vercel.app').replace(/\/$/, '')
 
   const defaultRules = `User-agent: *
 Allow: /
@@ -55,7 +55,7 @@ export function generateSitemapXml(
   services: Service[],
   posts: Post[]
 ): string {
-  const siteUrl = (settings.site_url || 'https://raya.sa').replace(/\/$/, '')
+  const siteUrl = (settings.site_url || 'https://raya-tawny.vercel.app').replace(/\/$/, '')
   const changefreq = settings.sitemap_change_freq || 'weekly'
   const today = new Date().toISOString().split('T')[0]
 

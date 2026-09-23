@@ -67,7 +67,7 @@ export const SeoFormFields: React.FC<SeoFormFieldsProps> = ({
   // Derived display values
   const displayTitle = (safeMetaTitle.trim() || safeFallbackTitle.trim() || 'صفحة بدون عنوان') + ' | راية'
   const displayDescription = safeMetaDescription.trim() || safeFallbackDescription.trim() || 'اكتشف المزيد من التفاصيل والإنتاجات الإبداعية المتميزة مع راية.'
-  const displayUrl = `https://raya.sa${pathPrefix}${safeUrlSlug}`
+  const displayUrl = `https://raya-tawny.vercel.app${pathPrefix}${safeUrlSlug}`
   const displayImage = safeOgImage.trim() || fallbackImage || 'https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=1200&q=80'
 
   // Character counter helper logic
@@ -235,7 +235,7 @@ export const SeoFormFields: React.FC<SeoFormFieldsProps> = ({
             </div>
             <div className="p-3 bg-[#F8F9FA] border-t border-slate-200 text-right">
               <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-1">
-                RAYA.SA
+                RAYA-TAWNY.VERCEL.APP
               </div>
               <div className="text-sm font-bold text-[#12372A] line-clamp-1 mb-1">
                 {displayTitle}
