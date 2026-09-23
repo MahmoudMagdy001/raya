@@ -4,7 +4,8 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
-    { "source": "/((?!assets|favicon|logo|robots|sitemap|header-banner|hero-banner).*)", "destination": "/index.html" }
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/((?!assets|favicon|logo|robots|header-banner|hero-banner).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
