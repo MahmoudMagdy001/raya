@@ -18,7 +18,7 @@ interface ReelCardProps {
 const ReelCard: React.FC<ReelCardProps> = ({ reel, onOpen }) => (
   <div
     onClick={() => onOpen(reel)}
-    className="group relative flex-none w-64 sm:w-72 aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-[#E5DFD3]/80 bg-[#0B221A] select-none"
+    className="group relative flex-none w-64 sm:w-72 aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-2xl hover:shadow-[#12372A]/25 transition-all duration-300 transform hover:-translate-y-2.5 border border-[#E5DFD3]/80 hover:border-[#C5A880] bg-[#0B221A] select-none"
     dir="rtl"
   >
     {/* Thumbnail Image */}
@@ -45,7 +45,7 @@ const ReelCard: React.FC<ReelCardProps> = ({ reel, onOpen }) => (
 
     {/* Center Play Button */}
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="w-14 h-14 rounded-full bg-[#C5A880] text-[#12372A] flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-110 transition-transform duration-300">
+      <div className="w-14 h-14 rounded-full bg-[#C5A880] text-[#12372A] flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(197,168,128,0.6)] transition-all duration-300">
         <Play className="w-6 h-6 fill-[#12372A] translate-x-0.5" />
       </div>
     </div>
@@ -97,21 +97,21 @@ export const ShowcaseReelSection: React.FC<ShowcaseReelSectionProps> = ({ reels,
       </div>
 
       {/* Full-width Infinite Auto-Scroll Carousel */}
-      <div className="relative w-full overflow-hidden py-4">
+      <div className="relative w-full overflow-hidden py-4 sm:py-6">
         {/* Subtle Fade Masks on Screen Edges */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-14 bg-gradient-to-l from-[#FAF7F2]/50 to-transparent z-10" />
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-14 bg-gradient-to-r from-[#FAF7F2]/50 to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-[#FAF7F2] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-[#FAF7F2] to-transparent z-10" />
 
         {loading ? (
-          <div className="flex gap-6 px-6 overflow-hidden select-none" dir="ltr">
+          <div className="flex gap-6 px-6 overflow-hidden select-none py-4" dir="ltr">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <ReelCardSkeleton key={i} />
             ))}
           </div>
         ) : (
-          /* Marquee Scroller */
-          <div className="flex overflow-hidden select-none" dir="ltr">
-            <div className="animate-infinite-scroll flex shrink-0 items-center">
+          /* Marquee Scroller with Vertical Breathing Room for Hover Lift and Shadows */
+          <div className="flex overflow-hidden select-none py-4 sm:py-5 -my-2" dir="ltr">
+            <div className="animate-infinite-scroll flex shrink-0 items-center hover:[animation-play-state:paused]">
               {/* Track 1 */}
               <div className="flex shrink-0 gap-6 pr-6 items-center">
                 {trackItems.map((reel, idx) => (

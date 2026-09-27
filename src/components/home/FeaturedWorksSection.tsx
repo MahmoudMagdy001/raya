@@ -66,7 +66,7 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
               <span className="relative inline-block text-[#C5A880]">
                 ودراسات حالة
                 <svg
-                  className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                  className="absolute -bottom-3 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                   viewBox="0 0 100 20"
                   preserveAspectRatio="none"
                   fill="none"

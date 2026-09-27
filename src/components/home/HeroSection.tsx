@@ -57,7 +57,7 @@ export const HeroSection: React.FC = () => {
           نحوّل أفكار علامتك التجارية إلى محتوى مبتكر..{' '}
           <span className="relative inline-block text-[#C5A880]">
             يصنع التأثير
-            <svg className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60" viewBox="0 0 100 20" preserveAspectRatio="none" fill="none">
+            <svg className="absolute -bottom-2 sm:-bottom-4 right-0 w-full h-3 sm:h-4 text-[#C5A880]/60 pointer-events-none" viewBox="0 0 100 20" preserveAspectRatio="none" fill="none">
               <path d="M0 15 Q50 0, 100 15" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
             </svg>
           </span>{' '}

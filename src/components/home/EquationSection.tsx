@@ -31,7 +31,7 @@ export const EquationSection: React.FC = () => {
             <span className="relative inline-block text-[#b38e5c]">
               أثر ملموس
               <svg
-                className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                className="absolute -bottom-3 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                 viewBox="0 0 100 20"
                 preserveAspectRatio="none"
                 fill="none"
@@ -48,16 +48,16 @@ export const EquationSection: React.FC = () => {
 
         {/* The Equation Capsule Bar */}
         <div className="max-w-3xl mx-auto">
-          <div className="bg-[#12372A] hover:bg-[#0E2B21] border border-[#C5A880]/30 hover:border-[#C5A880]/50 rounded-full px-6 py-3.5 sm:px-8 sm:py-4 shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden px-1">
+          <div className="bg-[#12372A] hover:bg-[#0E2B21] border border-[#C5A880]/30 hover:border-[#C5A880]/50 rounded-full px-5 py-3 sm:px-8 sm:py-3.5 shadow-xl transition-all duration-300 overflow-hidden">
+            <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-x-auto overflow-y-hidden no-scrollbar py-1 px-1">
               {equationSteps.map((step, idx) => {
                 const IconComponent = step.icon
                 return (
                   <React.Fragment key={step.label}>
-                    <div className="group/step flex items-center gap-2 sm:gap-2.5 shrink-0 select-none cursor-default">
+                    <div className="group/step flex items-center gap-2 sm:gap-2.5 shrink-0 select-none cursor-default transition-all duration-300">
                       {/* Unified Calm Icon Circle */}
-                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0B221A] border border-[#C5A880]/30 group-hover/step:border-[#C5A880] flex items-center justify-center text-[#C5A880] transition-all duration-300 group-hover/step:scale-105 shadow-inner">
-                        <IconComponent className="w-4 h-4 text-[#C5A880] transition-transform duration-300" />
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0B221A] border border-[#C5A880]/30 group-hover/step:border-[#C5A880] group-hover/step:bg-[#174233] group-hover/step:shadow-[0_0_12px_rgba(197,168,128,0.3)] flex items-center justify-center text-[#C5A880] transition-all duration-300 shadow-inner">
+                        <IconComponent className="w-4 h-4 text-[#C5A880] transition-transform duration-300 group-hover/step:scale-110" />
                       </div>
 
                       {/* Unified Calm Label */}

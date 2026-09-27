@@ -59,7 +59,7 @@ export const AboutPage: React.FC = () => {
             <span className="relative inline-block text-[#C5A880]">
               قصة شغف سعودية
               <svg
-                className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+                className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
                 viewBox="0 0 100 20"
                 preserveAspectRatio="none"
                 fill="none"
@@ -84,7 +84,7 @@ export const AboutPage: React.FC = () => {
                 <span className="relative inline-block text-[#C5A880]">
                   إبداعي سعودية
                   <svg
-                    className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                    className="absolute -bottom-3 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -142,7 +142,7 @@ export const AboutPage: React.FC = () => {
               <span className="relative inline-block text-[#C5A880]">
                 الرؤية والمهمة
                 <svg
-                  className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                  className="absolute -bottom-3 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                   viewBox="0 0 100 20"
                   preserveAspectRatio="none"
                   fill="none"
@@ -251,7 +251,7 @@ export const AboutPage: React.FC = () => {
               <span className="relative inline-block text-[#C5A880]">
                 الستة
                 <svg
-                  className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                  className="absolute -bottom-3 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                   viewBox="0 0 100 20"
                   preserveAspectRatio="none"
                   fill="none"

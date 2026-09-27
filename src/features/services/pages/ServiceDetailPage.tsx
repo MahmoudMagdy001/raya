@@ -73,7 +73,7 @@ export const ServiceDetailPage: React.FC = () => {
         <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-3">
           {title}
           <svg
-            className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
+            className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
             viewBox="0 0 100 20"
             preserveAspectRatio="none"
             fill="none"
@@ -93,7 +93,7 @@ export const ServiceDetailPage: React.FC = () => {
         <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-3">
           {lastPart}
           <svg
-            className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
+            className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-3 text-[#C5A880]/60 pointer-events-none"
             viewBox="0 0 100 20"
             preserveAspectRatio="none"
             fill="none"
@@ -181,7 +181,7 @@ export const ServiceDetailPage: React.FC = () => {
                 <span className="relative inline-block text-[#C5A880] pb-1.5 sm:pb-2">
                   والقيمة المضافة
                   <svg
-                    className="absolute -bottom-1 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
+                    className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -244,7 +244,7 @@ export const ServiceDetailPage: React.FC = () => {
                 <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
                   والتسليمات
                   <svg
-                    className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
+                    className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -316,7 +316,7 @@ export const ServiceDetailPage: React.FC = () => {
                 <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
                   لهذه الخدمة
                   <svg
-                    className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
+                    className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                     viewBox="0 0 100 20"
                     preserveAspectRatio="none"
                     fill="none"
@@ -374,7 +374,7 @@ export const ServiceDetailPage: React.FC = () => {
               <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
                 لهذه الخدمة؟
                 <svg
-                  className="absolute -bottom-1 sm:-bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60 pointer-events-none"
+                  className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                   viewBox="0 0 100 20"
                   preserveAspectRatio="none"
                   fill="none"

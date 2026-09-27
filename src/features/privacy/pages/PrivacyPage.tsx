@@ -92,10 +92,10 @@ export const PrivacyPage: React.FC = () => {
           {/* Main Title */}
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-[#F4EFE6] leading-tight">
             سياسة الخصوصية —{' '}
-            <span className="relative inline-block text-[#C5A880]">
+            <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
               حماية بياناتك أولويتنا
               <svg
-                className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+                className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                 viewBox="0 0 100 20"
                 preserveAspectRatio="none"
                 fill="none"

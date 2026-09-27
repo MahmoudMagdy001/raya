@@ -118,10 +118,10 @@ export const ContactPage: React.FC = () => {
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-[#F4EFE6]">
             تواصل مع{' '}
-            <span className="relative inline-block text-[#C5A880]">
+            <span className="relative inline-block text-[#C5A880] pb-2 sm:pb-2.5">
               رايـة
               <svg
-                className="absolute -bottom-2 right-0 w-full h-3 text-[#C5A880]/60"
+                className="absolute -bottom-2.5 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                 viewBox="0 0 100 20"
                 preserveAspectRatio="none"
                 fill="none"

@@ -92,14 +92,14 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
     return (
       <div
         key={key}
-        className="group w-44 sm:w-56 p-4 sm:p-5 bg-white rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-between text-center gap-3 hover:-translate-y-1.5 cursor-pointer relative overflow-hidden shrink-0 select-none"
+        className="group w-44 sm:w-56 p-4 sm:p-5 bg-white rounded-3xl border border-[#E5DFD3] hover:border-[#C5A880] shadow-xs hover:shadow-xl hover:shadow-[#12372A]/10 transition-all duration-300 flex flex-col items-center justify-between text-center gap-3 hover:-translate-y-1.5 cursor-pointer relative overflow-hidden shrink-0 select-none"
         title={client.name}
       >
         {/* Top Golden Hover Accent Line */}
         <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-transparent via-[#C5A880] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
         {/* Brand Emblem / Logo Image */}
-        <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] group-hover:bg-[#12372A] text-[#12372A] group-hover:text-[#F4EFE6] flex items-center justify-center transition-all duration-300 shadow-xs group-hover:scale-110 shrink-0 overflow-hidden p-1.5">
+        <div className="w-12 h-12 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3]/60 group-hover:border-[#C5A880]/70 text-[#12372A] group-hover:text-[#C5A880] flex items-center justify-center transition-all duration-300 shadow-xs group-hover:shadow-[0_0_14px_rgba(197,168,128,0.3)] group-hover:scale-105 shrink-0 overflow-hidden p-1.5">
           {client.logo_url ? (
             <img 
               src={client.logo_url} 
@@ -115,7 +115,7 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
 
         {/* Typography Brand Lockup */}
         <div className="space-y-0.5 w-full">
-          <span className="text-xs sm:text-sm font-black text-[#12372A] group-hover:text-[#205341] block transition-colors leading-tight truncate">
+          <span className="text-xs sm:text-sm font-black text-[#12372A] group-hover:text-[#C5A880] block transition-colors leading-tight truncate">
             {client.name}
           </span>
           {client.en_name && (
@@ -143,7 +143,7 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
             <span className="relative inline-block text-[#C5A880]">
               وثقت براية
               <svg
-                className="absolute -bottom-1.5 right-0 w-full h-2.5 text-[#C5A880]/60"
+                className="absolute -bottom-3 sm:-bottom-3.5 right-0 w-full h-2.5 sm:h-3 text-[#C5A880]/60 pointer-events-none"
                 viewBox="0 0 100 20"
                 preserveAspectRatio="none"
                 fill="none"
@@ -160,26 +160,26 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
         {/* Dual-Row Infinite Marquee Container */}
         {isLoading ? (
           <div className="relative w-full overflow-hidden space-y-4 sm:space-y-5">
-            <div className="flex gap-3 sm:gap-4 overflow-hidden select-none" dir="ltr">
+            <div className="flex gap-3 sm:gap-4 overflow-hidden select-none py-3" dir="ltr">
               {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <ClientLogoSkeleton key={`sk-r1-${i}`} />
               ))}
             </div>
-            <div className="flex gap-3 sm:gap-4 overflow-hidden select-none" dir="ltr">
+            <div className="flex gap-3 sm:gap-4 overflow-hidden select-none py-3" dir="ltr">
               {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <ClientLogoSkeleton key={`sk-r2-${i}`} />
               ))}
             </div>
           </div>
         ) : (
-          <div className="relative w-full overflow-hidden space-y-4 sm:space-y-5">
+          <div className="relative w-full overflow-hidden space-y-2 sm:space-y-3">
             {/* Luxury Edge Faders */}
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-36 bg-gradient-to-l from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-36 bg-gradient-to-r from-[#FAF7F2] via-[#FAF7F2]/80 to-transparent z-20" />
 
             {/* Row 1: Infinite Auto-Scroll Left (شمال) */}
-            <div className="flex overflow-hidden select-none" dir="ltr">
-              <div className="animate-infinite-scroll flex shrink-0 items-center">
+            <div className="flex overflow-hidden select-none py-3.5 sm:py-4 -my-1" dir="ltr">
+              <div className="animate-infinite-scroll flex shrink-0 items-center hover:[animation-play-state:paused]">
                 <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
                   {row1.map((client, idx) => renderCard(client, `r1-track1-${client.id}-${idx}`))}
                 </div>
@@ -190,8 +190,8 @@ export const ClientsSection: React.FC<ClientsSectionProps> = ({ clients: propCli
             </div>
 
             {/* Row 2: Infinite Auto-Scroll Right (يمين) */}
-            <div className="flex overflow-hidden select-none" dir="ltr">
-              <div className="animate-infinite-scroll-reverse flex shrink-0 items-center">
+            <div className="flex overflow-hidden select-none py-3.5 sm:py-4 -my-1" dir="ltr">
+              <div className="animate-infinite-scroll-reverse flex shrink-0 items-center hover:[animation-play-state:paused]">
                 <div className="flex shrink-0 gap-3 sm:gap-4 items-center pr-3 sm:pr-4">
                   {row2.map((client, idx) => renderCard(client, `r2-track1-${client.id}-${idx}`))}
                 </div>
