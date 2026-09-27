@@ -27,7 +27,6 @@ import { AdminPostsPage } from './features/admin/pages/AdminPostsPage'
 import { AdminInquiriesPage } from './features/admin/pages/AdminInquiriesPage'
 import { AdminMediaPage } from './features/admin/pages/AdminMediaPage'
 import { AdminSettingsPage } from './features/admin/pages/AdminSettingsPage'
-import { AdminGenericPage } from './features/admin/pages/AdminGenericPage'
 
 // Public layout wrapper
 const PublicLayout: React.FC = () => {
@@ -81,7 +80,6 @@ export const App: React.FC = () => {
           <Route path="posts" element={<AdminPostsPage />} />
           <Route path="inquiries" element={<AdminInquiriesPage />} />
           <Route path="media" element={<AdminMediaPage />} />
-          <Route path="redirects" element={<AdminGenericPage title="التحويلات" subtitle="إدارة روابط 301 و 302" />} />
           <Route path="settings" element={<AdminSettingsPage />} />
         </Route>
 

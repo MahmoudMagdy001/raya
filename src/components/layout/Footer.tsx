@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Instagram, Linkedin, Youtube, ArrowUp } from 'lucide-react'
 import { getServices, getSiteSettings } from '../../lib/supabase'
 import { Service, SiteSettings } from '../../lib/types'
-import { INITIAL_SITE_SETTINGS } from '../../data/initialData'
+import { INITIAL_SITE_SETTINGS, INITIAL_SERVICES } from '../../data/initialData'
 import { toArabicNumerals } from '../../lib/arabicNumerals'
 
 // Official WhatsApp Vector Icon
@@ -13,100 +13,26 @@ const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-5 h-5' 
   </svg>
 )
 
-const DEFAULT_SERVICES: Array<{ id?: string; title: string; slug: string }> = [
-  { id: '1', title: 'إنتاج المقاطع القصيرة', slug: 'short-form-content' },
-  { id: '2', title: 'تغطية المعارض والمؤتمرات', slug: 'events-coverage' },
-  { id: '3', title: 'الأفلام الوثائقية والإعلانات التجارية', slug: 'documentaries-commercials' },
-  { id: '4', title: 'صناعة المحتوى الشخصي والبودكاست', slug: 'podcast-personal-branding' },
-  { id: '5', title: 'إنشاء المواقع الإلكترونية والمنصات', slug: 'web-development' },
-  { id: '6', title: 'تطوير تطبيقات الجوال الذكية', slug: 'mobile-app-development' },
-  { id: '7', title: 'حلول وأنظمة الذكاء الاصطناعي', slug: 'ai-solutions' },
-  { id: '8', title: 'بناء الهوية البصرية والاستراتيجية', slug: 'brand-identity-strategy' }
-]
-
 export const Footer: React.FC = () => {
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const location = useLocation()
-
-  const [services, setServices] = useState<Service[]>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = localStorage.getItem('raya_services')
-        if (raw) {
-          const parsed = JSON.parse(raw)
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return []
-  })
-
-  const [settings, setSettings] = useState<SiteSettings>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const raw = localStorage.getItem('raya_site_settings')
-        if (raw) {
-          const parsed = JSON.parse(raw)
-          if (parsed && typeof parsed === 'object') return { ...INITIAL_SITE_SETTINGS, ...parsed }
-        }
-      } catch {
-        // ignore
-      }
-    }
-    return INITIAL_SITE_SETTINGS
-  })
+  const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
+  const [settings, setSettings] = useState<SiteSettings>(INITIAL_SITE_SETTINGS)
 
   useEffect(() => {
     let isMounted = true
 
-    async function loadData() {
-      const [servicesData, settingsData] = await Promise.all([
-        getServices(),
-        getSiteSettings()
-      ])
-      if (isMounted) {
-        if (servicesData && servicesData.length > 0) {
-          setServices(servicesData)
-        }
-        if (settingsData) {
-          setSettings(settingsData)
-        }
-      }
-    }
+    getServices().then((data) => {
+      if (isMounted && data?.length) setServices(data)
+    })
+    getSiteSettings().then((data) => {
+      if (isMounted && data) setSettings(data)
+    })
 
-    loadData()
-
-    const handleStorageUpdate = (e: Event) => {
-      const customEvent = e as CustomEvent<{ key?: string }>
-      if (!customEvent.detail?.key || customEvent.detail.key === 'raya_services') {
-        getServices().then((data) => {
-          if (isMounted && data && data.length > 0) setServices(data)
-        })
-      }
-      if (!customEvent.detail?.key || customEvent.detail.key === 'raya_site_settings') {
-        getSiteSettings().then((data) => {
-          if (isMounted && data) setSettings(data)
-        })
-      }
-    }
-
-    window.addEventListener('raya_storage_updated', handleStorageUpdate)
-
-    return () => {
-      isMounted = false
-      window.removeEventListener('raya_storage_updated', handleStorageUpdate)
-    }
-  }, [])
-
-  useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight
       if (totalScroll > 0) {
-        const progress = (window.scrollY / totalScroll) * 100
-        setScrollProgress(Math.min(100, Math.max(0, progress)))
+        setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / totalScroll) * 100)))
       }
       setShowScrollTop(window.scrollY > 300)
     }
@@ -115,26 +41,16 @@ export const Footer: React.FC = () => {
     handleScroll()
 
     return () => {
+      isMounted = false
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const handleLinkClick = (path: string) => {
-    if (location.pathname === path) {
-      scrollToTop()
-    }
-  }
-
-  const displayServices = (services.length > 0 ? services : DEFAULT_SERVICES).filter(
-    (s: any) => !s.status || s.status === 'published'
-  )
+  const displayServices = services.filter((s) => !s.status || s.status === 'published')
 
   const cleanWhatsappNumber = (settings.whatsapp_number || '966501234567').replace(/[^0-9]/g, '')
 
@@ -150,7 +66,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-14 border-b border-[#174233]">
           {/* Column 1: Brand & Identity (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
-            <Link to="/" onClick={() => handleLinkClick('/')} className="inline-block">
+            <Link to="/" className="inline-block">
               <img
                 src="/logo.png"
                 alt="شعار راية"
@@ -173,43 +89,43 @@ export const Footer: React.FC = () => {
             </div>
             <ul className="space-y-2.5 p-0 m-0 list-none text-sm text-[#b9d5c7]">
               <li>
-                <Link to="/" onClick={() => handleLinkClick('/')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>الرئيسية</span>
                 </Link>
               </li>
               <li>
-                <Link to="/about" onClick={() => handleLinkClick('/about')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/about" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>عن راية</span>
                 </Link>
               </li>
               <li>
-                <Link to="/services" onClick={() => handleLinkClick('/services')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/services" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>خدماتنا</span>
                 </Link>
               </li>
               <li>
-                <Link to="/works" onClick={() => handleLinkClick('/works')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/works" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>أعمالنا</span>
                 </Link>
               </li>
               <li>
-                <Link to="/blog" onClick={() => handleLinkClick('/blog')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/blog" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>المدونة</span>
                 </Link>
               </li>
               <li>
-                <Link to="/contact" onClick={() => handleLinkClick('/contact')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/contact" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>تواصل معنا</span>
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" onClick={() => handleLinkClick('/privacy')} className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
+                <Link to="/privacy" className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
                   <span>سياسة الخصوصية</span>
                 </Link>
@@ -225,7 +141,6 @@ export const Footer: React.FC = () => {
               </h4>
               <Link
                 to="/services"
-                onClick={() => handleLinkClick('/services')}
                 className="text-xs font-bold text-[#C5A880] hover:text-[#f3d7a4] transition-colors"
               >
                 عرض الكل
@@ -236,7 +151,6 @@ export const Footer: React.FC = () => {
                 <li key={service.slug || service.id}>
                   <Link
                     to={`/services/${service.slug}`}
-                    onClick={() => handleLinkClick(`/services/${service.slug}`)}
                     className="hover:text-[#C5A880] transition-colors flex items-center gap-2 py-0.5 group/item"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#C5A880]/70 shrink-0 group-hover/item:bg-[#C5A880] transition-colors" />
@@ -330,7 +244,6 @@ export const Footer: React.FC = () => {
             <span className="hidden sm:inline text-[#205341]">•</span>
             <Link
               to="/privacy"
-              onClick={() => handleLinkClick('/privacy')}
               className="text-[#b9d5c7] hover:text-[#C5A880] transition-colors underline-offset-4 hover:underline font-medium"
             >
               سياسة الخصوصية

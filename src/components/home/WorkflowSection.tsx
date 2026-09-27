@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Check
 } from 'lucide-react'
-import { toArabicNumerals } from '../../lib/arabicNumerals'
 
 interface WorkflowStep {
   stepNum: string
@@ -155,7 +154,7 @@ export const WorkflowSection: React.FC = () => {
             <div className="lg:col-span-7 space-y-5">
               <div className="flex items-center gap-2.5">
                 <span className="px-2.5 py-0.5 rounded-full bg-[#174233] text-[#C5A880] text-xs font-bold">
-                  المرحلة {toArabicNumerals(activeStep + 1)} من ٧
+                  المرحلة {current.stepAr} من ٧
                 </span>
                 <span className="text-xs text-[#8bbba5] font-medium">
                   {current.highlight}

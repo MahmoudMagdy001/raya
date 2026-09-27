@@ -55,390 +55,128 @@ export function generateUUID(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID()
   }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
 }
 
 // ==============================================================================
-// 1. SERVICES CRUD
+// 🛠️ Generic Table Store Helper
 // ==============================================================================
 
-const SERVICES_STORAGE_KEY = 'raya_services'
+function createCrudStore<T extends { id: string; slug?: string }>(
+  tableName: string,
+  storageKey: string,
+  initialData: T[],
+  orderCol = 'display_order',
+  orderAsc = true,
+  prependOnCreate = false
+) {
+  const getAll = async (): Promise<T[]> => {
+    const local = getLocalData<T>(storageKey, initialData)
+    try {
+      const { data, error } = await supabase
+        .from(tableName)
+        .select('*')
+        .order(orderCol, { ascending: orderAsc })
 
-export async function getServices(): Promise<Service[]> {
-  const local = getLocalData<Service>(SERVICES_STORAGE_KEY, INITIAL_SERVICES)
-  try {
-    const { data, error } = await supabase
-      .from('services')
-      .select('*')
-      .order('display_order', { ascending: true })
-
-    if (error) {
-      console.warn('Supabase services query error:', error)
-      return local
-    }
-    if (data) {
-      setLocalData(SERVICES_STORAGE_KEY, data)
-      return data as Service[]
-    }
-    return local
-  } catch (err) {
-    console.warn('Supabase services exception:', err)
-    return local
-  }
-}
-
-export async function createService(service: Omit<Service, 'id'> & { id?: string }): Promise<Service> {
-  const newService: Service = {
-    ...service,
-    id: service.id || generateUUID()
-  }
-
-  // Update local storage immediately
-  const current = getLocalData<Service>(SERVICES_STORAGE_KEY, INITIAL_SERVICES)
-  const updated = [...current, newService]
-  setLocalData(SERVICES_STORAGE_KEY, updated)
-
-  // Sync to Supabase
-  try {
-    await supabase.from('services').insert([newService])
-  } catch (err) {
-    console.warn('Supabase service insert fallback to local:', err)
-  }
-
-  return newService
-}
-
-export async function updateService(id: string, updates: Partial<Service>): Promise<void> {
-  const current = getLocalData<Service>(SERVICES_STORAGE_KEY, INITIAL_SERVICES)
-  const updated = current.map((s) => (s.id === id ? { ...s, ...updates } : s))
-  setLocalData(SERVICES_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('services').update(updates).eq('id', id)
-  } catch (err) {
-    console.warn('Supabase service update fallback to local:', err)
-  }
-}
-
-export async function deleteService(id: string): Promise<void> {
-  const current = getLocalData<Service>(SERVICES_STORAGE_KEY, INITIAL_SERVICES)
-  const updated = current.filter((s) => s.id !== id)
-  setLocalData(SERVICES_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('services').delete().eq('id', id)
-  } catch (err) {
-    console.warn('Supabase service delete fallback to local:', err)
-  }
-}
-
-export async function getServiceBySlug(slug: string): Promise<Service | undefined> {
-  const services = await getServices()
-  return services.find((s) => s.slug === slug)
-}
-
-// ==============================================================================
-// 2. PROJECTS & CASE STUDIES CRUD
-// ==============================================================================
-
-const PROJECTS_STORAGE_KEY = 'raya_projects'
-
-export async function getProjects(): Promise<Project[]> {
-  const local = getLocalData<Project>(PROJECTS_STORAGE_KEY, INITIAL_PROJECTS)
-  try {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .order('display_order', { ascending: true })
-
-    if (error) {
-      console.warn('Supabase projects query error:', error)
-      return local
-    }
-    if (data) {
-      setLocalData(PROJECTS_STORAGE_KEY, data)
-      return data as Project[]
+      if (!error && data) {
+        setLocalData(storageKey, data)
+        return data as T[]
+      }
+    } catch (err) {
+      console.warn(`Supabase ${tableName} query error:`, err)
     }
     return local
-  } catch (err) {
-    console.warn('Supabase projects exception:', err)
-    return local
-  }
-}
-
-export async function createProject(project: Omit<Project, 'id'> & { id?: string }): Promise<Project> {
-  const newProject: Project = {
-    ...project,
-    id: project.id || generateUUID()
   }
 
-  const current = getLocalData<Project>(PROJECTS_STORAGE_KEY, INITIAL_PROJECTS)
-  const updated = [newProject, ...current]
-  setLocalData(PROJECTS_STORAGE_KEY, updated)
+  const create = async (item: Omit<T, 'id'> & { id?: string }): Promise<T> => {
+    const newItem = { ...item, id: item.id || generateUUID() } as T
+    const current = getLocalData<T>(storageKey, initialData)
+    const updated = prependOnCreate ? [newItem, ...current] : [...current, newItem]
+    setLocalData(storageKey, updated)
 
-  try {
-    await supabase.from('projects').insert([newProject])
-  } catch (err) {
-    console.warn('Supabase project insert fallback to local:', err)
-  }
-
-  return newProject
-}
-
-export async function updateProject(id: string, updates: Partial<Project>): Promise<void> {
-  const current = getLocalData<Project>(PROJECTS_STORAGE_KEY, INITIAL_PROJECTS)
-  const updated = current.map((p) => (p.id === id ? { ...p, ...updates } : p))
-  setLocalData(PROJECTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('projects').update(updates).eq('id', id)
-  } catch (err) {
-    console.warn('Supabase project update fallback to local:', err)
-  }
-}
-
-export async function deleteProject(id: string): Promise<void> {
-  const current = getLocalData<Project>(PROJECTS_STORAGE_KEY, INITIAL_PROJECTS)
-  const updated = current.filter((p) => p.id !== id)
-  setLocalData(PROJECTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('projects').delete().eq('id', id)
-  } catch (err) {
-    console.warn('Supabase project delete fallback to local:', err)
-  }
-}
-
-export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
-  const projects = await getProjects()
-  return projects.find((p) => p.slug === slug)
-}
-
-// ==============================================================================
-// 3. CLIENTS & PARTNERS CRUD
-// ==============================================================================
-
-const CLIENTS_STORAGE_KEY = 'raya_clients'
-
-export async function getClients(): Promise<Client[]> {
-  const local = getLocalData<Client>(CLIENTS_STORAGE_KEY, INITIAL_CLIENTS)
-  try {
-    const { data, error } = await supabase
-      .from('clients')
-      .select('*')
-      .order('display_order', { ascending: true })
-
-    if (error) {
-      console.warn('Supabase clients query error:', error)
-      return local
+    try {
+      await (supabase.from(tableName) as any).insert([newItem])
+    } catch (err) {
+      console.warn(`Supabase ${tableName} insert fallback:`, err)
     }
-    if (data) {
-      setLocalData(CLIENTS_STORAGE_KEY, data)
-      return data as Client[]
+
+    return newItem
+  }
+
+  const update = async (id: string, updates: Partial<T>): Promise<void> => {
+    const current = getLocalData<T>(storageKey, initialData)
+    const updated = current.map((item) => (item.id === id ? { ...item, ...updates } : item))
+    setLocalData(storageKey, updated)
+
+    try {
+      await (supabase.from(tableName) as any).update(updates).eq('id', id)
+    } catch (err) {
+      console.warn(`Supabase ${tableName} update fallback:`, err)
     }
-    return local
-  } catch (err) {
-    console.warn('Supabase clients exception:', err)
-    return local
-  }
-}
-
-export async function createClientRecord(client: Omit<Client, 'id'> & { id?: string }): Promise<Client> {
-  const newClient: Client = {
-    ...client,
-    id: client.id || generateUUID()
   }
 
-  const current = getLocalData<Client>(CLIENTS_STORAGE_KEY, INITIAL_CLIENTS)
-  const updated = [...current, newClient]
-  setLocalData(CLIENTS_STORAGE_KEY, updated)
+  const remove = async (id: string): Promise<void> => {
+    const current = getLocalData<T>(storageKey, initialData)
+    const updated = current.filter((item) => item.id !== id)
+    setLocalData(storageKey, updated)
 
-  try {
-    await supabase.from('clients').insert([newClient])
-  } catch (err) {
-    console.warn('Supabase client insert fallback to local:', err)
-  }
-
-  return newClient
-}
-
-export async function updateClientRecord(id: string, updates: Partial<Client>): Promise<void> {
-  const current = getLocalData<Client>(CLIENTS_STORAGE_KEY, INITIAL_CLIENTS)
-  const updated = current.map((c) => (c.id === id ? { ...c, ...updates } : c))
-  setLocalData(CLIENTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('clients').update(updates).eq('id', id)
-  } catch (err) {
-    console.warn('Supabase client update fallback to local:', err)
-  }
-}
-
-export async function deleteClientRecord(id: string): Promise<void> {
-  const current = getLocalData<Client>(CLIENTS_STORAGE_KEY, INITIAL_CLIENTS)
-  const updated = current.filter((c) => c.id !== id)
-  setLocalData(CLIENTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('clients').delete().eq('id', id)
-  } catch (err) {
-    console.warn('Supabase client delete fallback to local:', err)
-  }
-}
-
-// ==============================================================================
-// 4. SHOWCASE REELS (9:16) CRUD
-// ==============================================================================
-
-const REELS_STORAGE_KEY = 'raya_showcase_reels'
-
-export async function getShowcaseReels(): Promise<ShowcaseReel[]> {
-  const local = getLocalData<ShowcaseReel>(REELS_STORAGE_KEY, INITIAL_SHOWCASE_REELS)
-  try {
-    const { data, error } = await supabase
-      .from('showcase_reels')
-      .select('*')
-      .order('display_order', { ascending: true })
-
-    if (error) {
-      console.warn('Supabase reels query error:', error)
-      return local
+    try {
+      await supabase.from(tableName).delete().eq('id', id)
+    } catch (err) {
+      console.warn(`Supabase ${tableName} delete fallback:`, err)
     }
-    if (data) {
-      setLocalData(REELS_STORAGE_KEY, data)
-      return data as ShowcaseReel[]
-    }
-    return local
-  } catch (err) {
-    console.warn('Supabase reels exception:', err)
-    return local
   }
+
+  const getBySlug = async (slug: string): Promise<T | undefined> => {
+    const items = await getAll()
+    return items.find((item) => item.slug === slug)
+  }
+
+  return { getAll, create, update, remove, getBySlug }
 }
 
-export async function createShowcaseReel(reel: Omit<ShowcaseReel, 'id'> & { id?: string }): Promise<ShowcaseReel> {
-  const newReel: ShowcaseReel = {
-    ...reel,
-    id: reel.id || generateUUID()
-  }
+// 1. SERVICES
+const servicesStore = createCrudStore<Service>('services', 'raya_services', INITIAL_SERVICES)
+export const getServices = servicesStore.getAll
+export const createService = servicesStore.create
+export const updateService = servicesStore.update
+export const deleteService = servicesStore.remove
+export const getServiceBySlug = servicesStore.getBySlug
 
-  const current = getLocalData<ShowcaseReel>(REELS_STORAGE_KEY, INITIAL_SHOWCASE_REELS)
-  const updated = [...current, newReel]
-  setLocalData(REELS_STORAGE_KEY, updated)
+// 2. PROJECTS & CASE STUDIES
+const projectsStore = createCrudStore<Project>('projects', 'raya_projects', INITIAL_PROJECTS, 'display_order', true, true)
+export const getProjects = projectsStore.getAll
+export const createProject = projectsStore.create
+export const updateProject = projectsStore.update
+export const deleteProject = projectsStore.remove
+export const getProjectBySlug = projectsStore.getBySlug
 
-  try {
-    await supabase.from('showcase_reels').insert([newReel])
-  } catch (err) {
-    console.warn('Supabase reel insert fallback to local:', err)
-  }
+// 3. CLIENTS & PARTNERS
+const clientsStore = createCrudStore<Client>('clients', 'raya_clients', INITIAL_CLIENTS)
+export const getClients = clientsStore.getAll
+export const createClientRecord = clientsStore.create
+export const updateClientRecord = clientsStore.update
+export const deleteClientRecord = clientsStore.remove
 
-  return newReel
-}
+// 4. SHOWCASE REELS (9:16)
+const reelsStore = createCrudStore<ShowcaseReel>('showcase_reels', 'raya_showcase_reels', INITIAL_SHOWCASE_REELS)
+export const getShowcaseReels = reelsStore.getAll
+export const createShowcaseReel = reelsStore.create
+export const updateShowcaseReel = reelsStore.update
+export const deleteShowcaseReel = reelsStore.remove
 
-export async function updateShowcaseReel(id: string, updates: Partial<ShowcaseReel>): Promise<void> {
-  const current = getLocalData<ShowcaseReel>(REELS_STORAGE_KEY, INITIAL_SHOWCASE_REELS)
-  const updated = current.map((r) => (r.id === id ? { ...r, ...updates } : r))
-  setLocalData(REELS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('showcase_reels').update(updates).eq('id', id)
-  } catch (err) {
-    console.warn('Supabase reel update fallback to local:', err)
-  }
-}
-
-export async function deleteShowcaseReel(id: string): Promise<void> {
-  const current = getLocalData<ShowcaseReel>(REELS_STORAGE_KEY, INITIAL_SHOWCASE_REELS)
-  const updated = current.filter((r) => r.id !== id)
-  setLocalData(REELS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('showcase_reels').delete().eq('id', id)
-  } catch (err) {
-    console.warn('Supabase reel delete fallback to local:', err)
-  }
-}
-
-// ==============================================================================
-// 5. POSTS & INSIGHTS CRUD
-// ==============================================================================
-
-const POSTS_STORAGE_KEY = 'raya_posts'
-
-export async function getPosts(): Promise<Post[]> {
-  const local = getLocalData<Post>(POSTS_STORAGE_KEY, INITIAL_POSTS)
-  try {
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (error) {
-      console.warn('Supabase posts query error:', error)
-      return local
-    }
-    if (data) {
-      setLocalData(POSTS_STORAGE_KEY, data)
-      return data as Post[]
-    }
-    return local
-  } catch (err) {
-    console.warn('Supabase posts exception:', err)
-    return local
-  }
-}
-
-export async function createPost(post: Omit<Post, 'id'> & { id?: string }): Promise<Post> {
-  const newPost: Post = {
+// 5. POSTS & INSIGHTS
+const postsStore = createCrudStore<Post>('posts', 'raya_posts', INITIAL_POSTS, 'created_at', false, true)
+export const getPosts = postsStore.getAll
+export const createPost = async (post: Omit<Post, 'id'> & { id?: string }): Promise<Post> => {
+  return postsStore.create({
     ...post,
-    id: post.id || generateUUID(),
-    created_at: new Date().toISOString()
-  }
-
-  const current = getLocalData<Post>(POSTS_STORAGE_KEY, INITIAL_POSTS)
-  const updated = [newPost, ...current]
-  setLocalData(POSTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('posts').insert([newPost])
-  } catch (err) {
-    console.warn('Supabase post insert fallback to local:', err)
-  }
-
-  return newPost
+    created_at: post.created_at || new Date().toISOString()
+  } as any)
 }
-
-export async function updatePost(id: string, updates: Partial<Post>): Promise<void> {
-  const current = getLocalData<Post>(POSTS_STORAGE_KEY, INITIAL_POSTS)
-  const updated = current.map((p) => (p.id === id ? { ...p, ...updates } : p))
-  setLocalData(POSTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('posts').update(updates).eq('id', id)
-  } catch (err) {
-    console.warn('Supabase post update fallback to local:', err)
-  }
-}
-
-export async function deletePost(id: string): Promise<void> {
-  const current = getLocalData<Post>(POSTS_STORAGE_KEY, INITIAL_POSTS)
-  const updated = current.filter((p) => p.id !== id)
-  setLocalData(POSTS_STORAGE_KEY, updated)
-
-  try {
-    await supabase.from('posts').delete().eq('id', id)
-  } catch (err) {
-    console.warn('Supabase post delete fallback to local:', err)
-  }
-}
-
-export async function getPostBySlug(slug: string): Promise<Post | undefined> {
-  const posts = await getPosts()
-  return posts.find((p) => p.slug === slug)
-}
+export const updatePost = postsStore.update
+export const deletePost = postsStore.remove
+export const getPostBySlug = postsStore.getBySlug
 
 // ==============================================================================
 // 6. SITE SETTINGS API
