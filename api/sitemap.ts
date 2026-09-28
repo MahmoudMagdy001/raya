@@ -108,14 +108,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       entries.push(buildEntry(`${siteUrl}${path}`, today, 'weekly', priority))
     })
 
-    // 3. Projects
+    // 3. Projects (Case Studies)
     if (settings.sitemap_include_projects !== false) {
       projects
         .filter((p) => p.status === 'published' && p.slug)
         .forEach((p) => {
           entries.push(
             buildEntry(
-              `${siteUrl}/projects/${escapeXml(p.slug)}`,
+              `${siteUrl}/works/${escapeXml(p.slug)}`,
               formatDate(p.created_at || p.completion_date),
               changefreq,
               0.8

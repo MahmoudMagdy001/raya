@@ -5,6 +5,7 @@ import { INITIAL_SERVICES } from '../../../data/initialData'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { ServiceCard } from '../components/ServiceCard'
 import { ServiceCardSkeleton } from '../../../components/ui/skeleton'
+import { EmptyState } from '../../../components/common/EmptyState'
 
 export const ServicesPage: React.FC = () => {
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
@@ -61,6 +62,13 @@ export const ServicesPage: React.FC = () => {
               <ServiceCardSkeleton mode="detailed" />
               <ServiceCardSkeleton mode="detailed" />
             </>
+          ) : services.length === 0 ? (
+            <EmptyState
+              title="لا توجد خدمات مسجلة حالياً"
+              description="يمكنك التواصل مع فريق راية مباشرة لطلب خدمة مخصصة أو استشارة إبداعية."
+              actionLabel="تواصل معنا الآن"
+              actionHref="/contact"
+            />
           ) : (
             services.map((service, index) => (
               <ServiceCard

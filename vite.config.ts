@@ -13,5 +13,34 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src')
     }
+  },
+  build: {
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const normalized = id.replace(/\\/g, '/')
+          if (normalized.includes('/node_modules/')) {
+            if (normalized.includes('/@tiptap/') || normalized.includes('/prosemirror')) {
+              return 'vendor-tiptap'
+            }
+            if (normalized.includes('/@supabase/')) {
+              return 'vendor-supabase'
+            }
+            if (normalized.includes('/lucide-react/')) {
+              return 'vendor-lucide'
+            }
+            if (
+              normalized.includes('/react/') ||
+              normalized.includes('/react-dom/') ||
+              normalized.includes('/react-router/') ||
+              normalized.includes('/react-router-dom/')
+            ) {
+              return 'vendor-react'
+            }
+          }
+        }
+      }
+    }
   }
 })

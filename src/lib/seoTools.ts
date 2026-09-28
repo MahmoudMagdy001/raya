@@ -93,7 +93,7 @@ export function generateSitemapXml(
       .filter((p) => p.status === 'published')
       .forEach((p) => {
         entries.push({
-          url: `${siteUrl}/projects/${escapeXml(p.slug)}`,
+          url: `${siteUrl}/works/${escapeXml(p.slug)}`,
           lastmod: formatDate(p.created_at || p.completion_date),
           changefreq,
           priority: 0.8

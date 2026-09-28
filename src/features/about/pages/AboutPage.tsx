@@ -2,33 +2,85 @@ import React, { useState, useEffect, useRef } from 'react'
 import { CORE_VALUES } from '../../../data/initialData'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
+const STAGE_DURATION = 3500 // 3.5s per stage
+
+interface CoreValueCardProps {
+  val: (typeof CORE_VALUES)[number]
+  idx: number
+  isActive: boolean
+  isCompleted: boolean
+  isPaused: boolean
+  onSelect: (idx: number) => void
+  cardRef?: (el: HTMLDivElement | null) => void
+}
+
+const CoreValueCard: React.FC<CoreValueCardProps> = ({
+  val,
+  idx,
+  isActive,
+  isCompleted,
+  isPaused,
+  onSelect,
+  cardRef,
+}) => {
+  const match = val.title.match(/^(.*?)\s*\((.*?)\)$/)
+  const arTitle = match ? match[1] : val.title
+  const enTitle = match ? match[2] : ''
+
+  return (
+    <div
+      ref={cardRef}
+      onClick={() => onSelect(idx)}
+      className={`relative w-full md:flex-1 p-[3px] rounded-[2rem] cursor-pointer transition-all duration-300 ease-out flex flex-col select-none overflow-hidden ${
+        isActive
+          ? 'shadow-xl -translate-y-2 ring-4 ring-[#12372A]/10 z-10 scale-[1.01] bg-[#12372A]'
+          : isCompleted
+          ? 'shadow-sm hover:-translate-y-0.5 bg-[#12372A]'
+          : 'shadow-xs hover:-translate-y-1 bg-[#E5DFD3]'
+      }`}
+    >
+      <div className="w-full h-full bg-white p-6 sm:p-8 rounded-[calc(2rem-3px)] flex flex-col justify-center text-center min-h-[210px] sm:min-h-[230px] relative overflow-hidden">
+        <div className="mb-2.5">
+          <h3 className="text-xl sm:text-2xl font-black text-[#12372A] tracking-tight">{arTitle}</h3>
+          {enTitle && (
+            <span className="block text-xs sm:text-sm font-bold text-[#9C7546] mt-1 tracking-wider uppercase">
+              ({enTitle})
+            </span>
+          )}
+        </div>
+        <p className="text-sm sm:text-base text-[#556b60] leading-relaxed">{val.desc}</p>
+
+        {/* Smooth CSS-driven progress bar */}
+        {isActive && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#E5DFD3]/60">
+            <div
+              key={`progress-${idx}`}
+              className="h-full bg-[#C5A880]"
+              style={{
+                animation: `stageProgressFill ${STAGE_DURATION}ms linear forwards`,
+                animationPlayState: isPaused ? 'paused' : 'running',
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export const AboutPage: React.FC = () => {
   const [activeStage, setActiveStage] = useState(0)
-  const [stageProgress, setStageProgress] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
-
-  const STAGE_DURATION = 3500 // 3.5s per stage
-  const INTERVAL_STEP = 35 // update every 35ms
 
   useEffect(() => {
     if (isPaused) return
 
-    const startTime = Date.now()
-    setStageProgress(0)
+    const timer = setTimeout(() => {
+      setActiveStage((prev) => (prev + 1) % CORE_VALUES.length)
+    }, STAGE_DURATION)
 
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime
-      const progress = Math.min((elapsed / STAGE_DURATION) * 100, 100)
-      setStageProgress(progress)
-
-      if (elapsed >= STAGE_DURATION) {
-        clearInterval(interval)
-        setActiveStage((prev) => (prev + 1) % CORE_VALUES.length)
-      }
-    }, INTERVAL_STEP)
-
-    return () => clearInterval(interval)
+    return () => clearTimeout(timer)
   }, [isPaused, activeStage])
 
   useEffect(() => {
@@ -43,7 +95,6 @@ export const AboutPage: React.FC = () => {
 
   const handleSelectStage = (idx: number) => {
     setActiveStage(idx)
-    setStageProgress(0)
   }
 
   return (
@@ -275,48 +326,19 @@ export const AboutPage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
               {CORE_VALUES.slice(0, 3).map((val, rowIdx) => {
                 const idx = rowIdx
-                const isActive = idx === activeStage
-                const isCompleted = idx < activeStage
-
-                const match = val.title.match(/^(.*?)\s*\((.*?)\)$/)
-                const arTitle = match ? match[1] : val.title
-                const enTitle = match ? match[2] : ''
-
                 return (
                   <React.Fragment key={val.number}>
-                    <div
-                      onClick={() => handleSelectStage(idx)}
-                      className={`w-full md:flex-1 p-[3px] rounded-[2rem] cursor-pointer transition-all duration-300 ease-out flex flex-col select-none ${
-                        isActive
-                          ? 'shadow-xl -translate-y-2 ring-4 ring-[#12372A]/10 z-10 scale-[1.01]'
-                          : isCompleted
-                          ? 'shadow-sm hover:-translate-y-0.5'
-                          : 'shadow-xs hover:-translate-y-1'
-                      }`}
-                      style={{
-                        background: isActive
-                          ? `conic-gradient(from -90deg, #12372A ${stageProgress}%, #E5DFD3 ${stageProgress}%)`
-                          : isCompleted
-                          ? '#12372A'
-                          : '#E5DFD3'
+                    <CoreValueCard
+                      val={val}
+                      idx={idx}
+                      isActive={idx === activeStage}
+                      isCompleted={idx < activeStage}
+                      isPaused={isPaused}
+                      onSelect={handleSelectStage}
+                      cardRef={(el) => {
+                        cardRefs.current[idx] = el
                       }}
-                    >
-                      <div className="w-full h-full bg-white p-6 sm:p-8 rounded-[calc(2rem-3px)] flex flex-col justify-center text-center min-h-[210px] sm:min-h-[230px]">
-                        <div className="mb-2.5">
-                          <h3 className="text-xl sm:text-2xl font-black text-[#12372A] tracking-tight">
-                            {arTitle}
-                          </h3>
-                          {enTitle && (
-                            <span className="block text-xs sm:text-sm font-bold text-[#9C7546] mt-1 tracking-wider uppercase">
-                              ({enTitle})
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm sm:text-base text-[#556b60] leading-relaxed">
-                          {val.desc}
-                        </p>
-                      </div>
-                    </div>
+                    />
 
                     {/* Connecting line between cards in Row 1 */}
                     {rowIdx < 2 && (
@@ -338,48 +360,19 @@ export const AboutPage: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
               {CORE_VALUES.slice(3, 6).map((val, rowIdx) => {
                 const idx = rowIdx + 3
-                const isActive = idx === activeStage
-                const isCompleted = idx < activeStage
-
-                const match = val.title.match(/^(.*?)\s*\((.*?)\)$/)
-                const arTitle = match ? match[1] : val.title
-                const enTitle = match ? match[2] : ''
-
                 return (
                   <React.Fragment key={val.number}>
-                    <div
-                      onClick={() => handleSelectStage(idx)}
-                      className={`w-full md:flex-1 p-[3px] rounded-[2rem] cursor-pointer transition-all duration-300 ease-out flex flex-col select-none ${
-                        isActive
-                          ? 'shadow-xl -translate-y-2 ring-4 ring-[#12372A]/10 z-10 scale-[1.01]'
-                          : isCompleted
-                          ? 'shadow-sm hover:-translate-y-0.5'
-                          : 'shadow-xs hover:-translate-y-1'
-                      }`}
-                      style={{
-                        background: isActive
-                          ? `conic-gradient(from -90deg, #12372A ${stageProgress}%, #E5DFD3 ${stageProgress}%)`
-                          : isCompleted
-                          ? '#12372A'
-                          : '#E5DFD3'
+                    <CoreValueCard
+                      val={val}
+                      idx={idx}
+                      isActive={idx === activeStage}
+                      isCompleted={idx < activeStage}
+                      isPaused={isPaused}
+                      onSelect={handleSelectStage}
+                      cardRef={(el) => {
+                        cardRefs.current[idx] = el
                       }}
-                    >
-                      <div className="w-full h-full bg-white p-6 sm:p-8 rounded-[calc(2rem-3px)] flex flex-col justify-center text-center min-h-[210px] sm:min-h-[230px]">
-                        <div className="mb-2.5">
-                          <h3 className="text-xl sm:text-2xl font-black text-[#12372A] tracking-tight">
-                            {arTitle}
-                          </h3>
-                          {enTitle && (
-                            <span className="block text-xs sm:text-sm font-bold text-[#9C7546] mt-1 tracking-wider uppercase">
-                              ({enTitle})
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm sm:text-base text-[#556b60] leading-relaxed">
-                          {val.desc}
-                        </p>
-                      </div>
-                    </div>
+                    />
 
                     {/* Connecting line between cards in Row 2 */}
                     {rowIdx < 2 && (

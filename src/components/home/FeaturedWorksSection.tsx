@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { VideoModal } from '../ui/VideoModal'
 import { ProjectCardSkeleton } from '../ui/skeleton'
+import { EmptyState } from '../common/EmptyState'
 
 interface FeaturedWorksSectionProps {
   projects: Project[]
@@ -111,9 +112,12 @@ export const FeaturedWorksSection: React.FC<FeaturedWorksSectionProps> = ({ proj
             ))}
           </div>
         ) : filteredProjects.length === 0 ? (
-          <div className="text-center py-16 bg-white/60 rounded-3xl border border-[#E5DFD3]">
-            <p className="text-sm font-bold text-[#6b7f74]">لا توجد دراسات حالة مسجلة في هذا التصنيف حالياً.</p>
-          </div>
+          <EmptyState
+            title="لا توجد دراسات حالة مسجلة في هذا التصنيف"
+            description="جرب اختيار تصنيف آخر من القائمة أعلاه لمعاينة دراسات الحالة الأخرى."
+            actionLabel="عرض جميع الأعمال"
+            onAction={() => setSelectedCategory('all')}
+          />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 xl:gap-6">
             {filteredProjects.map((project) => (

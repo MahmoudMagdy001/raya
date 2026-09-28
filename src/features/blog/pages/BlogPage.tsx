@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { BlogHeroSkeleton, BlogCardSkeleton } from '../../../components/ui/skeleton'
+import { EmptyState } from '../../../components/common/EmptyState'
 import { toArabicNumerals } from '../../../lib/arabicNumerals'
 
 export const BlogPage: React.FC = () => {
@@ -154,20 +155,16 @@ export const BlogPage: React.FC = () => {
             </div>
           </div>
         ) : filteredPosts.length === 0 ? (
-          <div className="py-24 text-center space-y-4 bg-white rounded-3xl border border-[#E5DFD3] p-12">
-            <BookOpen className="w-12 h-12 text-[#C5A880] mx-auto opacity-70" />
-            <h3 className="text-xl font-bold text-[#12372A]">لم نتمكن من إيجاد مقالات تطابق بحثك</h3>
-            <p className="text-sm text-[#5a7769]">جرب كتابة كلمات مفتاحية أخرى أو اختر تصنيفاً مختلفاً.</p>
-            <button
-              onClick={() => {
-                setSelectedCategory('all')
-                setSearchQuery('')
-              }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#12372A] text-[#F3D7A4] rounded-full text-xs font-bold hover:bg-[#205341] transition-all"
-            >
-              عرض كافة المقالات
-            </button>
-          </div>
+          <EmptyState
+            icon={BookOpen}
+            title="لم نتمكن من إيجاد مقالات تطابق بحثك"
+            description="جرب كتابة كلمات مفتاحية أخرى أو اختر تصنيفاً مختلفاً من القائمة."
+            actionLabel="عرض كافة المقالات"
+            onAction={() => {
+              setSelectedCategory('all')
+              setSearchQuery('')
+            }}
+          />
         ) : (
           <div className="space-y-12">
             {/* Featured Post Card (Hero Highlight) */}

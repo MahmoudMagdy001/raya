@@ -57,6 +57,15 @@ const ResizableImage = Image.extend({
   }
 })
 
+type ImageWidth = '100%' | '75%' | '50%' | '35%'
+
+const IMAGE_WIDTH_OPTIONS: Array<{ label: string; value: ImageWidth }> = [
+  { label: 'عرض كامل (100%)', value: '100%' },
+  { label: 'كبير (75%)', value: '75%' },
+  { label: 'متوسط (50%)', value: '50%' },
+  { label: 'صغير (35%)', value: '35%' },
+]
+
 interface TipTapEditorProps {
   value: string
   onChange: (html: string) => void
@@ -77,7 +86,7 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
   const [uploading, setUploading] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([])
-  const [selectedImageWidth, setSelectedImageWidth] = useState<'100%' | '75%' | '50%' | '35%'>('100%')
+  const [selectedImageWidth, setSelectedImageWidth] = useState<ImageWidth>('100%')
   const [loadingLibrary, setLoadingLibrary] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -172,7 +181,7 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
       })
 
       // 3. Insert into TipTap with chosen width
-      editor.chain().focus().setImage({ src: url, alt: name, width: selectedImageWidth } as any).run()
+      editor.chain().focus().setImage({ src: url, alt: name, width: selectedImageWidth } as unknown as { src: string; alt?: string; title?: string }).run()
       setUploadSuccess(true)
       setTimeout(() => {
         setUploadSuccess(false)
@@ -202,7 +211,7 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
 
   // Insert image from library
   const handleSelectMediaItem = (item: MediaItem) => {
-    editor.chain().focus().setImage({ src: item.file_url, alt: item.alt_text || item.name, width: selectedImageWidth } as any).run()
+    editor.chain().focus().setImage({ src: item.file_url, alt: item.alt_text || item.name, width: selectedImageWidth } as unknown as { src: string; alt?: string; title?: string }).run()
     setImageModalOpen(false)
   }
 
@@ -210,7 +219,7 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
   const handleInsertDirectUrl = (e: React.FormEvent) => {
     e.preventDefault()
     if (!directImageUrl.trim()) return
-    editor.chain().focus().setImage({ src: directImageUrl.trim(), width: selectedImageWidth } as any).run()
+    editor.chain().focus().setImage({ src: directImageUrl.trim(), width: selectedImageWidth } as unknown as { src: string; alt?: string; title?: string }).run()
     setDirectImageUrl('')
     setImageModalOpen(false)
   }
@@ -581,16 +590,11 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
                 <span className="text-[10px] text-[#6b7f74] hidden sm:inline">(يمكنك أيضاً تغييره لاحقاً بالنقر على الصورة)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                {[
-                  { label: 'عرض كامل (100%)', value: '100%' },
-                  { label: 'كبير (75%)', value: '75%' },
-                  { label: 'متوسط (50%)', value: '50%' },
-                  { label: 'صغير (35%)', value: '35%' },
-                ].map((opt) => (
+                {IMAGE_WIDTH_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
-                    onClick={() => setSelectedImageWidth(opt.value as any)}
+                    onClick={() => setSelectedImageWidth(opt.value)}
                     className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       selectedImageWidth === opt.value
                         ? 'bg-[#12372A] text-[#F3D7A4] shadow-xs'

@@ -8,11 +8,20 @@ export const Navbar: React.FC = () => {
   const location = useLocation()
 
   useEffect(() => {
+    let rafId: number | null = null
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      if (rafId !== null) return
+      rafId = requestAnimationFrame(() => {
+        rafId = null
+        const shouldBeScrolled = window.scrollY > 20
+        setIsScrolled((prev) => (prev === shouldBeScrolled ? prev : shouldBeScrolled))
+      })
     }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafId !== null) cancelAnimationFrame(rafId)
+    }
   }, [])
 
   // Close mobile menu on route change

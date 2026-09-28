@@ -159,16 +159,19 @@ export const AdminLoginPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Emergency Default Account Hint */}
-          <div className="pt-4 border-t border-[#174233]/60 text-center">
-            <p className="text-[11px] text-[#7a9d8c] leading-relaxed">
-              الحساب الافتراضي للنظام:{' '}
-              <span className="text-[#C5A880] font-mono font-bold">admin@raya.sa</span>
-              <br />
-              كلمة المرور الافتراضية:{' '}
-              <span className="text-[#C5A880] font-mono font-bold">raya2026!</span>
-            </p>
-          </div>
+          {/* Emergency Default Account Hint (Development Mode Only) */}
+          {import.meta.env.DEV && (
+            <div className="pt-4 border-t border-[#174233]/60 text-center">
+              <p className="text-[11px] text-[#7a9d8c] leading-relaxed">
+                <span className="text-amber-400 font-bold block mb-1">⚠️ وضع التطوير المحلي (Dev Mode Only):</span>
+                الحساب الافتراضي:{' '}
+                <span className="text-[#C5A880] font-mono font-bold">admin@raya.sa</span>
+                <br />
+                كلمة المرور الافتراضية:{' '}
+                <span className="text-[#C5A880] font-mono font-bold">raya2026!</span>
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Security Footer Note */}

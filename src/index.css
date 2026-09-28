@@ -355,4 +355,14 @@
   scrollbar-width: none;
 }
 
+/* Smooth stage progress bar animation */
+@keyframes stageProgressFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 

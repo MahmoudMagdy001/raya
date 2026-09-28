@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { supabase } from '../../../lib/supabase'
+import { supabase, getProjectInquiries, invalidateCache } from '../../../lib/supabase'
 import { ProjectInquiry } from '../../../lib/types'
 import { AdminTableSkeleton } from '../../../components/ui/skeleton'
 import { 
@@ -11,8 +11,8 @@ import {
   Inbox, 
   RefreshCw, 
   Trash2, 
-  Building2,
-  Calendar
+  Building2, 
+  Calendar 
 } from 'lucide-react'
 
 export const AdminInquiriesPage: React.FC = () => {
@@ -22,14 +22,8 @@ export const AdminInquiriesPage: React.FC = () => {
 
   const loadInquiries = async () => {
     try {
-      const { data, error } = await supabase
-        .from('project_inquiries')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (!error && data) {
-        setInquiries(data as ProjectInquiry[])
-      }
+      const data = await getProjectInquiries()
+      setInquiries(data)
     } catch (err) {
       console.warn('Error loading inquiries:', err)
     } finally {
@@ -44,6 +38,7 @@ export const AdminInquiriesPage: React.FC = () => {
 
   const handleRefresh = () => {
     setRefreshing(true)
+    invalidateCache('list_project_inquiries')
     loadInquiries()
   }
 
@@ -51,6 +46,7 @@ export const AdminInquiriesPage: React.FC = () => {
     const nextStatus = inq.status === 'new' ? 'contacted' : inq.status === 'contacted' ? 'in_progress' : 'new'
     if (inq.id) {
       await supabase.from('project_inquiries').update({ status: nextStatus }).eq('id', inq.id)
+      invalidateCache('list_project_inquiries')
     }
     setInquiries(prev => prev.map(item => item.id === inq.id ? { ...item, status: nextStatus } : item))
   }
@@ -59,6 +55,7 @@ export const AdminInquiriesPage: React.FC = () => {
     if (!id) return
     if (window.confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) {
       await supabase.from('project_inquiries').delete().eq('id', id)
+      invalidateCache('list_project_inquiries')
       setInquiries(prev => prev.filter(item => item.id !== id))
     }
   }

@@ -17,6 +17,7 @@ import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { usePageSeo } from '../../../components/common/SEO'
 import { CaseStudyDetailSkeleton } from '../../../components/ui/skeleton'
 import { toArabicNumerals } from '../../../lib/arabicNumerals'
+import { NotFoundState } from '../../../components/common/NotFoundState'
 
 export const CaseStudyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -56,22 +57,13 @@ export const CaseStudyDetailPage: React.FC = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#12372A] text-[#F4EFE6] font-sans antialiased">
-        <div className="text-center space-y-6 max-w-md mx-auto px-4">
-          <span className="text-xs font-bold text-[#C5A880] tracking-widest uppercase">RAAYA / 404</span>
-          <h2 className="text-3xl font-black text-[#F4EFE6]">العمل أو المشروع غير موجود</h2>
-          <p className="text-sm text-[#b9d5c7] leading-relaxed">
-            الرابط المطلوب غير متاح حالياً أو تم نقله. يمكنك تصفح جميع أعمال ودراسات حالة راية.
-          </p>
-          <Link 
-            to="/works" 
-            className="inline-flex items-center gap-2 bg-[#C5A880] text-[#12372A] px-7 py-3.5 rounded-full font-bold text-sm hover:bg-[#b0926b] transition-colors"
-          >
-            <ArrowRight className="w-4 h-4" />
-            <span>العودة لمعرض الأعمال</span>
-          </Link>
-        </div>
-      </div>
+      <NotFoundState
+        code="RAAYA / 404"
+        title="العمل أو المشروع غير موجود"
+        description="الرابط المطلوب غير متاح حالياً أو تم نقله. يمكنك تصفح جميع أعمال ودراسات حالة راية."
+        backLink="/works"
+        backLabel="العودة لمعرض الأعمال"
+      />
     )
   }
 

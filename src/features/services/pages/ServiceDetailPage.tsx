@@ -9,6 +9,7 @@ import {
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 import { usePageSeo } from '../../../components/common/SEO'
 import { ServiceDetailSkeleton } from '../../../components/ui/skeleton'
+import { NotFoundState } from '../../../components/common/NotFoundState'
 
 export const ServiceDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -47,22 +48,13 @@ export const ServiceDetailPage: React.FC = () => {
 
   if (!service) {
     return (
-      <div className="min-h-screen pt-40 pb-20 flex items-center justify-center bg-[#12372A] text-[#F4EFE6] font-sans antialiased">
-        <div className="text-center space-y-6 max-w-md mx-auto px-4">
-          <span className="text-xs font-bold text-[#C5A880] tracking-widest uppercase">RAAYA / 404</span>
-          <h2 className="text-3xl font-black text-[#F4EFE6]">الخدمة غير موجودة</h2>
-          <p className="text-sm text-[#b9d5c7] leading-relaxed">
-            الرابط المطلوب غير متاح حالياً أو تم نقله. يمكنك تصفح جميع خدمات راية الإبداعية.
-          </p>
-          <Link 
-            to="/services" 
-            className="inline-flex items-center gap-2 bg-[#C5A880] text-[#12372A] px-7 py-3.5 rounded-full font-bold text-sm hover:bg-[#b0926b] transition-colors"
-          >
-            <ArrowRight className="w-4 h-4" />
-            <span>العودة لصفحة الخدمات</span>
-          </Link>
-        </div>
-      </div>
+      <NotFoundState
+        code="RAAYA / 404"
+        title="الخدمة غير موجودة"
+        description="الرابط المطلوب غير متاح حالياً أو تم نقله. يمكنك تصفح جميع خدمات راية الإبداعية."
+        backLink="/services"
+        backLabel="العودة لصفحة الخدمات"
+      />
     )
   }
 

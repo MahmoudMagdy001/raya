@@ -321,7 +321,7 @@ export const AdminReelsPage: React.FC = () => {
                   </label>
                   <select
                     value={formData.platform}
-                    onChange={(e) => setFormData({ ...formData, platform: e.target.value as any })}
+                    onChange={(e) => setFormData({ ...formData, platform: e.target.value as ShowcaseReel['platform'] })}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#E5DFD3] text-sm focus:border-[#12372A] focus:outline-none bg-white"
                   >
                     <option value="instagram">Instagram Reels</option>
