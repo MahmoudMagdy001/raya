@@ -11,8 +11,6 @@ import {
   RefreshCw,
   Mail,
   CheckCircle2,
-  Clock,
-  Tag,
   ChevronLeft,
   Info,
   Layers,
@@ -114,22 +112,6 @@ export const PrivacyPage: React.FC = () => {
           <p className="text-base sm:text-lg text-[#b9d5c7] max-w-2xl mx-auto leading-relaxed">
             نلتزم في راية للإنتاج والتسويق الإبداعي بأعلى معايير الشفافية والأمان في معالجة وحماية بيانات عملائنا وزوارنا، إيماناً بأن الثقة هي أساس كل شراكة إبداعية ناجحة.
           </p>
-
-          {/* Policy Meta Tags */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-[#8bbba5]">
-            <div className="flex items-center gap-1.5 bg-[#0B221A]/70 px-3 py-1.5 rounded-lg border border-[#205341]/50">
-              <Clock className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span>آخر تحديث: مارس ٢٠٢٦</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-[#0B221A]/70 px-3 py-1.5 rounded-lg border border-[#205341]/50">
-              <Tag className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span>الإصدار: ٢.١</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-[#0B221A]/70 px-3 py-1.5 rounded-lg border border-[#205341]/50">
-              <Lock className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span>تشفير بيانات عالي المستوى (SSL/TLS)</span>
-            </div>
-          </div>
         </div>
       </section>
 
