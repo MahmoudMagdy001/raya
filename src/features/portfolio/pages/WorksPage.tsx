@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { usePageSeo } from '../../../components/common/SEO'
 import { getProjects } from '../../../lib/supabase'
 import { Project } from '../../../lib/types'
 import { INITIAL_PROJECTS } from '../../../data/initialData'
@@ -6,6 +7,7 @@ import { FeaturedWorksSection } from '../../../components/home/FeaturedWorksSect
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
 export const WorksPage: React.FC = () => {
+  usePageSeo({ title: 'أعمالنا' })
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
   const [loading, setLoading] = useState<boolean>(true)
 

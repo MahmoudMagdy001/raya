@@ -154,6 +154,14 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
   social_linkedin TEXT,
   social_tiktok TEXT,
   social_youtube TEXT,
+  social_snapchat TEXT,
+  social_facebook TEXT,
+  social_whatsapp TEXT,
+  social_behance TEXT,
+  social_vimeo TEXT,
+  social_threads TEXT,
+  social_telegram TEXT,
+  social_pinterest TEXT,
   default_meta_title TEXT,
   default_meta_description TEXT,
   default_keywords TEXT,
@@ -188,6 +196,16 @@ CREATE TABLE IF NOT EXISTS public.project_inquiries (
 -- ------------------------------------------------------------------------------
 -- 1. ENABLE ROW LEVEL SECURITY (RLS) ACROSS ALL TABLES
 -- ------------------------------------------------------------------------------
+-- Ensure new social media columns exist in site_settings
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_snapchat TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_facebook TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_whatsapp TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_behance TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_vimeo TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_threads TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_telegram TEXT;
+ALTER TABLE public.site_settings ADD COLUMN IF NOT EXISTS social_pinterest TEXT;
+
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.clients ENABLE ROW LEVEL SECURITY;

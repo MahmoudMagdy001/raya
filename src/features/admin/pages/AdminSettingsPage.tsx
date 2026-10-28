@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getSiteSettings, updateSiteSettings } from '../../../lib/supabase'
 import { SiteSettings } from '../../../lib/types'
 import { INITIAL_SITE_SETTINGS } from '../../../data/initialData'
+import { useSiteSettings } from '../../../context/SiteSettingsContext'
 import {
   Save, CheckCircle2, Settings, Globe, Phone, Share2, Search, Bot
 } from 'lucide-react'
@@ -15,6 +16,7 @@ export const AdminSettingsPage: React.FC = () => {
   const [settings, setSettings] = useState<SiteSettings>(INITIAL_SITE_SETTINGS)
   const [saved, setSaved] = useState(false)
   const [activeTab, setActiveTab] = useState<'general' | 'contact' | 'social' | 'seo' | 'robots'>('general')
+  const { refresh: refreshGlobalSettings } = useSiteSettings()
 
   useEffect(() => {
     async function load() {
@@ -27,6 +29,7 @@ export const AdminSettingsPage: React.FC = () => {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     await updateSiteSettings(settings)
+    await refreshGlobalSettings()
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
   }

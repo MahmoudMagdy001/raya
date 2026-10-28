@@ -169,6 +169,14 @@ export interface SiteSettings {
   social_linkedin: string
   social_tiktok: string
   social_youtube: string
+  social_snapchat?: string
+  social_facebook?: string
+  social_whatsapp?: string
+  social_behance?: string
+  social_vimeo?: string
+  social_threads?: string
+  social_telegram?: string
+  social_pinterest?: string
   // SEO & Analytics Specialist Settings
   default_meta_title?: string
   default_meta_description?: string

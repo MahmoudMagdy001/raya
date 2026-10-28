@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { usePageSeo } from '../../../components/common/SEO'
 import { getServices } from '../../../lib/supabase'
 import { Service } from '../../../lib/types'
 import { INITIAL_SERVICES } from '../../../data/initialData'
@@ -8,6 +9,7 @@ import { ServiceCardSkeleton } from '../../../components/ui/skeleton'
 import { EmptyState } from '../../../components/common/EmptyState'
 
 export const ServicesPage: React.FC = () => {
+  usePageSeo({ title: 'خدماتنا' })
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
   const [loading, setLoading] = useState<boolean>(true)
 

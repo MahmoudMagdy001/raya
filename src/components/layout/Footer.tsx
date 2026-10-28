@@ -1,25 +1,57 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { MapPin, Phone, Mail, Instagram, Linkedin, Youtube, ArrowUp } from 'lucide-react'
-import { getServices, getSiteSettings } from '../../lib/supabase'
+import { MapPin, Phone, Mail, ArrowUp } from 'lucide-react'
+import { getServices } from '../../lib/supabase'
 import { Service, SiteSettings } from '../../lib/types'
-import { INITIAL_SITE_SETTINGS, INITIAL_SERVICES } from '../../data/initialData'
+import { INITIAL_SERVICES } from '../../data/initialData'
 import { toArabicNumerals } from '../../lib/arabicNumerals'
+import { useSiteSettings } from '../../context/SiteSettingsContext'
 
-import { WhatsAppIcon } from '../ui/icons/WhatsAppIcon'
+import {
+  WhatsAppIcon,
+  XIcon,
+  InstagramIcon,
+  TikTokIcon,
+  SnapchatIcon,
+  LinkedInIcon,
+  YouTubeIcon,
+  FacebookIcon,
+  BehanceIcon,
+  VimeoIcon,
+  ThreadsIcon,
+  TelegramIcon,
+  PinterestIcon
+} from '../ui/icons/SocialIcons'
+
+const SOCIAL_CONFIG: Array<{
+  key: keyof SiteSettings
+  name: string
+  icon: React.FC<{ className?: string }>
+}> = [
+  { key: 'social_instagram', name: 'Instagram', icon: InstagramIcon },
+  { key: 'social_x', name: 'X (Twitter)', icon: XIcon },
+  { key: 'social_tiktok', name: 'TikTok', icon: TikTokIcon },
+  { key: 'social_snapchat', name: 'Snapchat', icon: SnapchatIcon },
+  { key: 'social_linkedin', name: 'LinkedIn', icon: LinkedInIcon },
+  { key: 'social_facebook', name: 'Facebook', icon: FacebookIcon },
+  { key: 'social_youtube', name: 'YouTube', icon: YouTubeIcon },
+  { key: 'social_whatsapp', name: 'WhatsApp', icon: WhatsAppIcon },
+  { key: 'social_behance', name: 'Behance', icon: BehanceIcon },
+  { key: 'social_vimeo', name: 'Vimeo', icon: VimeoIcon },
+  { key: 'social_threads', name: 'Threads', icon: ThreadsIcon },
+  { key: 'social_telegram', name: 'Telegram', icon: TelegramIcon },
+  { key: 'social_pinterest', name: 'Pinterest', icon: PinterestIcon }
+]
 
 export const Footer: React.FC = () => {
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
-  const [settings, setSettings] = useState<SiteSettings>(INITIAL_SITE_SETTINGS)
+  const { settings, whatsappLink, telHref, mailHref } = useSiteSettings()
 
   useEffect(() => {
     let isMounted = true
 
     getServices().then((data) => {
       if (isMounted && data?.length) setServices(data)
-    })
-    getSiteSettings().then((data) => {
-      if (isMounted && data) setSettings(data)
     })
 
     return () => {
@@ -29,7 +61,10 @@ export const Footer: React.FC = () => {
 
   const displayServices = services.filter((s) => !s.status || s.status === 'published')
 
-  const cleanWhatsappNumber = (settings.whatsapp_number || '966501234567').replace(/[^0-9]/g, '')
+  const activeSocialLinks = SOCIAL_CONFIG.map((platform) => ({
+    ...platform,
+    url: ((settings[platform.key] as string) || '').trim()
+  })).filter((platform) => platform.url.length > 0)
 
   return (
     <footer className="relative bg-[#0B221A] text-[#F4EFE6] pt-16 pb-12 overflow-hidden border-t border-[#205341]/40">
@@ -146,71 +181,48 @@ export const Footer: React.FC = () => {
               </h4>
             </div>
             <div className="space-y-3 text-sm text-[#b9d5c7]">
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
-                <span className="leading-relaxed">{settings.address || 'الرياض، المملكة العربية السعودية'}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#C5A880] shrink-0" />
-                <a href={`tel:${(settings.phone_number || '+966 50 123 4567').replace(/\s+/g, '')}`} className="hover:text-[#C5A880] transition-colors" dir="ltr">
-                  {toArabicNumerals(settings.phone_number || '+966 50 123 4567')}
-                </a>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#C5A880] shrink-0" />
-                <a href={`mailto:${settings.email_address || 'info@raya.sa'}`} className="hover:text-[#C5A880] transition-colors">
-                  {settings.email_address || 'info@raya.sa'}
-                </a>
-              </div>
+              {settings.address && (
+                <div className="flex items-start gap-2.5">
+                  <MapPin className="w-4 h-4 text-[#C5A880] shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">{settings.address}</span>
+                </div>
+              )}
+              {settings.phone_number && (
+                <div className="flex items-center gap-2.5">
+                  <Phone className="w-4 h-4 text-[#C5A880] shrink-0" />
+                  <a href={telHref} className="hover:text-[#C5A880] transition-colors" dir="ltr">
+                    {toArabicNumerals(settings.phone_number)}
+                  </a>
+                </div>
+              )}
+              {settings.email_address && (
+                <div className="flex items-center gap-2.5">
+                  <Mail className="w-4 h-4 text-[#C5A880] shrink-0" />
+                  <a href={mailHref} className="hover:text-[#C5A880] transition-colors">
+                    {settings.email_address}
+                  </a>
+                </div>
+              )}
             </div>
 
-            {/* Social Icons */}
-            <div className="pt-2 flex items-center gap-2.5">
-              {settings.social_instagram && (
-                <a
-                  href={settings.social_instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-              )}
-              {settings.social_x && (
-                <a
-                  href={settings.social_x}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6] font-bold text-xs"
-                  aria-label="X"
-                >
-                  𝕏
-                </a>
-              )}
-              {settings.social_linkedin && (
-                <a
-                  href={settings.social_linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              )}
-              {settings.social_youtube && (
-                <a
-                  href={settings.social_youtube}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6]"
-                  aria-label="YouTube"
-                >
-                  <Youtube className="w-4 h-4" />
-                </a>
-              )}
-            </div>
+            {/* Social Icons - only renders platforms that have a valid link */}
+            {activeSocialLinks.length > 0 && (
+              <div className="pt-2 flex flex-wrap items-center gap-2">
+                {activeSocialLinks.map(({ key, name, url, icon: Icon }) => (
+                  <a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-8 h-8 rounded-full bg-[#12372A] hover:bg-[#C5A880] hover:text-[#12372A] flex items-center justify-center transition-all duration-300 text-[#F4EFE6] hover:scale-110"
+                    aria-label={name}
+                    title={name}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -227,7 +239,7 @@ export const Footer: React.FC = () => {
             </Link>
           </div>
           <div className="flex items-center gap-6">
-            <span>الرياض • المملكة العربية السعودية</span>
+            {settings.address && <span>{settings.address}</span>}
             <span className="text-[#C5A880]">{settings.slogan_ar || 'أفكار تصنع الفرق'}</span>
           </div>
         </div>
@@ -235,7 +247,7 @@ export const Footer: React.FC = () => {
 
       {/* Floating WhatsApp Action Button (Right) */}
       <a
-        href={`https://wa.me/${cleanWhatsappNumber}?text=${encodeURIComponent('مرحباً، أود الاستفسار عن خدمات راية للإنتاج الإبداعي')}`}
+        href={whatsappLink(`مرحباً، أود الاستفسار عن خدمات ${settings.site_name || 'راية للإنتاج الإبداعي'}`)}
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-6 right-6 z-40 w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xl hover:shadow-green-500/25 flex items-center justify-center transition-all duration-300 transform hover:scale-110 group"

@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import { ArrowUpLeft } from 'lucide-react'
 
 import { WhatsAppIcon } from '../ui/icons/WhatsAppIcon'
+import { useSiteSettings } from '../../context/SiteSettingsContext'
 
 export const MasterCtaSection: React.FC = () => {
+  const { whatsappLink } = useSiteSettings()
   return (
     <section className="py-16 sm:py-24 bg-[#FAF7F2]">
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,7 +36,7 @@ export const MasterCtaSection: React.FC = () => {
               </Link>
 
               <a
-                href="https://wa.me/966501234567?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%AD%D8%AC%D8%B2%20%D8%AC%D9%84%D8%B3%D8%A9%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D9%8A%D8%A9%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20%D8%B1%D8%A7%D9%8A%D8%A9"
+                href={whatsappLink('مرحباً، أود حجز جلسة استشارية مع فريق راية')}
                 target="_blank"
                 rel="noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl sm:rounded-2xl bg-white/5 hover:bg-white/10 text-[#FAF7F2] border border-white/15 hover:border-[#C5A880]/50 font-bold text-sm sm:text-base transition-all duration-200"

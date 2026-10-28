@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { usePageSeo } from '../../components/common/SEO'
 import { HeroSection } from '../../components/home/HeroSection'
 import { EquationSection } from '../../components/home/EquationSection'
 import { ShowcaseReelSection } from '../../components/home/ShowcaseReelSection'
@@ -18,6 +19,7 @@ import {
 } from '../../data/initialData'
 
 export const HomePage: React.FC = () => {
+  usePageSeo({})
   const [services, setServices] = useState<Service[]>(INITIAL_SERVICES)
   const [projects, setProjects] = useState<Project[]>(INITIAL_PROJECTS)
   const [reels, setReels] = useState<ShowcaseReel[]>(INITIAL_SHOWCASE_REELS)

@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { usePageSeo } from '../../../components/common/SEO'
+import { useSiteSettings } from '../../../context/SiteSettingsContext'
 import { CORE_VALUES } from '../../../data/initialData'
 import { MasterCtaSection } from '../../../components/home/MasterCtaSection'
 
@@ -69,6 +71,8 @@ const CoreValueCard: React.FC<CoreValueCardProps> = ({
 }
 
 export const AboutPage: React.FC = () => {
+  usePageSeo({ title: 'عن راية' })
+  const { settings } = useSiteSettings()
   const [activeStage, setActiveStage] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -171,8 +175,8 @@ export const AboutPage: React.FC = () => {
               </div>
               <div className="absolute -bottom-6 -right-6 bg-[#12372A] text-[#F4EFE6] p-6 rounded-2xl shadow-xl border border-[#C5A880]/30 hidden sm:block max-w-xs">
                 <p className="text-xs font-bold text-[#C5A880] mb-1">شعارنا الخالد</p>
-                <p className="text-sm font-extrabold">أفكار تصنع الفرق</p>
-                <p className="text-[11px] text-[#b9d5c7] mt-1">Ideas Make the Difference</p>
+                <p className="text-sm font-extrabold">{settings.slogan_ar || 'أفكار تصنع الفرق'}</p>
+                <p className="text-[11px] text-[#b9d5c7] mt-1" dir="ltr">{settings.slogan_en || 'Ideas Make the Difference'}</p>
               </div>
             </div>
           </div>

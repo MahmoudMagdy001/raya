@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
+import { SiteSettingsProvider } from './context/SiteSettingsContext'
 import './index.css'
 import { initArabicNumeralsObserver } from './lib/arabicNumerals'
 
@@ -11,7 +12,9 @@ initArabicNumeralsObserver()
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <SiteSettingsProvider>
+        <App />
+      </SiteSettingsProvider>
     </BrowserRouter>
   </StrictMode>,
 )

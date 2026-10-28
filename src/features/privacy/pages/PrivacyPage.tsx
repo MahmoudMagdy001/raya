@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 
 import { WhatsAppIcon } from '../../../components/ui/icons/WhatsAppIcon'
+import { useSiteSettings } from '../../../context/SiteSettingsContext'
 
 interface PolicySection {
   id: string
@@ -47,6 +48,7 @@ export const PrivacyPage: React.FC = () => {
     keywords: 'سياسة الخصوصية, حماية البيانات, راية, PDPL, الأمان الرقمي, الرياض, المملكة العربية السعودية'
   })
 
+  const { settings, whatsappLink, telHref, mailHref } = useSiteSettings()
   const [activeSection, setActiveSection] = useState<string>('intro')
 
   useEffect(() => {
@@ -230,14 +232,14 @@ export const PrivacyPage: React.FC = () => {
                 </p>
                 <div className="pt-1 space-y-2">
                   <a
-                    href="mailto:privacy@raya.sa"
+                    href={mailHref}
                     className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-[#C5A880] hover:bg-[#b38e5c] text-[#12372A] font-bold text-xs transition-colors shadow-md"
                   >
                     <Mail className="w-4 h-4" />
                     <span>مراسلة مسؤول الخصوصية</span>
                   </a>
                   <a
-                    href="https://wa.me/966501234567?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D9%84%D8%AF%D9%8A%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%AD%D9%88%D9%84%20%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9%20%D8%A7%D9%84%D8%AE%D8%B5%D9%88%D8%B5%D9%8A%D8%A9%20%D9%81%D9%8A%20%D8%B1%D8%A7%D9%8A%D8%A9"
+                    href={whatsappLink('مرحباً، لدي استفسار حول سياسة الخصوصية في راية')}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-[#205341] hover:bg-[#174233] text-[#F4EFE6] text-xs font-semibold transition-colors border border-[#C5A880]/30"
@@ -631,7 +633,7 @@ export const PrivacyPage: React.FC = () => {
                       لممارسة أي من هذه الحقوق، يرجى إرسال طلبك عبر البريد الرسمي وسيقوم فريقنا بالرد عليك خلال مدة أقصاها <strong>٣٠ يوماً</strong>.
                     </p>
                     <a
-                      href="mailto:privacy@raya.sa"
+                      href={mailHref}
                       className="shrink-0 px-4 py-2 rounded-xl bg-[#12372A] text-[#C5A880] text-xs font-bold hover:bg-[#174233] transition-colors"
                     >
                       تقديم طلب حقوق
@@ -689,29 +691,29 @@ export const PrivacyPage: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1.5 text-center sm:text-right">
                       <span className="text-xs text-[#8BBBA5] font-semibold block">البريد المخصص للخصوصية</span>
                       <a
-                        href="mailto:privacy@raya.sa"
+                        href={mailHref}
                         className="font-bold text-[#12372A] hover:text-[#C5A880] text-sm transition-colors block"
                         dir="ltr"
                       >
-                        privacy@raya.sa
+                        {settings.email_address}
                       </a>
                     </div>
 
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1.5 text-center sm:text-right">
                       <span className="text-xs text-[#8BBBA5] font-semibold block">الهاتف الموحد</span>
                       <a
-                        href="tel:+966501234567"
+                        href={telHref}
                         className="font-bold text-[#12372A] hover:text-[#C5A880] text-sm transition-colors block"
                         dir="ltr"
                       >
-                        +966 50 123 4567
+                        {settings.phone_number}
                       </a>
                     </div>
 
                     <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E5DFD3] space-y-1.5 text-center sm:text-right">
                       <span className="text-xs text-[#8BBBA5] font-semibold block">المقر الرئيسي</span>
                       <span className="font-bold text-[#12372A] text-sm block">
-                        الرياض، المملكة العربية السعودية
+                        {settings.address}
                       </span>
                     </div>
                   </div>

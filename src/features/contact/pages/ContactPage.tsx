@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { usePageSeo } from '../../../components/common/SEO'
 import { submitProjectInquiry } from '../../../lib/supabase'
 import { ProjectInquiry } from '../../../lib/types'
 import {
@@ -24,8 +25,11 @@ import {
 } from 'lucide-react'
 
 import { WhatsAppIcon } from '../../../components/ui/icons/WhatsAppIcon'
+import { useSiteSettings } from '../../../context/SiteSettingsContext'
 
 export const ContactPage: React.FC = () => {
+  usePageSeo({ title: 'تواصل معنا' })
+  const { settings, whatsappLink, telHref, mailHref, mapsHref } = useSiteSettings()
   const [formData, setFormData] = useState<ProjectInquiry>({
     client_name: '',
     company_name: '',
@@ -439,7 +443,7 @@ export const ContactPage: React.FC = () => {
 
                 <div className="relative space-y-2">
                   <h3 className="text-2xl sm:text-3xl font-black text-[#F4EFE6] tracking-tight">
-                    مقر رايـة بالرياض
+                    مقر {settings.site_name || 'رايـة'}
                   </h3>
                   <p className="text-xs sm:text-sm text-[#B0C9BC] leading-relaxed">
                     فريقنا مستعد دائماً لاستقبالكم في مقرنا أو الاجتماع بكم افتراضياً لمناقشة آفاق التعاون والإنتاج الإبداعي.
@@ -449,8 +453,9 @@ export const ContactPage: React.FC = () => {
                 {/* Contact List */}
                 <div className="relative space-y-3 pt-2">
                   {/* Location */}
+                  {settings.address && (
                   <a
-                    href="https://maps.google.com/?q=Riyadh+King+Fahd+Road"
+                    href={mapsHref}
                     target="_blank"
                     rel="noreferrer"
                     className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-[#C5A880]/40 transition-all duration-200 flex items-start gap-4 group"
@@ -464,14 +469,16 @@ export const ContactPage: React.FC = () => {
                         <ArrowUpLeft className="w-3 h-3 text-[#C5A880] opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <p className="text-sm font-semibold text-[#F4EFE6] leading-snug mt-0.5">
-                        طريق الملك فهد، الرياض، المملكة العربية السعودية
+                        {settings.address}
                       </p>
                     </div>
                   </a>
+                  )}
 
                   {/* Direct Phone */}
+                  {settings.phone_number && (
                   <a
-                    href="tel:+966501234567"
+                    href={telHref}
                     className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-[#C5A880]/40 transition-all duration-200 flex items-start gap-4 group"
                   >
                     <div className="w-11 h-11 rounded-xl bg-[#205341] border border-[#C5A880]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:border-[#C5A880] transition-all">
@@ -480,14 +487,16 @@ export const ContactPage: React.FC = () => {
                     <div className="min-w-0">
                       <span className="text-[11px] font-bold text-[#C5A880] uppercase tracking-wider">الهاتف المباشر</span>
                       <p className="text-sm font-semibold text-[#F4EFE6] leading-snug mt-0.5" dir="ltr">
-                        +966 50 123 4567
+                        {settings.phone_number}
                       </p>
                     </div>
                   </a>
+                  )}
 
                   {/* Email */}
+                  {settings.email_address && (
                   <a
-                    href="mailto:info@raya.sa"
+                    href={mailHref}
                     className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-[#C5A880]/40 transition-all duration-200 flex items-start gap-4 group"
                   >
                     <div className="w-11 h-11 rounded-xl bg-[#205341] border border-[#C5A880]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:border-[#C5A880] transition-all">
@@ -496,16 +505,17 @@ export const ContactPage: React.FC = () => {
                     <div className="min-w-0">
                       <span className="text-[11px] font-bold text-[#C5A880] uppercase tracking-wider">البريد الإلكتروني الرسمي</span>
                       <p className="text-sm font-semibold text-[#F4EFE6] leading-snug mt-0.5">
-                        info@raya.sa
+                        {settings.email_address}
                       </p>
                     </div>
                   </a>
+                  )}
                 </div>
 
                 {/* WhatsApp Button */}
                 <div className="relative pt-2">
                   <a
-                    href="https://wa.me/966501234567?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D9%88%D8%AF%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20%D9%85%D8%B9%20%D8%B1%D8%A7%D9%8A%D8%A9"
+                    href={whatsappLink('مرحباً، أود مناقشة مشروع مع راية')}
                     target="_blank"
                     rel="noreferrer"
                     className="group relative overflow-hidden w-full flex items-center justify-center gap-3 bg-[#C5A880] hover:bg-[#b8996e] text-[#12372A] py-4 px-6 rounded-2xl font-black text-sm shadow-xl shadow-[#C5A880]/20 hover:shadow-2xl hover:shadow-[#C5A880]/30 hover:-translate-y-0.5 transition-all duration-300"
@@ -526,7 +536,7 @@ export const ContactPage: React.FC = () => {
                 </div>
                 <div className="space-y-2 text-xs text-[#5B7166] leading-relaxed">
                   <p className="font-semibold text-[#12372A]">
-                    الأحد — الخميس: 9:00 صباحاً حتى 6:00 مساءً (بتوقيت الرياض)
+                    الأحد — الخميس: 9:00 صباحاً حتى 6:00 مساءً (بتوقيت السعودية)
                   </p>
                   <p className="text-[11px] text-[#8C7149] font-bold bg-[#FAF5ED] border border-[#E8DFCE] p-2.5 rounded-xl text-center">
                     خدمة الدعم والمشاريع العاجلة متوفرة على مدار الساعة 24/7.
